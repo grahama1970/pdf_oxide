@@ -1,0 +1,37 @@
+{
+  "command_or_endpoint": "run_page_second_pass_dag.build_model_ready_payload",
+  "exit_code": 0,
+  "finished_at": "2026-07-21T11:20:33.447510+00:00",
+  "input_artifacts": [
+    "page_before.json",
+    "page_before.png",
+    "page_candidates.png",
+    "candidate_presets.json"
+  ],
+  "next_allowed_nodes": [
+    "scillm_one_shot_page_review"
+  ],
+  "node_id": "build_model_ready_payload",
+  "output_artifacts": [
+    "review_request.json",
+    "review_request_validation.json",
+    "scillm_orchestrator_page_dag_spec.json",
+    "scillm_orchestrator_page_dag_spec_validation.json",
+    "scillm_orchestrator_page_submission.json",
+    "scillm_orchestrator_page_submission_validation.json"
+  ],
+  "schema": "pdf_lab.second_pass.node_receipt.v1",
+  "started_at": "2026-07-21T11:20:33.447506+00:00",
+  "validator_result": {
+    "ok": true,
+    "orchestrator_dag_errors": [],
+    "orchestrator_submission_errors": [],
+    "review_request_errors": [],
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0028",
+      "item_id": "page_case_0001_p0028:31821b975e76b6f3",
+      "request_sha256": "31821b975e76b6f38193fdfc6ba8aa1f409e1d5c3cb441929762f0fb776329d9"
+    }
+  }
+}

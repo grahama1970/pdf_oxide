@@ -1,0 +1,13 @@
+{
+  "schema": "surf.webgpt_heartbeat.v1",
+  "updated_at": "2026-07-21T11:44:06Z",
+  "submitted_at": "2026-07-21T11:42:24Z",
+  "last_browser_observation_at": "2026-07-21T11:44:06Z",
+  "phase": "completed",
+  "page_state": "response_detected",
+  "last_artifact_written": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/unblock/ask_webgpt_timeout/ask-tau-webgpt-review-bundle-pdf-oxide-p-b2aec86c58fd/node-artifacts/handler-webgpt/response.raw.md",
+  "next_expected_artifact": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/unblock/ask_webgpt_timeout/ask-tau-webgpt-review-bundle-pdf-oxide-p-b2aec86c58fd/node-artifacts/handler-webgpt/response.meta.json",
+  "timeout_remaining_seconds": 0,
+  "sentinel": "<<<WEBGPT_DONE:20260721T114222Z:34f5e7d3>>>",
+  "prepared_prompt_is_transport_proof": false
+}

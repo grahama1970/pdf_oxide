@@ -1,0 +1,56 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0026:0000:side_chrome",
+      "evidence": "Extracted JSON `actual:p26:block:0` correctly identifies text \"NIST SP 800-53, REV. 5 ... ORGANIZATIONS\" with `source_type: Header` and accurate bounding box.",
+      "rationale": "The header text and its bounding box are accurately extracted and classified as page chrome. The text matches the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0001:side_chrome",
+      "evidence": "Extracted JSON `actual:p26:block:1` identifies the horizontal line as text \"_________________________________________________________________________________________________\" with `source_type: Header` and accurate bounding box.",
+      "rationale": "The horizontal rule, a visual separator in the header, is correctly extracted as text and classified as page chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0002:side_chrome",
+      "evidence": "Extracted JSON `actual:p26:block:2` identifies text \"xxiv\" with `source_type: PageNumber` and accurate bounding box.",
+      "rationale": "The page number at the bottom of the page is correctly extracted and classified as page chrome.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0003:side_chrome",
+      "evidence": "Extracted JSON `actual:p26:block:3` identifies text \"This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5\" with `source_type: Boilerplate` and accurate bounding box for the rotated text.",
+      "rationale": "The rotated boilerplate text on the left margin is correctly extracted and classified as page chrome with an accurate bounding box.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0026:0004:side_chrome",
+      "evidence": "Extracted JSON `actual:p26:block:7` is classified as `type: header_footer_noise` and `source_type: Boilerplate`, but the visual evidence shows this text (\"https://doi.org/10.6028/NIST.SP.800-181\u201d to \u201cPetersen R, Santos D,\") is part of the 'REVISION' column within the main table (`cand:p0026:0006`).",
+      "rationale": "This text is incorrectly classified as side chrome/boilerplate and extracted as a separate block. It is clearly content belonging to the first row of the main table on the page.",
+      "status": "defect",
+      "suggested_fix_surface": "pdf_oxide_core"
+    },
+    {
+      "candidate_id": "cand:p0026:0005:side_chrome",
+      "evidence": "Extracted JSON `actual:p26:block:9` is classified as `type: header_footer_noise` and `source_type: Boilerplate`, but the visual evidence shows this text (\"https://doi.org/10.6028/NIST.SP.800-181r1\u201d\") is part of the 'REVISION' column within the main table (`cand:p0026:0006`).",
+      "rationale": "This text is incorrectly classified as side chrome/boilerplate and extracted as a separate block. It is clearly content belonging to the first row of the main table on the page, forming part of a multi-line entry.",
+      "status": "defect",
+      "suggested_fix_surface": "pdf_oxide_core"
+    },
+    {
+      "candidate_id": "cand:p0026:0006:table",
+      "evidence": "The extracted table (`actual:p26:table:0`) has an accurate bounding box but its `text` content is incomplete. It is missing the content visually present within its bounds, specifically the text segments extracted by `actual:p26:block:7` and `actual:p26:block:9` that are part of the table's first row.",
+      "rationale": "While the table's bounding box and type are correct, the content extraction for the table is flawed because parts of its content (from the first row) were incorrectly parsed as separate `header_footer_noise` blocks, leading to fragmented table text.",
+      "status": "defect",
+      "suggested_fix_surface": "pdf_oxide_core"
+    }
+  ],
+  "page_rationale": "This page contains a significant defect where substantial content belonging to the primary table is misclassified as 'side_chrome' / 'boilerplate' and extracted as separate blocks, leading to an incomplete and fragmented table text extraction. While standard page chrome elements are correctly identified, the core content parsing is flawed.",
+  "page_status": "defect",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

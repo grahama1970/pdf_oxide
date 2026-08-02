@@ -1,0 +1,13 @@
+{
+  "schema": "surf.webgpt_heartbeat.v1",
+  "updated_at": "2026-07-21T09:57:29Z",
+  "submitted_at": "2026-07-21T09:55:03Z",
+  "last_browser_observation_at": "2026-07-21T09:57:29Z",
+  "phase": "completed",
+  "page_state": "response_detected",
+  "last_artifact_written": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.raw.md",
+  "next_expected_artifact": "artifacts/pdf_lab/live_second_pass_page16_20260721T1130Z/unblock/webgpt_page16_repeated_readtimeout_bundle-assess-response.meta.json",
+  "timeout_remaining_seconds": 0,
+  "sentinel": "<<<WEBGPT_DONE:20260721T095501Z:5c230e4f>>>",
+  "prepared_prompt_is_transport_proof": false
+}

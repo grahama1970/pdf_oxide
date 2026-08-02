@@ -1,0 +1,13 @@
+{
+  "schema": "surf.webgpt_heartbeat.v1",
+  "updated_at": "2026-07-21T11:33:16Z",
+  "submitted_at": "2026-07-21T11:29:44Z",
+  "last_browser_observation_at": "2026-07-21T11:33:16Z",
+  "phase": "completed",
+  "page_state": "response_detected",
+  "last_artifact_written": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page28_vlm_free2_repaired_orchestrator_live_20260721T1128Z/unblock/ask_webgpt_schema/pdf-oxide-page28-schema-webgpt/node-artifacts/handler-webgpt/response.raw.md",
+  "next_expected_artifact": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page28_vlm_free2_repaired_orchestrator_live_20260721T1128Z/unblock/ask_webgpt_schema/pdf-oxide-page28-schema-webgpt/node-artifacts/handler-webgpt/response.meta.json",
+  "timeout_remaining_seconds": 0,
+  "sentinel": "<<<WEBGPT_DONE:20260721T112942Z:e26a6a36>>>",
+  "prepared_prompt_is_transport_proof": false
+}

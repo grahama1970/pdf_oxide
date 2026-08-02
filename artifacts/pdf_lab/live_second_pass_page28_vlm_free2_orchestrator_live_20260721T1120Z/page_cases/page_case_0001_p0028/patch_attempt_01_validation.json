@@ -1,0 +1,8 @@
+{
+  "errors": [
+    "patch_delegate_dry_run"
+  ],
+  "ok": false,
+  "patch_status": "not_attempted",
+  "schema": "pdf_lab.second_pass.patch_delegate_validation.v1"
+}

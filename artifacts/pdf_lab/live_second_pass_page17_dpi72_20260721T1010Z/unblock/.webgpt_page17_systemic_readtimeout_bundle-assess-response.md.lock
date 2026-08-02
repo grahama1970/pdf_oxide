@@ -1,0 +1,9 @@
+{
+  "schema": "webgpt.submit_output_lock.v1",
+  "pid": 3620982,
+  "started_at": "2026-07-21T10:02:55Z",
+  "response_path": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.md",
+  "raw_path": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.raw.md",
+  "meta_path": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.meta.json",
+  "receipt_path": "artifacts/pdf_lab/live_second_pass_page17_dpi72_20260721T1010Z/unblock/webgpt_page17_systemic_readtimeout_bundle-assess-response.receipt.json"
+}

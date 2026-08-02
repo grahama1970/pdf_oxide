@@ -1,0 +1,206 @@
+{
+  "endpoint": "POST /v1/chat/completions",
+  "http_status": 200,
+  "raw_response": {
+    "_hidden_params": {
+      "additional_headers": {
+        "x-scillm-backoff-active": "false",
+        "x-scillm-queue-depth": "0",
+        "x-scillm-queue-wait-ms": "0"
+      }
+    },
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "logprobs": null,
+        "message": {
+          "annotations": null,
+          "audio": null,
+          "content": "{\n  \"schema\": \"pdf_lab.second_pass.review_response.v1\",\n  \"page_status\": \"defect\",\n  \"candidate_findings\": [\n    {\n      \"candidate_id\": \"cand:p0028:0000:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: header_footer_noise` with `semantic_role: page_chrome` and `source_type: Header`. The bounding box, text content 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS', and visual representation match the candidate preset type.\",\n      \"rationale\": \"The header text is accurately extracted, its bounding box is correct, and the classification as side_chrome (header_footer_noise, page_chrome) is appropriate for the visual element.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0001:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: header_footer_noise` with `semantic_role: page_chrome` and `source_type: Header`. The bounding box, text content '_________________________________________________________________________________________________', and visual representation match the candidate preset type.\",\n      \"rationale\": \"The separator line in the header is correctly extracted, its bounding box is accurate, and the classification as side_chrome (header_footer_noise, page_chrome) is appropriate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0002:side_chrome\",\n      \"status\": \"defect\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: header_footer_noise` with `semantic_role: page_chrome` and `source_type: Body`. The text content 'CHAPTER ONE PAGE 1' and bounding box are accurate. Visually, this element is a page footer.\",\n      \"rationale\": \"The element is correctly classified as `side_chrome` (header/footer noise) with an accurate bounding box and text. However, its `source_type` is incorrectly identified as 'Body' instead of 'Footer', which is a semantic misclassification based on its position and role in the document.\",\n      \"suggested_fix_surface\": \"pdf_oxide_core\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0003:side_chrome\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: header_footer_noise` with `source_type: Boilerplate`. The bounding box, text content 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5', and visual representation of the rotated text on the left side of the page match the candidate preset type.\",\n      \"rationale\": \"The side boilerplate text is accurately extracted, its bounding box is correct, and the classification as side_chrome (header_footer_noise, Boilerplate) is appropriate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0004:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: section_heading` with `source_type: Title`. The bounding box, text content 'CHAPTER ONE', and visual appearance as a main section heading match the candidate preset type.\",\n      \"rationale\": \"The section heading is accurately extracted with correct text, bounding box, and classification as `section_heading`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0005:section_heading\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: section_heading` with `source_type: Title`. The bounding box, text content 'INTRODUCTION', and visual appearance as a sub-section heading match the candidate preset type.\",\n      \"rationale\": \"The section heading is accurately extracted with correct text, bounding box, and classification as `section_heading`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0006:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: section_subtitle` with `source_type: Body`. The text content 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS' and its bounding box are accurate. Visually, it functions as a subtitle.\",\n      \"rationale\": \"The element is correctly identified as a `section_subtitle` in the extracted JSON, which is a more specific and accurate classification than the general `text` preset, but still compatible. The bounding box and text are accurate.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0007:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: paragraph_block` with `source_type: Body`. The bounding box, text content 'Modern information systems1 can include a variety of computing platforms...', and visual appearance as a standard paragraph match the candidate preset type.\",\n      \"rationale\": \"The paragraph text is accurately extracted with correct text, bounding box, and classification as `paragraph_block`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0008:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: paragraph_block` with `source_type: Body`. The bounding box, text content 'Security controls are the safeguards or countermeasures employed...', and visual appearance as a standard paragraph match the candidate preset type.\",\n      \"rationale\": \"The paragraph text is accurately extracted with correct text, bounding box, and classification as `paragraph_block`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0009:text\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: paragraph_block` with `source_type: Body`. The bounding box, text content 'The selection, design, and implementation of security and privacy controls5 are important tasks...', and visual appearance as a standard paragraph preceding a list match the candidate preset type.\",\n      \"rationale\": \"The paragraph text is accurately extracted with correct text, bounding box, and classification as `paragraph_block`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0010:list\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: list` with `source_type: List`. The bounding box, text content starting with bullet points like '\\u2022 What security and privacy controls are needed...', and visual appearance as a bulleted list match the candidate preset type.\",\n      \"rationale\": \"The bulleted list is accurately extracted with correct text, bounding box, and classification as `list`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0011:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '1 An information system is a discrete set of information resources organized...', and visual appearance as footnote '1' match the candidate preset type.\",\n      \"rationale\": \"Footnote 1 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0012:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '2 The term organization describes an entity of any size...', and visual appearance as footnote '2' match the candidate preset type.\",\n      \"rationale\": \"Footnote 2 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0013:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '3 The two terms information security and security are used synonymously...', and visual appearance as footnote '3' match the candidate preset type.\",\n      \"rationale\": \"Footnote 3 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0014:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '4 [OMB A-130] defines security and privacy controls.', and visual appearance as footnote '4' match the candidate preset type.\",\n      \"rationale\": \"Footnote 4 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0015:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '5 Controls provide safeguards and countermeasures in systems...', and visual appearance as footnote '5' match the candidate preset type.\",\n      \"rationale\": \"Footnote 5 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0016:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '6 Organizational operations include mission, functions, image, and reputation.', and visual appearance as footnote '6' match the candidate preset type.\",\n      \"rationale\": \"Footnote 6 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    },\n    {\n      \"candidate_id\": \"cand:p0028:0017:footnote\",\n      \"status\": \"clean\",\n      \"evidence\": \"The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '7 Security and privacy control effectiveness addresses the extent...', and visual appearance as footnote '7' match the candidate preset type.\",\n      \"rationale\": \"Footnote 7 is accurately extracted with correct text, bounding box, and classification as `footnote`.\",\n      \"suggested_fix_surface\": \"none\"\n    }\n  ],\n  \"page_rationale\": \"The page exhibits generally high-quality extraction, with all major content elements such as section headings, paragraphs, lists, and footnotes correctly identified with accurate bounding boxes and text. However, a minor defect was found where a footer element ('CHAPTER ONE PAGE 1') was incorrectly assigned a `source_type` of 'Body' instead of 'Footer'. This single defect prevents a 'clean' page status.\"\n}",
+          "function_call": null,
+          "refusal": null,
+          "role": "assistant",
+          "tool_calls": null
+        }
+      }
+    ],
+    "created": 1784632861,
+    "id": "AlZfape3CKea-8YP-L2u0A0",
+    "model": "gemini-2.5-flash",
+    "moderation": null,
+    "object": "chat.completion",
+    "scillm_metadata": {
+      "batch_id": "pdf-lab-second-pass",
+      "case_id": "page_case_0001_p0028",
+      "item_id": "page_case_0001_p0028:31821b975e76b6f3",
+      "request_sha256": "31821b975e76b6f38193fdfc6ba8aa1f409e1d5c3cb441929762f0fb776329d9"
+    },
+    "scillm_multimodal": {
+      "document_count": 0,
+      "image_count": 2,
+      "image_seen_by": null,
+      "inline_data_count": 0,
+      "input_multimodal": true,
+      "model_requested": "vlm-free2",
+      "model_served": "gemini-2.5-flash",
+      "routed_to_provider": null
+    },
+    "scillm_reasoning": {
+      "applied_effort": null,
+      "forwarded": false,
+      "ignored_reason": "unsupported_effort_for_provider",
+      "provider_field": null,
+      "requested_effort": "high"
+    },
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+      "completion_tokens": 2820,
+      "completion_tokens_details": null,
+      "prompt_tokens": 14151,
+      "prompt_tokens_details": null,
+      "total_tokens": 20949
+    }
+  },
+  "review_response": {
+    "candidate_findings": [
+      {
+        "candidate_id": "cand:p0028:0000:side_chrome",
+        "evidence": "The extracted JSON identifies this block as `type: header_footer_noise` with `semantic_role: page_chrome` and `source_type: Header`. The bounding box, text content 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS', and visual representation match the candidate preset type.",
+        "rationale": "The header text is accurately extracted, its bounding box is correct, and the classification as side_chrome (header_footer_noise, page_chrome) is appropriate for the visual element.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0001:side_chrome",
+        "evidence": "The extracted JSON identifies this block as `type: header_footer_noise` with `semantic_role: page_chrome` and `source_type: Header`. The bounding box, text content '_________________________________________________________________________________________________', and visual representation match the candidate preset type.",
+        "rationale": "The separator line in the header is correctly extracted, its bounding box is accurate, and the classification as side_chrome (header_footer_noise, page_chrome) is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0002:side_chrome",
+        "evidence": "The extracted JSON identifies this block as `type: header_footer_noise` with `semantic_role: page_chrome` and `source_type: Body`. The text content 'CHAPTER ONE PAGE 1' and bounding box are accurate. Visually, this element is a page footer.",
+        "rationale": "The element is correctly classified as `side_chrome` (header/footer noise) with an accurate bounding box and text. However, its `source_type` is incorrectly identified as 'Body' instead of 'Footer', which is a semantic misclassification based on its position and role in the document.",
+        "status": "defect",
+        "suggested_fix_surface": "pdf_oxide_core"
+      },
+      {
+        "candidate_id": "cand:p0028:0003:side_chrome",
+        "evidence": "The extracted JSON identifies this block as `type: header_footer_noise` with `source_type: Boilerplate`. The bounding box, text content 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5', and visual representation of the rotated text on the left side of the page match the candidate preset type.",
+        "rationale": "The side boilerplate text is accurately extracted, its bounding box is correct, and the classification as side_chrome (header_footer_noise, Boilerplate) is appropriate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0004:section_heading",
+        "evidence": "The extracted JSON identifies this block as `type: section_heading` with `source_type: Title`. The bounding box, text content 'CHAPTER ONE', and visual appearance as a main section heading match the candidate preset type.",
+        "rationale": "The section heading is accurately extracted with correct text, bounding box, and classification as `section_heading`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0005:section_heading",
+        "evidence": "The extracted JSON identifies this block as `type: section_heading` with `source_type: Title`. The bounding box, text content 'INTRODUCTION', and visual appearance as a sub-section heading match the candidate preset type.",
+        "rationale": "The section heading is accurately extracted with correct text, bounding box, and classification as `section_heading`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0006:text",
+        "evidence": "The extracted JSON identifies this block as `type: section_subtitle` with `source_type: Body`. The text content 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS' and its bounding box are accurate. Visually, it functions as a subtitle.",
+        "rationale": "The element is correctly identified as a `section_subtitle` in the extracted JSON, which is a more specific and accurate classification than the general `text` preset, but still compatible. The bounding box and text are accurate.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0007:text",
+        "evidence": "The extracted JSON identifies this block as `type: paragraph_block` with `source_type: Body`. The bounding box, text content 'Modern information systems1 can include a variety of computing platforms...', and visual appearance as a standard paragraph match the candidate preset type.",
+        "rationale": "The paragraph text is accurately extracted with correct text, bounding box, and classification as `paragraph_block`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0008:text",
+        "evidence": "The extracted JSON identifies this block as `type: paragraph_block` with `source_type: Body`. The bounding box, text content 'Security controls are the safeguards or countermeasures employed...', and visual appearance as a standard paragraph match the candidate preset type.",
+        "rationale": "The paragraph text is accurately extracted with correct text, bounding box, and classification as `paragraph_block`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0009:text",
+        "evidence": "The extracted JSON identifies this block as `type: paragraph_block` with `source_type: Body`. The bounding box, text content 'The selection, design, and implementation of security and privacy controls5 are important tasks...', and visual appearance as a standard paragraph preceding a list match the candidate preset type.",
+        "rationale": "The paragraph text is accurately extracted with correct text, bounding box, and classification as `paragraph_block`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0010:list",
+        "evidence": "The extracted JSON identifies this block as `type: list` with `source_type: List`. The bounding box, text content starting with bullet points like '\u2022 What security and privacy controls are needed...', and visual appearance as a bulleted list match the candidate preset type.",
+        "rationale": "The bulleted list is accurately extracted with correct text, bounding box, and classification as `list`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0011:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '1 An information system is a discrete set of information resources organized...', and visual appearance as footnote '1' match the candidate preset type.",
+        "rationale": "Footnote 1 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0012:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '2 The term organization describes an entity of any size...', and visual appearance as footnote '2' match the candidate preset type.",
+        "rationale": "Footnote 2 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0013:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '3 The two terms information security and security are used synonymously...', and visual appearance as footnote '3' match the candidate preset type.",
+        "rationale": "Footnote 3 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0014:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '4 [OMB A-130] defines security and privacy controls.', and visual appearance as footnote '4' match the candidate preset type.",
+        "rationale": "Footnote 4 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0015:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '5 Controls provide safeguards and countermeasures in systems...', and visual appearance as footnote '5' match the candidate preset type.",
+        "rationale": "Footnote 5 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0016:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '6 Organizational operations include mission, functions, image, and reputation.', and visual appearance as footnote '6' match the candidate preset type.",
+        "rationale": "Footnote 6 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      },
+      {
+        "candidate_id": "cand:p0028:0017:footnote",
+        "evidence": "The extracted JSON identifies this block as `type: footnote` with `source_type: Footnote`. The bounding box, text content '7 Security and privacy control effectiveness addresses the extent...', and visual appearance as footnote '7' match the candidate preset type.",
+        "rationale": "Footnote 7 is accurately extracted with correct text, bounding box, and classification as `footnote`.",
+        "status": "clean",
+        "suggested_fix_surface": "none"
+      }
+    ],
+    "page_rationale": "The page exhibits generally high-quality extraction, with all major content elements such as section headings, paragraphs, lists, and footnotes correctly identified with accurate bounding boxes and text. However, a minor defect was found where a footer element ('CHAPTER ONE PAGE 1') was incorrectly assigned a `source_type` of 'Body' instead of 'Footer'. This single defect prevents a 'clean' page status.",
+    "page_status": "defect",
+    "schema": "pdf_lab.second_pass.review_response.v1"
+  },
+  "schema": "pdf_lab.second_pass.scillm_review_receipt.v1",
+  "scillm_metadata": {
+    "batch_id": "pdf-lab-second-pass",
+    "case_id": "page_case_0001_p0028",
+    "item_id": "page_case_0001_p0028:31821b975e76b6f3",
+    "request_sha256": "31821b975e76b6f38193fdfc6ba8aa1f409e1d5c3cb441929762f0fb776329d9"
+  }
+}

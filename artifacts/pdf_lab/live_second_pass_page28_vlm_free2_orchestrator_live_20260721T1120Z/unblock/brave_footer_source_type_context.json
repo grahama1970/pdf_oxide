@@ -1,0 +1,32 @@
+{
+  "query": "PDF text extraction classify footer source_type body footer running footer page label",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "(PDF) Header and Footer Extraction by Page-Association",
+      "description": "eliminate accidental good text matches between a header/footer and a normal body text line. The final similarity is defined as the product of the two components: ... The proposed method has been tested on 9 documents with different styles, including 7 periodicals and 2 \u00b7 books. All the 1156 pages are scanned and recognized using a commercial OCR engine. The header/footer \u00b7 extraction system then runs on the generated text and bounding box information.",
+      "url": "https://www.researchgate.net/publication/221253782_Header_and_Footer_Extraction_by_Page-Association"
+    },
+    {
+      "title": "Extract Text from a PDF \u2014 pypdf 6.14.2 documentation",
+      "description": "The following example reads the text of page four of this PDF document, but ignores the header (y &gt; 720) and footer (y &lt; 50). In this file we also need to include new line characters (y == 0). from pypdf import PdfReader reader = PdfReader(&quot;GeoBase_NHNC1_Data_Model_UML_EN.pdf&quot;) page = reader.pages[3] parts = [] def visitor_body(text, cm, tm, font_dict, font_size): y = tm[5] if 50 &lt; y &lt; 720 or y == 0: parts.append(text) page.extract_text(visitor_text=visitor_body) text_body = &quot;&quot;.join(parts) print(text_body)",
+      "url": "https://pypdf.readthedocs.io/en/stable/user/extract-text.html"
+    },
+    {
+      "title": "Extract Text from a PDF \u2014 pypdf 3.16.2 documentation",
+      "description": "The following example reads the text of page 4 of this PDF document, but ignores header (y &lt; 720) and footer (y &gt; 50). from pypdf import PdfReader reader = PdfReader(&quot;GeoBase_NHNC1_Data_Model_UML_EN.pdf&quot;) page = reader.pages[3] parts = [] def visitor_body(text, cm, tm, font_dict, font_size): y = tm[5] if y &gt; 50 and y &lt; 720: parts.append(text) page.extract_text(visitor_text=visitor_body) text_body = &quot;&quot;.join(parts) print(text_body)",
+      "url": "https://pypdf.readthedocs.io/en/3.16.2/user/extract-text.html"
+    },
+    {
+      "title": "The RAG Playbook: Advanced Parsing for PDFs That Hate You - Tables, Footnotes, & Figures",
+      "description": "Many PDFs have consistent headers/footers that you can spot by frequency. Detect by Font Size/Style: Often, the main body text is one font size, and footnotes are smaller. A clever approach is to use pdfplumber\u2019s character analysis. Then you can separate text by those sizes. This isn\u2019t foolproof (what if a quote uses a smaller font?), but in structured documents it holds surprisingly well. I\u2019ve used this trick: parse page by page, classify text segments into \u201cmain text vs.",
+      "url": "https://lettersfromacoder.substack.com/p/the-rag-playbook-advanced-parsing"
+    },
+    {
+      "title": "r/computervision on Reddit: How to extract the different sections of a pdf document using image processing?",
+      "description": "For step 3, if your documents are all the same header/body/footer layout, you can just use a few if statements to distinguish them based on shape. If they\u2019re not all similar shape, you may have to use a classifier. If you\u2019re interested in good results without a lot of labeled data, using location in the image as features will work better than pixels.",
+      "url": "https://www.reddit.com/r/computervision/comments/dli63d/how_to_extract_the_different_sections_of_a_pdf/"
+    }
+  ]
+}

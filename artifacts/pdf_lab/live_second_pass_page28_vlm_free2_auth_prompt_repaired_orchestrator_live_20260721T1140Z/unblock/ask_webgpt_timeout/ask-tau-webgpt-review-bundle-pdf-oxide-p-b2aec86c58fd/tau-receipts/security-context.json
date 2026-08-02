@@ -1,0 +1,36 @@
+{
+  "actor": null,
+  "command_policy": null,
+  "created_at": "2026-07-21T11:42:22Z",
+  "dag_id": "ask-tau-webgpt-review-bundle-pdf-oxide-p-b2aec86c58fd",
+  "data_boundary": null,
+  "environment": {
+    "generated": true,
+    "path": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page28_vlm_free2_auth_prompt_repaired_orchestrator_live_20260721T1140Z/unblock/ask_webgpt_timeout/ask-tau-webgpt-review-bundle-pdf-oxide-p-b2aec86c58fd/tau-receipts/environment-manifest.json",
+    "schema": "tau.environment_manifest.v1",
+    "sha256": "sha256:1df797533d2e19a75071c8ca2a9e8d6158eecde5e8d15be20ac9f93a5fc4f64a",
+    "source_kind": "generated"
+  },
+  "goal": {
+    "goal_hash": "sha256:04a6876bd36208b6c012061ca663f531432d18f33cb353302964a5d0f009155b",
+    "goal_id": "ask-ask-tau-webgpt-review-bundle-pdf-oxide-p-b2aec86c58fd",
+    "goal_version": 1
+  },
+  "policy_profile": null,
+  "production_authority": false,
+  "regulated_data_authorized": false,
+  "required_gates": [],
+  "resolved_inputs": {
+    "actor_access_manifest": false,
+    "command_policy": false,
+    "data_boundary": false,
+    "environment_manifest": true,
+    "policy_profile": false
+  },
+  "run_id": "ask-tau-webgpt-review-bundle-pdf-oxide-p-b2aec86c58fd",
+  "schema": "tau.security_context.v1",
+  "security_context_sha256": "sha256:7fa9f7681bf17d146029575830d76042a73e7d7d393191d3df51799e6c2880dc",
+  "security_mode": "development",
+  "security_mode_explicit": false,
+  "security_mode_requested": null
+}

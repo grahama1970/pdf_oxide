@@ -1,0 +1,13 @@
+{
+  "schema": "surf.webgpt_heartbeat.v1",
+  "updated_at": "2026-07-21T11:57:36Z",
+  "submitted_at": "2026-07-21T11:53:29Z",
+  "last_browser_observation_at": "2026-07-21T11:57:36Z",
+  "phase": "completed",
+  "page_state": "response_detected",
+  "last_artifact_written": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/node-artifacts/handler-webgpt/response.raw.md",
+  "next_expected_artifact": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/node-artifacts/handler-webgpt/response.meta.json",
+  "timeout_remaining_seconds": 0,
+  "sentinel": "<<<WEBGPT_DONE:20260721T115327Z:a0203c78>>>",
+  "prepared_prompt_is_transport_proof": false
+}

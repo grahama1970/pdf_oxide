@@ -1,0 +1,98 @@
+{
+  "active_goal_hash": "sha256:5cd020549c12b5a5e0c43fa6c8514a98b06525b1658466ce1e37a2aff65f8d99",
+  "active_subagents": [],
+  "completed_subagents": [
+    {
+      "agent": "handler-webgpt",
+      "node_id": "handler-webgpt"
+    },
+    {
+      "agent": "join",
+      "node_id": "join"
+    }
+  ],
+  "dag_id": "ask-tau-webgpt-review-bundle-pdf-oxide-p-02c1bd724a6f",
+  "entry_node": "handler-webgpt",
+  "event_count": 4,
+  "events": [
+    {
+      "agent": "handler-webgpt",
+      "attempt": 1,
+      "event": "node_started",
+      "node_id": "handler-webgpt",
+      "ts": "2026-07-21T10:57:41Z"
+    },
+    {
+      "agent": "handler-webgpt",
+      "attempt": 1,
+      "event": "node_completed",
+      "node_id": "handler-webgpt",
+      "ok": true,
+      "ts": "2026-07-21T11:03:19Z"
+    },
+    {
+      "agent": "join",
+      "attempt": 1,
+      "event": "node_started",
+      "node_id": "join",
+      "ts": "2026-07-21T11:03:19Z"
+    },
+    {
+      "agent": "join",
+      "attempt": 1,
+      "event": "node_completed",
+      "node_id": "join",
+      "ok": true,
+      "ts": "2026-07-21T11:03:19Z"
+    }
+  ],
+  "last_event": {
+    "agent": "join",
+    "attempt": 1,
+    "event": "node_completed",
+    "node_id": "join",
+    "ok": true,
+    "ts": "2026-07-21T11:03:19Z"
+  },
+  "live": true,
+  "mocked": false,
+  "node_count": 2,
+  "node_progress": [
+    {
+      "agent": "handler-webgpt",
+      "attempt": 1,
+      "last_event_at": "2026-07-21T11:03:19Z",
+      "node_id": "handler-webgpt",
+      "status": "COMPLETED"
+    },
+    {
+      "agent": "join",
+      "attempt": 1,
+      "last_event_at": "2026-07-21T11:03:19Z",
+      "node_id": "join",
+      "status": "COMPLETED"
+    }
+  ],
+  "ok": true,
+  "proof_scope": {
+    "does_not_prove": [
+      "The active subprocess will finish successfully.",
+      "Provider/model semantic quality.",
+      "Final DAG acceptance before dag-receipt.json is written."
+    ],
+    "proves": [
+      "Tau has written a durable local progress artifact for this DAG run.",
+      "Operators can inspect active and completed subagents before the final DAG receipt exists."
+    ]
+  },
+  "provider_live": false,
+  "run_dir": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/live_second_pass_page26_vlm_free2_orchestrator_live_20260721T1105Z/unblock/ask_webgpt/pdf-oxide-page26-webgpt/tau-receipts",
+  "scheduler": "bounded-ready-queue",
+  "schema": "tau.dag_progress.v1",
+  "status": "PASS",
+  "terminal_nodes": [
+    "human"
+  ],
+  "updated_at": "2026-07-21T11:03:19Z",
+  "verdict": "PASS"
+}

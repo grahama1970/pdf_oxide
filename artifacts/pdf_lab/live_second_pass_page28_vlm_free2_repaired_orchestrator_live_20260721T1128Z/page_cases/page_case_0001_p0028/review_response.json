@@ -1,0 +1,133 @@
+{
+  "candidate_findings": [
+    {
+      "candidate_id": "cand:p0028:0000:side_chrome",
+      "evidence": "Candidate preset_type 'side_chrome' matches extracted JSON type 'header_footer_noise' with semantic_role 'page_chrome'. Bounding box and text are accurate. Extracted text: 'NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS'.",
+      "rationale": "The header text is correctly identified as side chrome, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0001:side_chrome",
+      "evidence": "Candidate preset_type 'side_chrome' matches extracted JSON type 'header_footer_noise' with semantic_role 'page_chrome'. Bounding box and text are accurate. Extracted text: '_________________________________________________________________________________________________'.",
+      "rationale": "The horizontal rule acting as a header divider is correctly identified as side chrome, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0002:side_chrome",
+      "evidence": "Candidate preset_type 'side_chrome' matches extracted JSON type 'header_footer_noise' with semantic_role 'page_chrome'. Bounding box and text are accurate. Extracted text: 'CHAPTER ONE PAGE 1'.",
+      "rationale": "The footer text is correctly identified as side chrome, with accurate bounding box and content, matching the visual evidence. The page number 'PAGE 1' is inconsistent with the actual page number 28, which is a document content issue, not an extraction error.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0003:side_chrome",
+      "evidence": "Candidate preset_type 'side_chrome' matches extracted JSON type 'header_footer_noise' with source_type 'Boilerplate'. Bounding box and text are accurate. Extracted text: 'This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5'.",
+      "rationale": "The vertical boilerplate text on the left margin is correctly identified as side chrome, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0004:section_heading",
+      "evidence": "Candidate preset_type 'section_heading' matches extracted JSON type 'section_heading'. Bounding box and text are accurate. Extracted text: 'CHAPTER ONE'.",
+      "rationale": "The main chapter heading 'CHAPTER ONE' is correctly identified as a section heading, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0005:section_heading",
+      "evidence": "Candidate preset_type 'section_heading' matches extracted JSON type 'section_heading'. Bounding box and text are accurate. Extracted text: 'INTRODUCTION'.",
+      "rationale": "The section heading 'INTRODUCTION' is correctly identified as a section heading, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0006:text",
+      "evidence": "Candidate preset_type is 'text'. However, the extracted JSON block type is 'section_subtitle'. Both refer to the content: 'THE NEED TO PROTECT INFORMATION, SYSTEMS, ORGANIZATIONS, AND INDIVIDUALS'.",
+      "rationale": "The content, bounding box, and text extraction are accurate. However, the extracted JSON's specific type 'section_subtitle' is more semantically appropriate for this content (a subtitle under 'INTRODUCTION') than the generic 'text' specified by the candidate's preset_type.",
+      "status": "defect",
+      "suggested_fix_surface": "nist_preset"
+    },
+    {
+      "candidate_id": "cand:p0028:0007:text",
+      "evidence": "Candidate preset_type 'text' is consistent with extracted JSON type 'paragraph_block'. Bounding box and text are accurate. Extracted text begins: 'Modern information systems1 can include a variety of computing platforms...'.",
+      "rationale": "The paragraph text is correctly extracted with an accurate bounding box and classified as a paragraph block, which is consistent with the general 'text' preset type.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0008:text",
+      "evidence": "Candidate preset_type 'text' is consistent with extracted JSON type 'paragraph_block'. Bounding box and text are accurate. Extracted text begins: 'Security controls are the safeguards or countermeasures...'.",
+      "rationale": "The paragraph text is correctly extracted with an accurate bounding box and classified as a paragraph block, which is consistent with the general 'text' preset type.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0009:text",
+      "evidence": "Candidate preset_type 'text' is consistent with extracted JSON type 'paragraph_block'. Bounding box and text are accurate. Extracted text begins: 'The selection, design, and implementation of security and privacy controls...'.",
+      "rationale": "The paragraph text is correctly extracted with an accurate bounding box and classified as a paragraph block, which is consistent with the general 'text' preset type.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0010:list",
+      "evidence": "Candidate preset_type 'list' matches extracted JSON type 'list'. Bounding box and text are accurate. Extracted text begins: '\u2022 What security and privacy controls are needed...'.",
+      "rationale": "The bulleted list is correctly identified as a list, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0011:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text begins: '1 An information system is a discrete set of information resources...'.",
+      "rationale": "Footnote 1 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0012:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text begins: '2 The term organization describes an entity of any size...'.",
+      "rationale": "Footnote 2 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0013:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text begins: '3 The two terms information security and security are used...'.",
+      "rationale": "Footnote 3 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0014:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text: '4 [OMB A-130] defines security and privacy controls.'.",
+      "rationale": "Footnote 4 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0015:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text begins: '5 Controls provide safeguards and countermeasures in systems...'.",
+      "rationale": "Footnote 5 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0016:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text: '6 Organizational operations include mission, functions, image, and reputation.'.",
+      "rationale": "Footnote 6 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    },
+    {
+      "candidate_id": "cand:p0028:0017:footnote",
+      "evidence": "Candidate preset_type 'footnote' matches extracted JSON type 'footnote'. Bounding box and text are accurate. Extracted text begins: '7 Security and privacy control effectiveness addresses the extent...'.",
+      "rationale": "Footnote 7 is correctly identified as a footnote, with accurate bounding box and content, matching the visual evidence.",
+      "status": "clean",
+      "suggested_fix_surface": "none"
+    }
+  ],
+  "page_rationale": "The page demonstrates largely clean extraction for all required candidates. All elements, including side chrome, section headings, paragraphs, list, and footnotes, have accurate bounding boxes and text extraction. One minor defect was noted where the extracted JSON provided a more semantically specific type ('section_subtitle') than the generic 'text' type specified in the candidate's preset. This is an opportunity for improving preset specificity rather than a fundamental extraction error.",
+  "page_status": "clean",
+  "schema": "pdf_lab.second_pass.review_response.v1"
+}

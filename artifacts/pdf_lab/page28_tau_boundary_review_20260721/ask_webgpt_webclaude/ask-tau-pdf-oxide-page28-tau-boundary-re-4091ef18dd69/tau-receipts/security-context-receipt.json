@@ -1,0 +1,65 @@
+{
+  "alert_codes": [],
+  "alerts": [],
+  "checked_at": "2026-07-21T11:53:27Z",
+  "live": true,
+  "mocked": false,
+  "ok": true,
+  "proof_scope": {
+    "does_not_prove": [
+      "ITAR compliance.",
+      "Legal identity proof or authoritative U.S.-person status.",
+      "Runtime sandbox enforcement.",
+      "Provider/model semantic quality.",
+      "Secure enforcement outside tau run and tau dag-run."
+    ],
+    "proves": [
+      "Tau resolved DAG policy, boundary, actor, environment, command-policy, and goal inputs before dispatch.",
+      "Tau hash-bound the resolved security context for this run.",
+      "Tau identified whether the resolved data boundary is controlled."
+    ]
+  },
+  "provider_live": false,
+  "receipt_path": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/security-context-receipt.json",
+  "schema": "tau.security_context_receipt.v1",
+  "security_context": {
+    "actor": null,
+    "command_policy": null,
+    "created_at": "2026-07-21T11:53:27Z",
+    "dag_id": "ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69",
+    "data_boundary": null,
+    "environment": {
+      "generated": true,
+      "path": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/environment-manifest.json",
+      "schema": "tau.environment_manifest.v1",
+      "sha256": "sha256:83a3beba0c10af669ee6067506b79ac062cf7b7ea38ce4369aaa6f8c855d32b5",
+      "source_kind": "generated"
+    },
+    "goal": {
+      "goal_hash": "sha256:f2eac40967d045fc103c8762e6fd5b7627784a503665faf2b09f4f8393a9d200",
+      "goal_id": "ask-ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69",
+      "goal_version": 1
+    },
+    "policy_profile": null,
+    "production_authority": false,
+    "regulated_data_authorized": false,
+    "required_gates": [],
+    "resolved_inputs": {
+      "actor_access_manifest": false,
+      "command_policy": false,
+      "data_boundary": false,
+      "environment_manifest": true,
+      "policy_profile": false
+    },
+    "run_id": "ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69",
+    "schema": "tau.security_context.v1",
+    "security_context_sha256": "sha256:7eadb19e178d30bc97bd6ef55430cd4f4279d626a361850da022537ba99fa7c7",
+    "security_mode": "development",
+    "security_mode_explicit": false,
+    "security_mode_requested": null
+  },
+  "security_context_path": "/tmp/pdf_oxide_page45b_1784600709/artifacts/pdf_lab/page28_tau_boundary_review_20260721/ask_webgpt_webclaude/ask-tau-pdf-oxide-page28-tau-boundary-re-4091ef18dd69/tau-receipts/security-context.json",
+  "security_context_sha256": "sha256:7eadb19e178d30bc97bd6ef55430cd4f4279d626a361850da022537ba99fa7c7",
+  "security_mode": "development",
+  "status": "PASS"
+}
