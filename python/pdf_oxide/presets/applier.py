@@ -43,6 +43,7 @@ _RULE_KINDS = frozenset({
     "field_split_rule",
     "text_normalization_rule",
     "page_chrome_prefix_strip_rule",
+    "chain_merge_rule",
 })
 
 
@@ -681,6 +682,83 @@ def _apply_adjacent_text_merge_rule(
     return out
 
 
+def _apply_chain_merge_rule(
+    elements: list[dict[str, Any]],
+    rule: dict[str, Any],
+    entry_id: str,
+    cfg: ApplierConfig,
+) -> list[dict[str, Any]]:
+    """Merge contiguous chains of matching elements into single elements.
+
+    Unlike adjacent_text_merge_rule (which only merges lead+tail pairs),
+    chain_merge_rule greedily extends a chain while each successive element
+    matches the same `merge_when` guard and stays within geometric bounds.
+    """
+    merge_when = rule.get("merge_when") or {}
+    max_y_gap = float(rule.get("max_y_gap", 0.02))
+    max_x_delta = float(rule.get("max_x_delta", 0.03))
+    join_style = rule.get("join_style") or "space"
+    merged_fields = rule.get("merged_fields") or {}
+    child_ids_field = rule.get("child_ids_field") or "child_ids"
+    min_run = int(rule.get("min_run_length", 2))
+
+    out: list[dict[str, Any]] = []
+    fired = 0
+    i = 0
+    n = len(elements)
+
+    while i < n:
+        el = dict(elements[i])
+        if not _matches_when(el, merge_when):
+            out.append(el)
+            i += 1
+            continue
+
+        # Start a chain
+        chain = [el]
+        child_ids: list[str | None] = [el.get("id")]
+        i += 1
+
+        while i < n:
+            candidate = dict(elements[i])
+            if not _matches_when(candidate, merge_when):
+                break
+
+            prev_bbox = chain[-1].get("bbox") or []
+            cand_bbox = candidate.get("bbox") or []
+            if len(prev_bbox) != 4 or len(cand_bbox) != 4:
+                break
+
+            y_gap = float(cand_bbox[1]) - float(prev_bbox[3])
+            x_delta = abs(float(cand_bbox[0]) - float(prev_bbox[0]))
+            if y_gap < -max_y_gap or y_gap > max_y_gap or x_delta > max_x_delta:
+                break
+
+            prev_text = str(chain[-1].get("text") or "").strip()
+            cand_text = str(candidate.get("text") or "").strip()
+            if join_style == "hyphen_continuation" and prev_text.endswith("-"):
+                merged_text = f"{prev_text}{cand_text}"
+            else:
+                merged_text = " ".join(part for part in [prev_text, cand_text] if part)
+
+            chain[-1]["text"] = merged_text
+            chain[-1]["bbox"] = _bbox_union([prev_bbox, cand_bbox])
+            child_ids.append(candidate.get("id"))
+            chain[-1][child_ids_field] = child_ids
+            i += 1
+
+        if len(chain) >= min_run:
+            for field, value in merged_fields.items():
+                chain[-1][field] = value
+            out.append(chain[-1])
+            fired += 1
+        else:
+            out.extend(chain)
+
+    cfg.rule_fired_counts[entry_id] = cfg.rule_fired_counts.get(entry_id, 0) + fired
+    return out
+
+
 def _collapse_url_internal_whitespace(text: str) -> str:
     def replace_url(match: re.Match[str]) -> str:
         return re.sub(r"\s+", "", match.group(0))
@@ -1183,6 +1261,8 @@ def apply_ledger(
                 _apply_text_normalization_rule(out, rule, eid, cfg)
             elif applier_kind == "page_chrome_prefix_strip_rule":
                 out = _apply_page_chrome_prefix_strip_rule(out, rule, eid, cfg)
+            elif applier_kind == "chain_merge_rule":
+                out = _apply_chain_merge_rule(out, rule, eid, cfg)
 
     return out
 

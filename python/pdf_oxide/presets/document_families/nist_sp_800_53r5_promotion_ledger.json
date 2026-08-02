@@ -4101,6 +4101,69 @@
       },
       "rule_class": "document_family_adapter",
       "status": "closed"
+    },
+    {
+      "added_at": "2026-06-04T14:57:00Z",
+      "added_by": "agent:codex (page 45 AC-1 list fragmentation fix)",
+      "applied_at": "2026-06-04T14:57:00Z",
+      "applier_rule_kind": "chain_merge_rule",
+      "category": "structural_grouping",
+      "checklist_item": "Merge contiguous NIST control list blocks emitted as separate top-level List/Body blocks by the Rust classifier into one semantic list region.",
+      "closed_at": "2026-06-04T14:57:00Z",
+      "closed_by": "agent:codex (validated by tests/test_nist_p45_list_merge.py)",
+      "entry_id": "nist-list-chain-merge-001",
+      "evidence": {
+        "primary_candidate_ids": [
+          "actual:p45:block:10",
+          "actual:p45:block:11",
+          "actual:p45:block:12",
+          "actual:p45:block:13",
+          "actual:p45:block:14",
+          "actual:p45:block:15",
+          "actual:p45:block:16",
+          "actual:p45:block:17"
+        ],
+        "risk_reasons_observed": [
+          "nist_control_list_fragmented_into_multiple_top_level_blocks"
+        ]
+      },
+      "evidence_and_intent": {
+        "candidates_that_could_disprove": [
+          "Two unrelated NIST lists on the same page with no paragraph_block/heading separator between them; rejected because the chain_merge_rule only merges contiguous type=list blocks, and unrelated lists are always separated by field labels, discussion text, or control enhancement headings.",
+          "A single list item intentionally emitted as its own block; rejected because min_run_length=2 requires at least two adjacent list blocks before merging."
+        ],
+        "candidates_that_prove": [
+          "Page 45 AC-1 policy/procedures control list is fragmented into 8 separate blocks (3 from Rust source_type=List, 5 from Body blocks promoted to list by nist-list-item-typing-001). After chain_merge_rule, they form one merged list block with combined text and bbox union."
+        ],
+        "deterministic_rule": "After type_remap and semantic_enrichment have typed all NIST list items as type=list, find contiguous runs of type=list blocks in the main body column (x_min > 0.18, y_max < 0.92) with small vertical gaps (< 0.015) and moderate x-delta (< 0.08). Merge each run into a single list block with semantic_role=nist_list_item."
+      },
+      "fix_target": "nist_preset",
+      "guards": {
+        "do_not_apply_if": [
+          "type is not list",
+          "bbox is outside the main NIST body column",
+          "fewer than 2 contiguous list blocks meet the geometric bounds",
+          "vertical gap between consecutive list blocks exceeds 0.015"
+        ]
+      },
+      "rule": {
+        "join_style": "space",
+        "max_x_delta": 0.08,
+        "max_y_gap": 0.015,
+        "merge_when": {
+          "bbox_constraints": {
+            "x_min_gt": 0.18,
+            "y_max_lt": 0.92
+          },
+          "type": "list"
+        },
+        "merged_fields": {
+          "semantic_role": "nist_list_item"
+        },
+        "min_run_length": 2
+      },
+      "rule_class": "document_family_adapter",
+      "status": "closed"
     }
   ],
   "preset_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_pdf.json",
