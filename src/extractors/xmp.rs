@@ -16,7 +16,7 @@ use crate::document::PdfDocument;
 use crate::error::{Error, Result};
 use crate::object::Object;
 use quick_xml::events::Event;
-use quick_xml::Reader;
+use quick_xml::{Reader, XmlVersion};
 use std::collections::HashMap;
 
 /// XMP metadata extracted from a PDF document.
@@ -256,7 +256,11 @@ impl XmpExtractor {
                     // Empty elements don't have text content
                 },
                 Ok(Event::Text(e)) => {
-                    let text = e.xml_content().unwrap_or_default().trim().to_string();
+                    let text = e
+                        .xml_content(XmlVersion::Implicit1_0)
+                        .unwrap_or_default()
+                        .trim()
+                        .to_string();
                     if text.is_empty() {
                         continue;
                     }

@@ -3247,7 +3247,7 @@ impl PyPdfDocument {
     ///             - page (int | None): Target page
     ///             - depth (int): Nesting level (0 = top)
     ///             - children (list[dict]): Sub-entries (same structure)
-    fn get_toc(&mut self, py: Python<'_>) -> PyResult<Option<PyObject>> {
+    fn get_toc(&mut self, py: Python<'_>) -> PyResult<Option<Py<PyAny>>> {
         let total_pages = self.inner.page_count().unwrap_or(0) as u32;
         let mut structure_tree_fallback: Option<(
             Vec<u32>,
@@ -3342,7 +3342,7 @@ impl PyPdfDocument {
     ///             - start_page (int): First page of section
     ///             - end_page (int): Last page of section
     ///             - level (int): Nesting depth (0 = top-level)
-    fn get_section_map(&mut self, py: Python<'_>) -> PyResult<Option<PyObject>> {
+    fn get_section_map(&mut self, py: Python<'_>) -> PyResult<Option<Py<PyAny>>> {
         let total_pages = self.inner.page_count().unwrap_or(0) as u32;
 
         // Tier 1: Structure tree TOC → geometric extraction on known pages
@@ -3569,7 +3569,7 @@ impl PyPdfDocument {
     ///
     /// Raises:
     ///     RuntimeError: If repair fails
-    fn repair(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+    fn repair(&mut self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         self.ensure_editor()?;
         if let Some(ref mut editor) = self.editor {
             let report = editor
@@ -3597,7 +3597,7 @@ impl PyPdfDocument {
     ///
     /// Returns:
     ///     list[dict]: List of block dicts with keys: block_type, text, bbox, font_size, font_name, is_bold, confidence, header_level
-    fn classify_blocks(&mut self, py: Python<'_>, page: usize) -> PyResult<PyObject> {
+    fn classify_blocks(&mut self, py: Python<'_>, page: usize) -> PyResult<Py<PyAny>> {
         let doc = &mut self.inner;
         let spans = doc
             .extract_spans_unsorted(page)
@@ -3658,7 +3658,7 @@ impl PyPdfDocument {
     ///     dict: {"blocks": [...same shape as classify_blocks...],
     ///            "tables": [...same shape as read_pdf...],
     ///            "reconciliation": {"consumed": [...], "retained_ambiguous": [...]}}
-    fn classify_blocks_reconciled(&mut self, py: Python<'_>, page: usize) -> PyResult<PyObject> {
+    fn classify_blocks_reconciled(&mut self, py: Python<'_>, page: usize) -> PyResult<Py<PyAny>> {
         use crate::tables::{self, ExtractConfig, Flavor};
 
         let result_dict = pyo3::types::PyDict::new(py);
@@ -3783,7 +3783,7 @@ impl PyPdfDocument {
         font_size: f32,
         median_font_size: f32,
         max_font_size: f32,
-    ) -> PyResult<PyObject> {
+    ) -> PyResult<Py<PyAny>> {
         let hv = crate::extractors::block_classifier::validate_header(
             text,
             is_bold,
@@ -3799,7 +3799,7 @@ impl PyPdfDocument {
     ///
     /// Returns:
     ///     dict: Profile with keys: page_count, domain, layout, complexity_score, is_scanned, etc.
-    fn profile_document(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+    fn profile_document(&mut self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         let doc = &mut self.inner;
         let profile = crate::extractors::document_profiler::profile_document(doc)
             .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
@@ -3835,7 +3835,7 @@ impl PyPdfDocument {
     ///
     /// Returns:
     ///     dict: Section tree with keys: sections (list), total_sections, max_depth
-    fn get_section_hierarchy(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+    fn get_section_hierarchy(&mut self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         let doc = &mut self.inner;
         let tree = crate::extractors::section_hierarchy::build_section_hierarchy(doc)
             .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
@@ -3867,7 +3867,7 @@ impl PyPdfDocument {
     ///     Each section dict has: title, display_title, level, section_number,
     ///     page_start, page_end, bbox, content, block_count, section_hash,
     ///     parent_idx, header_disposition
-    fn build_flat_sections(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+    fn build_flat_sections(&mut self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         let doc = &mut self.inner;
         let page_count = doc
             .page_count()
@@ -3965,7 +3965,7 @@ impl PyPdfDocument {
         tables: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
         figures: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
         page_width: f32,
-    ) -> PyResult<PyObject> {
+    ) -> PyResult<Py<PyAny>> {
         use crate::extractors::content_assembler::*;
 
         // Convert Python dicts to Rust structs
@@ -4269,7 +4269,7 @@ impl PyPdfDocument {
     /// section hierarchy, and engineering detection. Returns a single dict with
     /// all analysis results and a recommended extraction strategy.
     /// This is the primary input for Shadow-LEGO cascade decision points.
-    fn predict_extraction(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+    fn predict_extraction(&mut self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         let doc = &mut self.inner;
         let prediction = crate::extractors::prediction::predict_extraction(doc)
             .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
@@ -4334,7 +4334,7 @@ impl PyPdfDocument {
     ///
     /// Returns a dict with: is_engineering, doc_subtype, elements, drawing_number,
     /// revision, cage_code, distribution_statement.
-    fn detect_engineering_features(&mut self, py: Python<'_>) -> PyResult<PyObject> {
+    fn detect_engineering_features(&mut self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         let doc = &mut self.inner;
         let profile = crate::extractors::engineering::detect_engineering_features(doc)
             .map_err(|e| PyRuntimeError::new_err(format!("{}", e)))?;
@@ -4387,7 +4387,7 @@ impl PyPdfDocument {
         body_font_size_override: Option<f32>,
         header_ratio_override: Option<f32>,
         reconcile_tables: bool,
-    ) -> PyResult<PyObject> {
+    ) -> PyResult<Py<PyAny>> {
         use crate::extractors::document_extractor::{
             extract_document_with_config, ExtractionConfig,
         };
@@ -4549,7 +4549,7 @@ impl PyPdfDocument {
     ///
     /// Returns:
     ///     list[tuple[int, dict]]: List of (annot_index, annotation_dict) tuples
-    fn get_links(&mut self, page: usize) -> PyResult<Vec<(usize, PyObject)>> {
+    fn get_links(&mut self, page: usize) -> PyResult<Vec<(usize, Py<PyAny>)>> {
         if self.editor.is_none() {
             let editor = RustDocumentEditor::open(&self.path)
                 .map_err(|e| PyRuntimeError::new_err(format!("Failed to open editor: {}", e)))?;
@@ -4559,8 +4559,8 @@ impl PyPdfDocument {
             let links = editor
                 .get_links(page)
                 .map_err(|e| PyRuntimeError::new_err(format!("Failed to get links: {}", e)))?;
-            Python::with_gil(|py| {
-                let result: Vec<(usize, PyObject)> = links
+            Python::attach(|py| {
+                let result: Vec<(usize, Py<PyAny>)> = links
                     .into_iter()
                     .map(|(idx, annot)| {
                         let dict = PyDict::new(py);
@@ -7576,7 +7576,7 @@ fn section_map_to_py(
     py: Python<'_>,
     source: &str,
     sections: &[crate::pipeline::converters::toc_detector::SectionSpan],
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     let dict = PyDict::new(py);
     dict.set_item("source", source)?;
     let sections_list = pyo3::types::PyList::empty(py);
@@ -8774,7 +8774,7 @@ fn map_framework_controls(
     catalog_entries: Vec<(String, String, String)>,
     chunks: Vec<(String, String, bool)>,
     fuzz_threshold: f32,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     use crate::extractors::framework_mapper::{map_controls, ControlCatalog};
 
     // Build catalog from Python data
@@ -8839,7 +8839,7 @@ fn map_framework_controls(
 fn merge_tables(
     py: Python<'_>,
     tables: Vec<pyo3::Bound<'_, pyo3::types::PyDict>>,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     use crate::extractors::table_merger;
 
     let mut rust_tables = Vec::with_capacity(tables.len());

@@ -12,7 +12,7 @@ use super::OfficeConfig;
 use crate::error::{Error, Result};
 use crate::writer::{DocumentBuilder, DocumentMetadata};
 use quick_xml::events::{BytesStart, Event};
-use quick_xml::Reader;
+use quick_xml::{Reader, XmlVersion};
 use std::io::{Cursor, Read};
 use zip::ZipArchive;
 
@@ -245,7 +245,7 @@ impl DocxConverter {
                     if in_text && in_run {
                         current_run
                             .text
-                            .push_str(&e.xml_content().unwrap_or_default());
+                            .push_str(&e.xml_content(XmlVersion::Implicit1_0).unwrap_or_default());
                     }
                 },
                 Ok(Event::Eof) => break,
@@ -301,7 +301,11 @@ impl DocxConverter {
                 },
                 Ok(Event::Text(e)) => {
                     if in_title {
-                        title = Some(e.xml_content().unwrap_or_default().to_string());
+                        title = Some(
+                            e.xml_content(XmlVersion::Implicit1_0)
+                                .unwrap_or_default()
+                                .to_string(),
+                        );
                     }
                 },
                 Ok(Event::Eof) => break,
