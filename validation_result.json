@@ -1,0 +1,47 @@
+{
+  "bundle": "tests/fixtures/pdf_lab/page19_table_citation_hyphen_spacing_defects.json",
+  "checks": [
+    {
+      "actual_label": "table",
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "bbox": [
+            0.14666667015723933,
+            0.25272723881885256,
+            0.8525490355647467,
+            0.8321969774034288
+          ],
+          "contains_expected_text": true,
+          "contains_forbidden_text": false,
+          "id": "actual:p19:table:0",
+          "iou": 1.0,
+          "matches_expected_label": true,
+          "source_type": "table",
+          "text": "DATE | TYPE | REVISION | PAGE 12-10-2020 | Editorial | Acknowledgements (ODNI): Add \u201cMatthew A. Kozma, Chief Information Officer\u201d | iii 12-10-2020 | Editorial | Acknowledgements (ODNI): Add \u201cMichael E. Waschull, Deputy Chief Information Officer\u201d | iii 12-10-2020 | Editorial | Acknowledgements (ODNI): Add \u201cClifford M. Conner, Cybersecurity Group and IC CISO\u201d | iii 12-10-2020 | Editorial | Call Out Box: Change \u201cSpecial Publication 800-53B contains control baselines\u201d to \u201cSP 800-53B contains security and privacy control baselines\u201d | x 12-10-2020 | Editorial | Chapter One (Footnote 7): Add \u201c[SP 800-53A]\u201d | 1 12-10-2020 | Editorial | Section 1.4: Delete \u201cThe controls have also been mapped to the requirements for federal information systems included in [OMB A-130].\u201d | 5 12-10-2020 | Editorial | Section 1.4 (Footnote 23): Delete \u201c[OMB A-130] establishes policy for the planning, budgeting, governance, acquisition, and management of federal information, personnel, equipment, funds, IT resources, and supporting infrastructure and services.\u201d | 5 12-10-2020 | Editorial | Section 2.4 (first paragraph): Change \u201cpersonally identifiable information (PII)\u201d to \u201cPII\u201d | 13 12-10-2020 | Editorial | Control AC-1a.1.: Change \u201c organization-level; mission/business process-level; system-level\u201d to \u201cOrganization-level; Mission/business process-level; System-level\u201d | 18 12-10-2020 | Editorial | Control AC-1 Discussion: Change \u201csecurity or privacy incidents\u201d to \u201csecurity incidents or breaches\u201d | 18 12-10-2020 | Editorial | Control Enhancement AC-3(2) Discussion: Change \u201cauthorization duties to other individuals\u201d to \u201cauthorization duties\u201d | 23 12-10-2020 | Editorial | Control Enhancement AC-3(9) Discussion: Change \u201cmitigating control\u201d to \u201cmitigation measure\u201d | 26 12-10-2020 | Editorial | Control Enhancement AC-3(14) Related Controls: Add \u201c, PT-6\u201d | 28 12-10-2020 | Editorial | Control Enhancement AC-4(17): Change \u201c organization, system, application, service, individual\u201d to \u201corganization; system; application; service; individual\u201d | 33 12-10-2020 | Editorial | Control Enhancement AC-4(25): Change \u201c Selection (one or more: \u201d to \u201c Selection (one or more): \u201d | 34 12-10-2020 | Editorial | Control AC-12: Change \u201c conditions, \u201d to \u201c conditions \u201d | 43 12-10-2020 | Editorial | Control AC-14 Discussion: Change \u201cassignment\u201d to \u201cassignment operation\u201d | 44 12-10-2020 | Editorial | Control AC-19 Discussion: Change \u201cthe organizational network\u201d to \u201cits network\u201d | 52",
+          "type": "table"
+        }
+      ],
+      "defect_class": "TEXT_CONTENT_MISMATCH",
+      "expected_label": "table",
+      "expected_state": "present",
+      "expected_text": "[OMB A-130]",
+      "forbidden_text": "[OMB A- 130]",
+      "id": "page19-table-omb-a130-citation-hyphen-spacing",
+      "matching_text_count": 1,
+      "status": "PASS",
+      "text": "Section 1.4: Delete"
+    }
+  ],
+  "created_at": "2026-07-29T18:10:30.197505+00:00",
+  "errors": [],
+  "extraction_json": "/tmp/pdf_oxide_verify_page19_6ch7s6/artifacts/pdf_lab/creator_reviewer_page19_table_citation_hyphen_spacing_20260729T1825Z/current_evidence/pages/page_0019/release_extraction_blocks.json",
+  "page": 19,
+  "schema": "pdf_oxide.pdf_lab.creator_reviewer_defect_validation.v1",
+  "status": "PASS",
+  "summary": {
+    "check_count": 1,
+    "failed": 0,
+    "passed": 1
+  }
+}
