@@ -1,0 +1,8 @@
+{
+  "command": [
+    "/tmp/pdf_oxide_next_page_20260721/.venv/bin/python",
+    "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/page29_tau_runner.py"
+  ],
+  "cwd": "/tmp/pdf_oxide_next_page_20260721",
+  "timeout_s": 300
+}

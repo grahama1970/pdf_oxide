@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/tmp/pdf_oxide_next_page_20260721/.venv/bin/python",
+    "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/page29_tau_runner.py"
+  ],
+  "cwd": "/tmp/pdf_oxide_next_page_20260721",
+  "tau_dag_node": {
+    "agent": "page29-runner",
+    "dag_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1230Z",
+    "executor": "local",
+    "goal": {
+      "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+      "goal_id": "pdf-lab-all-page-candidates-hardening",
+      "goal_version": "2026-06-04"
+    },
+    "node_id": "page29-runner",
+    "required_evidence": [
+      "pdf_lab_page_second_pass_run_receipt"
+    ],
+    "target": {
+      "allowed_paths": [
+        "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/**",
+        "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/**"
+      ],
+      "repo": "grahama1970/pdf_oxide",
+      "target": "page_case_0001_p0029"
+    }
+  },
+  "timeout_s": 300
+}

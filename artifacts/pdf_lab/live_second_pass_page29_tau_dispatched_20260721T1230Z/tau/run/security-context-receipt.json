@@ -1,0 +1,65 @@
+{
+  "alert_codes": [],
+  "alerts": [],
+  "checked_at": "2026-07-21T12:26:36Z",
+  "live": true,
+  "mocked": false,
+  "ok": true,
+  "proof_scope": {
+    "does_not_prove": [
+      "ITAR compliance.",
+      "Legal identity proof or authoritative U.S.-person status.",
+      "Runtime sandbox enforcement.",
+      "Provider/model semantic quality.",
+      "Secure enforcement outside tau run and tau dag-run."
+    ],
+    "proves": [
+      "Tau resolved DAG policy, boundary, actor, environment, command-policy, and goal inputs before dispatch.",
+      "Tau hash-bound the resolved security context for this run.",
+      "Tau identified whether the resolved data boundary is controlled."
+    ]
+  },
+  "provider_live": false,
+  "receipt_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run/security-context-receipt.json",
+  "schema": "tau.security_context_receipt.v1",
+  "security_context": {
+    "actor": null,
+    "command_policy": null,
+    "created_at": "2026-07-21T12:26:36Z",
+    "dag_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1230Z",
+    "data_boundary": null,
+    "environment": {
+      "generated": true,
+      "path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run/environment-manifest.json",
+      "schema": "tau.environment_manifest.v1",
+      "sha256": "sha256:8b0945ab9fdf70e877a6b29fda5c79efa104d394a397ee8c6c5f002ebe26153d",
+      "source_kind": "generated"
+    },
+    "goal": {
+      "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+      "goal_id": "pdf-lab-all-page-candidates-hardening",
+      "goal_version": "2026-06-04"
+    },
+    "policy_profile": null,
+    "production_authority": false,
+    "regulated_data_authorized": false,
+    "required_gates": [],
+    "resolved_inputs": {
+      "actor_access_manifest": false,
+      "command_policy": false,
+      "data_boundary": false,
+      "environment_manifest": true,
+      "policy_profile": false
+    },
+    "run_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1230Z",
+    "schema": "tau.security_context.v1",
+    "security_context_sha256": "sha256:28df408565894d7d8c59ab4758fd8c997efee10e3bd0d64c5f3d16cdc934b550",
+    "security_mode": "development",
+    "security_mode_explicit": false,
+    "security_mode_requested": null
+  },
+  "security_context_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run/security-context.json",
+  "security_context_sha256": "sha256:28df408565894d7d8c59ab4758fd8c997efee10e3bd0d64c5f3d16cdc934b550",
+  "security_mode": "development",
+  "status": "PASS"
+}

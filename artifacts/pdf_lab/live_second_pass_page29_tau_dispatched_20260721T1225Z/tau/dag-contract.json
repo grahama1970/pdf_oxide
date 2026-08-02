@@ -1,0 +1,59 @@
+{
+  "schema": "tau.dag_contract.v1",
+  "dag_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z",
+  "goal": {
+    "goal_id": "pdf-lab-all-page-candidates-hardening",
+    "goal_version": "2026-06-04",
+    "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978"
+  },
+  "target": {
+    "repo": "grahama1970/pdf_oxide",
+    "target": "page_case_0001_p0029",
+    "allowed_paths": [
+      "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/**",
+      "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/**"
+    ]
+  },
+  "entry_node": "page29-runner",
+  "terminal_nodes": [
+    "human"
+  ],
+  "limits": {
+    "resume": false,
+    "default_timeout_seconds": 300,
+    "max_total_attempts": 1
+  },
+  "nodes": [
+    {
+      "id": "page29-runner",
+      "agent": "page29-runner",
+      "executor": "local",
+      "max_attempts": 1,
+      "command_spec": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/command-specs/page29-runner/tau-dispatch-command.json",
+      "required_evidence": [
+        "pdf_lab_page_second_pass_run_receipt"
+      ],
+      "emits": [
+        "tau.agent_handoff.v1"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "page29-runner",
+      "to": "human"
+    }
+  ],
+  "required_evidence": [
+    "pdf_lab_page_second_pass_run_receipt"
+  ],
+  "fail_closed_on": [
+    "goal_hash_mismatch",
+    "target_changed",
+    "unexpected_node",
+    "unexpected_edge",
+    "missing_required_evidence",
+    "max_attempts_exceeded",
+    "malformed_handoff"
+  ]
+}

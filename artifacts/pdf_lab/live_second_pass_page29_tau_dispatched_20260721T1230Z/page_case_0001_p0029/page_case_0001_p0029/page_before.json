@@ -1,0 +1,474 @@
+{
+  "apply_mode": "release",
+  "blocks": [
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "font_name": "TT0",
+      "font_size": 7.3299994468688965,
+      "id": "actual:p29:block:0",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          748.3800048828125,
+          546.4834594726562,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT0",
+        "font_size": 7.3299994468688965,
+        "header_level": null,
+        "is_bold": false,
+        "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "NIST SP 800-53, REV. 5                                                                                     SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "font_name": "TT1",
+      "font_size": 7.980000019073486,
+      "id": "actual:p29:block:1",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          738.719970703125,
+          433.80078125,
+          7.97998046875
+        ],
+        "block_type": "Header",
+        "confidence": 0.800000011920929,
+        "font_name": "TT1",
+        "font_size": 7.980000019073486,
+        "header_level": null,
+        "is_bold": false,
+        "text": "_________________________________________________________________________________________________"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Header",
+      "text": "_________________________________________________________________________________________________",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528853273080066,
+        0.9549618345318418
+      ],
+      "font_name": "TT0",
+      "font_size": 8.271428108215332,
+      "id": "actual:p29:block:2",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          38.15999984741211,
+          434.03399658203125,
+          9.0
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 8.271428108215332,
+        "header_level": null,
+        "is_bold": false,
+        "text": "CHAPTER ONE  PAGE 2"
+      },
+      "semantic_role": "page_chrome",
+      "source_type": "Footer",
+      "text": "CHAPTER ONE  PAGE 2",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "font_name": "TT1",
+      "font_size": 9.0,
+      "id": "actual:p29:block:3",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          21.059999465942383,
+          223.44000244140625,
+          303.1199951171875,
+          349.6199951171875
+        ],
+        "block_type": "Boilerplate",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT1",
+        "font_size": 9.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+      },
+      "source_type": "Boilerplate",
+      "text": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5",
+      "type": "header_footer_noise"
+    },
+    {
+      "bbox": [
+        0.14699210372625612,
+        0.08994257570517183,
+        0.8513088849634906,
+        0.2610700780695135
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p29:block:4",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          89.95916748046875,
+          588.6582641601562,
+          433.5189208984375,
+          131.82171630859375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "The answers to these questions are not given in isolation but rather in the context of a risk management process for the organization that identifies, assesses, responds to, and monitors security and privacy risks arising from its information and systems on an ongoing basis.8 The security and privacy controls in this publication are recommended for use by organizations to satisfy their information security and privacy requirements. The control catalog can be viewed as a toolbox containing a collection of safeguards, countermeasures, techniques, and processes to respond to security and privacy risks. The controls are employed as part of a well-defined risk management process that supports organizational information security and privacy programs. In turn, those information security and privacy programs lay the foundation for the success of the mission and business functions of the organization."
+      },
+      "source_type": "Body",
+      "text": "The answers to these questions are not given in isolation but rather in the context of a risk management process for the organization that identifies, assesses, responds to, and monitors security and privacy risks arising from its information and systems on an ongoing basis.8 The security and privacy controls in this publication are recommended for use by organizations to satisfy their information security and privacy requirements. The control catalog can be viewed as a toolbox containing a collection of safeguards, countermeasures, techniques, and processes to respond to security and privacy risks. The controls are employed as part of a well-defined risk management process that supports organizational information security and privacy programs. In turn, those information security and privacy programs lay the foundation for the success of the mission and business functions of the organization.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.1469563502891391,
+        0.274642597545277,
+        0.8465516333486519,
+        0.3949290188876065
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979999542236328,
+      "id": "actual:p29:block:5",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          89.93728637695312,
+          482.6419677734375,
+          430.6623229980469,
+          91.55560302734375
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979999542236328,
+        "header_level": null,
+        "is_bold": false,
+        "text": "It is important that responsible officials understand the security and privacy risks that could adversely affect organizational operations and assets, individuals, other organizations, and the Nation.9 These officials must also understand the current status of their security and privacy programs and the controls planned or in place to protect information, information systems, and organizations in order to make informed judgments and investments that respond to identified risks in an acceptable manner. The objective is to manage these risks through the selection and implementation of security and privacy controls."
+      },
+      "source_type": "Body",
+      "text": "It is important that responsible officials understand the security and privacy risks that could adversely affect organizational operations and assets, individuals, other organizations, and the Nation.9 These officials must also understand the current status of their security and privacy programs and the controls planned or in place to protect information, information systems, and organizations in order to make informed judgments and investments that respond to identified risks in an acceptable manner. The objective is to manage these risks through the selection and implementation of security and privacy controls.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.40794796413845485,
+        0.46735885719847836,
+        0.43244826191603536
+      ],
+      "font_name": "TT2",
+      "font_size": 12.854999542236328,
+      "id": "actual:p29:block:6",
+      "is_bold": true,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          454.3800048828125,
+          199.23480224609375,
+          13.980010986328125
+        ],
+        "block_type": "Title",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT2",
+        "font_size": 12.854999542236328,
+        "header_level": 2,
+        "header_validation": {
+          "confidence": 0.8999999761581421,
+          "depth_level": 2,
+          "disposition": "Accept",
+          "features": {
+            "ends_with_colon": false,
+            "ends_with_other_punct": false,
+            "ends_with_period": false,
+            "font_size": 12.854999542236328,
+            "has_bullet_char": false,
+            "has_formal_prefix": false,
+            "has_number_prefix": true,
+            "has_parentheses": false,
+            "is_all_caps": true,
+            "is_bold": true,
+            "is_caption_pattern": false,
+            "is_multi_sentence": false,
+            "is_too_long": false,
+            "numbering_depth": 2,
+            "size_ratio": 1.1707650423049927,
+            "text_len": 31,
+            "title_case_ratio": 0.75,
+            "word_count": 4
+          },
+          "has_numbering": true,
+          "is_header": true,
+          "level": 2,
+          "number_text": "1.1",
+          "reasons": [
+            "numbering",
+            "title_case_like"
+          ],
+          "title_text": "PURPOSE AND APPLICABILITY"
+        },
+        "is_bold": true,
+        "text": "1.1   PURPOSE AND APPLICABILITY"
+      },
+      "source_type": "Title",
+      "text": "1.1   PURPOSE AND APPLICABILITY",
+      "type": "section_heading"
+    },
+    {
+      "bbox": [
+        0.14704102160883883,
+        0.43759409586588544,
+        0.8521096223320057,
+        0.6934954710681029
+      ],
+      "font_name": "TT0",
+      "font_size": 10.979998588562012,
+      "id": "actual:p29:block:7",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          89.98910522460938,
+          246.17733764648438,
+          433.9536437988281,
+          198.96267700195312
+        ],
+        "block_type": "Body",
+        "confidence": 0.8999999761581421,
+        "font_name": "TT0",
+        "font_size": 10.979998588562012,
+        "header_level": null,
+        "is_bold": false,
+        "text": "This publication establishes controls for systems and organizations. The controls can be implemented within any organization or system that processes, stores, or transmits information. The use of these controls is mandatory for federal information systems10 in accordance with Office of Management and Budget (OMB) Circular A-130 [OMB A-130] and the provisions of the Federal Information Security Modernization Act11 [FISMA], which requires the implementation of minimum controls to protect federal information and information systems.12 This publication, along with other supporting NIST publications, is designed to help organizations identify the security and privacy controls needed to manage risk and to satisfy the security and privacy requirements in FISMA, the Privacy Act of 1974 [PRIVACT], OMB policies (e.g., [OMB A-130]), and designated Federal Information Processing Standards (FIPS), among others. It accomplishes this objective by providing a comprehensive and flexible catalog of security and privacy controls to meet current and future protection needs based on changing threats, vulnerabilities, requirements, and technologies. The publication also improves communication among organizations by providing a common lexicon that supports the discussion of security, privacy, and risk management concepts."
+      },
+      "source_type": "Body",
+      "text": "This publication establishes controls for systems and organizations. The controls can be implemented within any organization or system that processes, stores, or transmits information. The use of these controls is mandatory for federal information systems10 in accordance with Office of Management and Budget (OMB) Circular A-130 [OMB A-130] and the provisions of the Federal Information Security Modernization Act11 [FISMA], which requires the implementation of minimum controls to protect federal information and information systems.12 This publication, along with other supporting NIST publications, is designed to help organizations identify the security and privacy controls needed to manage risk and to satisfy the security and privacy requirements in FISMA, the Privacy Act of 1974 [PRIVACT], OMB policies (e.g., [OMB A-130]), and designated Federal Information Processing Standards (FIPS), among others. It accomplishes this objective by providing a comprehensive and flexible catalog of security and privacy controls to meet current and future protection needs based on changing threats, vulnerabilities, requirements, and technologies. The publication also improves communication among organizations by providing a common lexicon that supports the discussion of security, privacy, and risk management concepts.",
+      "type": "paragraph_block"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7316741943359375,
+        0.8115618337992749,
+        0.7468787299262153
+      ],
+      "font_name": "TT0",
+      "font_size": 8.800000190734863,
+      "id": "actual:p29:block:8",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          203.27999877929688,
+          408.65399169921875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.800000190734863,
+        "header_level": null,
+        "is_bold": false,
+        "text": "8 The Risk Management Framework in [-SP 80037] is an example of a comprehensive risk management process."
+      },
+      "source_type": "Footnote",
+      "text": "8 The Risk Management Framework in [SP 800-37] is an example of a comprehensive risk management process.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7481136129360006,
+        0.648906882292305,
+        0.7633181485262784
+      ],
+      "font_name": "TT0",
+      "font_size": 8.625,
+      "id": "actual:p29:block:9",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          190.25999450683594,
+          309.17401123046875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "font_name": "TT0",
+        "font_size": 8.625,
+        "header_level": null,
+        "is_bold": false,
+        "text": "9 This includes risk to critical infrastructure and key resources described in [HSPD-7]."
+      },
+      "source_type": "Footnote",
+      "text": "9 This includes risk to critical infrastructure and key resources described in [HSPD-7].",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7644772770428898,
+        0.8488316754110499,
+        0.7935454243361347
+      ],
+      "font_name": "TT0",
+      "font_size": 8.399999618530273,
+      "id": "actual:p29:block:10",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          177.3000030517578,
+          431.5072021484375,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p29:block:11"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.399999618530273,
+        "header_level": null,
+        "is_bold": false,
+        "text": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or"
+      },
+      "source_type": "Footnote",
+      "text": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or another organization on behalf of an agency.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.7947803073459201,
+        0.8470737232881433,
+        0.8654393668126579
+      ],
+      "font_name": "TT0",
+      "font_size": 8.0,
+      "id": "actual:p29:block:12",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          153.3000030517578,
+          428.13189697265625,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p29:block:13"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542,"
+      },
+      "source_type": "Footnote",
+      "text": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542, are not subject to the requirements in [FISMA]. However, the controls established in this publication may be selected for national security systems as otherwise required (e.g., the Privacy Act of 1974) or with the approval of federal officials exercising policy authority over such systems. [CNSSP 22] and [CNSSI 1253] provide guidance for national security systems. [DODI 8510.01] provides guidance for the Department of Defense.",
+      "type": "footnote"
+    },
+    {
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.851950053296058,
+        0.9096060088186553
+      ],
+      "font_name": "TT0",
+      "font_size": 8.0,
+      "id": "actual:p29:block:14",
+      "is_bold": false,
+      "page": 29,
+      "pdf_page_index": 28,
+      "raw": {
+        "bbox": [
+          90.0,
+          96.36000061035156,
+          431.49871826171875,
+          9.0
+        ],
+        "block_type": "Footnote",
+        "confidence": 0.75,
+        "continuation_ids": [
+          "actual:p29:block:15"
+        ],
+        "font_name": "TT0",
+        "font_size": 8.0,
+        "header_level": null,
+        "is_bold": false,
+        "text": "12 While the controls established in this publication are mandatory for federal information systems and organizations,"
+      },
+      "source_type": "Footnote",
+      "text": "12 While the controls established in this publication are mandatory for federal information systems and organizations, other organizations such as state, local, and tribal governments as well as private sector organizations are encouraged to consider using these guidelines, as appropriate. See [SP 800-53B] for federal control baselines.",
+      "type": "footnote"
+    }
+  ],
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page": 29,
+  "page_dimensions_pts": [
+    612.0,
+    792.0
+  ],
+  "pdf_page_index": 28
+}

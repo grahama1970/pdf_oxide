@@ -1,0 +1,364 @@
+{
+  "candidate_count": 13,
+  "candidates": [
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.04473802296802251,
+        0.8507378272760927,
+        0.05821938948197798
+      ],
+      "candidate_id": "cand:p0029:0000:side_chrome",
+      "features": {
+        "bbox_area": 0.009487,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 94
+      },
+      "json_pointer": "/pages/28/blocks/0",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.05679397390346334,
+        0.8517353332120609,
+        0.07054738324097913
+      ],
+      "candidate_id": "cand:p0029:0001:side_chrome",
+      "features": {
+        "bbox_area": 0.009692,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Header",
+        "text_length": 97
+      },
+      "json_pointer": "/pages/28/blocks/1",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "_________________________________________________________________________________________________"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.9414804632013495,
+        0.8528853273080066,
+        0.9549618345318418
+      ],
+      "candidate_id": "cand:p0029:0002:side_chrome",
+      "features": {
+        "bbox_area": 0.009516,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": "page_chrome",
+        "source_type": "Footer",
+        "text_length": 18
+      },
+      "json_pointer": "/pages/28/blocks/2",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "CHAPTER ONE PAGE 2"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.0296323533151664,
+        0.28780303338561397,
+        0.049705879361021756,
+        0.7406287915778883
+      ],
+      "candidate_id": "cand:p0029:0003:side_chrome",
+      "features": {
+        "bbox_area": 0.00909,
+        "block_type": "header_footer_noise",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Boilerplate",
+        "text_length": 92
+      },
+      "json_pointer": "/pages/28/blocks/3",
+      "preset_type": "side_chrome",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14699210372625612,
+        0.08994257570517183,
+        0.8513088849634906,
+        0.2610700780695135
+      ],
+      "candidate_id": "cand:p0029:0004:text",
+      "features": {
+        "bbox_area": 0.120528,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 905
+      },
+      "json_pointer": "/pages/28/blocks/4",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "The answers to these questions are not given in isolation but rather in the context of a risk management process for the organization that identifies, assesses, responds to, and monitors security and privacy risks arising from its information and systems on an ongoing basis.8 The security and privacy controls in this publication are recommended for use by organizations to satisfy their information security and privacy requirements. The control catalog can be viewed as a toolbox containing a coll"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.1469563502891391,
+        0.274642597545277,
+        0.8465516333486519,
+        0.3949290188876065
+      ],
+      "candidate_id": "cand:p0029:0005:text",
+      "features": {
+        "bbox_area": 0.084152,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 620
+      },
+      "json_pointer": "/pages/28/blocks/5",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "It is important that responsible officials understand the security and privacy risks that could adversely affect organizational operations and assets, individuals, other organizations, and the Nation.9 These officials must also understand the current status of their security and privacy programs and the controls planned or in place to protect information, information systems, and organizations in order to make informed judgments and investments that respond to identified risks in an acceptable m"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.40794796413845485,
+        0.46735885719847836,
+        0.43244826191603536
+      ],
+      "candidate_id": "cand:p0029:0006:section_heading",
+      "features": {
+        "bbox_area": 0.007847,
+        "block_type": "section_heading",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Title",
+        "text_length": 29
+      },
+      "json_pointer": "/pages/28/blocks/6",
+      "preset_type": "section_heading",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "1.1 PURPOSE AND APPLICABILITY"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14704102160883883,
+        0.43759409586588544,
+        0.8521096223320057,
+        0.6934954710681029
+      ],
+      "candidate_id": "cand:p0029:0007:text",
+      "features": {
+        "bbox_area": 0.180428,
+        "block_type": "paragraph_block",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Body",
+        "text_length": 1320
+      },
+      "json_pointer": "/pages/28/blocks/7",
+      "preset_type": "text",
+      "question": "Does the rendered page evidence agree with this generic text review stratum, including clean-compatible specific extracted subtypes such as section_subtitle when text, bbox, and visual role are accurate?",
+      "text_excerpt": "This publication establishes controls for systems and organizations. The controls can be implemented within any organization or system that processes, stores, or transmits information. The use of these controls is mandatory for federal information systems10 in accordance with Office of Management and Budget (OMB) Circular A-130 [OMB A-130] and the provisions of the Federal Information Security Modernization Act11 [FISMA], which requires the implementation of minimum controls to protect federal i"
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.7316741943359375,
+        0.8115618337992749,
+        0.7468787299262153
+      ],
+      "candidate_id": "cand:p0029:0008:footnote",
+      "features": {
+        "bbox_area": 0.010103,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 104
+      },
+      "json_pointer": "/pages/28/blocks/8",
+      "preset_type": "footnote",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "8 The Risk Management Framework in [SP 800-37] is an example of a comprehensive risk management process."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.7481136129360006,
+        0.648906882292305,
+        0.7633181485262784
+      ],
+      "candidate_id": "cand:p0029:0009:footnote",
+      "features": {
+        "bbox_area": 0.00763,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 88
+      },
+      "json_pointer": "/pages/28/blocks/9",
+      "preset_type": "footnote",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "9 This includes risk to critical infrastructure and key resources described in [HSPD-7]."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.7644772770428898,
+        0.8488316754110499,
+        0.7935454243361347
+      ],
+      "candidate_id": "cand:p0029:0010:footnote",
+      "features": {
+        "bbox_area": 0.020399,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 162
+      },
+      "json_pointer": "/pages/28/blocks/10",
+      "preset_type": "footnote",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or another organization on behalf of an agency."
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.7947803073459201,
+        0.8470737232881433,
+        0.8654393668126579
+      ],
+      "candidate_id": "cand:p0029:0011:footnote",
+      "features": {
+        "bbox_area": 0.049462,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 548
+      },
+      "json_pointer": "/pages/28/blocks/11",
+      "preset_type": "footnote",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542, are not subject to the requirements in [FISMA]. However, the controls established in this publication may be selected for national security systems as otherwise required (e.g., the Privacy Act of 1974) or with the approval of federal officials exercising policy authority over such systems. [CNSSP 22] and [CNSSI 1253] provide guidance for national security systems. [DODI 8510.01] "
+    },
+    {
+      "allowed_review_statuses": [
+        "clean",
+        "defect",
+        "unsure",
+        "substrate_blocked"
+      ],
+      "bbox": [
+        0.14705882352941177,
+        0.8666742498224432,
+        0.851950053296058,
+        0.9096060088186553
+      ],
+      "candidate_id": "cand:p0029:0012:footnote",
+      "features": {
+        "bbox_area": 0.030262,
+        "block_type": "footnote",
+        "has_toc_entries": false,
+        "semantic_role": null,
+        "source_type": "Footnote",
+        "text_length": 338
+      },
+      "json_pointer": "/pages/28/blocks/12",
+      "preset_type": "footnote",
+      "question": "Does the rendered page evidence agree with this extracted candidate's preset type, bounding box, text, and nearby structure?",
+      "text_excerpt": "12 While the controls established in this publication are mandatory for federal information systems and organizations, other organizations such as state, local, and tribal governments as well as private sector organizations are encouraged to consider using these guidelines, as appropriate. See [SP 800-53B] for federal control baselines."
+    }
+  ],
+  "page_case": {
+    "case_id": "page_case_0001_p0029",
+    "page_number": 29
+  },
+  "preset_contract": {
+    "text": "preset_type text is a broad review stratum, not an exact expected semantic type; a more specific extracted subtype such as section_subtitle is clean-compatible when its text, bbox, and visual role are accurate"
+  },
+  "schema": "pdf_lab.second_pass.candidate_presets.v1"
+}

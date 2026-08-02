@@ -1,0 +1,32 @@
+{
+  "query": "SciLLM OpenCode transport runs endpoint /v1/scillm/opencode/transport/runs 404",
+  "count": 5,
+  "offset": 0,
+  "results": [
+    {
+      "title": "Troubleshooting | OpenCode",
+      "description": "Common issues and how to resolve them \u00b7 To debug issues with OpenCode, start by checking the logs and local data it stores on disk",
+      "url": "https://opencode.ai/docs/troubleshooting/"
+    },
+    {
+      "title": "Anthropic models fail with 404 on GitHub Enterprise (GHE.com) \u00b7 Issue #11105 \u00b7 anomalyco/opencode",
+      "description": "The Copilot /models API returns a supported_endpoints array for each model. ... GHE does not support /v1/messages for Anthropic models. Downgrade to OpenCode v1.1.36 which uses /chat/completions for all models.",
+      "url": "https://github.com/anomalyco/opencode/issues/11105"
+    },
+    {
+      "title": "[Bug]: OpenCode Zen returns 404 despite correct baseUrl configuration \u00b7 Issue #8159 \u00b7 openclaw/openclaw",
+      "description": "<strong>The 404 response is an HTML page from opencode.ai, indicating the request goes to /zen/messages instead of /zen/v1/messages</strong> \u00b7 Related to Issue #1416 - the resolveOpencodeZenModelApi() function may still be routing Anthropic-format models (claude-*) ...",
+      "url": "https://github.com/openclaw/openclaw/issues/8159"
+    },
+    {
+      "title": "Troubleshooting | OpenCode",
+      "description": "If you encounter API call errors, <strong>this may be due to outdated provider packages</strong>. opencode dynamically installs provider packages (OpenAI, Anthropic, Google, etc.) as needed and caches them locally.",
+      "url": "https://opencode.ubitools.com/troubleshooting/"
+    },
+    {
+      "title": "Providers | OpenCode",
+      "description": "And for all other OpenAI-compatible providers, use @ai-sdk/openai-compatible (for /v1/chat/completions); if a model uses /v1/responses, use @ai-sdk/openai. For mixed setups under one provider, you can override per model via provider.npm. Check correct API endpoint is used in the options.baseURL field.",
+      "url": "https://opencode.ai/docs/providers/"
+    }
+  ]
+}

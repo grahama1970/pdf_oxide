@@ -1,0 +1,36 @@
+{
+  "actor": null,
+  "command_policy": null,
+  "created_at": "2026-07-21T12:24:51Z",
+  "dag_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z",
+  "data_boundary": null,
+  "environment": {
+    "generated": true,
+    "path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/environment-manifest.json",
+    "schema": "tau.environment_manifest.v1",
+    "sha256": "sha256:fc95c7c0a8c8ab7dc4a069c40820a6e8ec5f696f049b58c191b4761a685c75c5",
+    "source_kind": "generated"
+  },
+  "goal": {
+    "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+    "goal_id": "pdf-lab-all-page-candidates-hardening",
+    "goal_version": "2026-06-04"
+  },
+  "policy_profile": null,
+  "production_authority": false,
+  "regulated_data_authorized": false,
+  "required_gates": [],
+  "resolved_inputs": {
+    "actor_access_manifest": false,
+    "command_policy": false,
+    "data_boundary": false,
+    "environment_manifest": true,
+    "policy_profile": false
+  },
+  "run_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z",
+  "schema": "tau.security_context.v1",
+  "security_context_sha256": "sha256:365856ed626fccadf906e029c341ba15e4c5bc0a822a918e8b30bce05b01dd31",
+  "security_mode": "development",
+  "security_mode_explicit": false,
+  "security_mode_requested": null
+}

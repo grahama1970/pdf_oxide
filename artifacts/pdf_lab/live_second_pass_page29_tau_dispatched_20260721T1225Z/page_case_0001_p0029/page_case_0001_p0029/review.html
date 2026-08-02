@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PDF Lab Second-Pass Review page_case_0001_p0029</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c2430;
+      --muted: #5b6572;
+      --line: #c9d2dc;
+      --panel: #f7f9fb;
+      --accent: #0b5cad;
+    }
+    body {
+      margin: 0;
+      font: 14px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+    }
+    h1, h2 {
+      margin: 0 0 10px;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    h2 {
+      font-size: 17px;
+    }
+    section {
+      margin: 22px 0;
+    }
+    .meta, .candidate, pre {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      padding: 12px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .value {
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    figcaption {
+      padding: 8px 10px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+    .candidate {
+      margin: 10px 0;
+      padding: 10px;
+    }
+    .candidate code {
+      color: var(--accent);
+    }
+    pre {
+      overflow: auto;
+      padding: 12px;
+      max-height: 420px;
+      white-space: pre-wrap;
+    }
+    a {
+      color: var(--accent);
+    }
+    ul {
+      columns: 2;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>PDF Lab Second-Pass Page Review</h1>
+    <div class="meta">
+      <div><div class="label">Case</div><div class="value">page_case_0001_p0029</div></div>
+      <div><div class="label">Page</div><div class="value">29</div></div>
+      <div><div class="label">Status</div><div class="value">blocked_substrate</div></div>
+      <div><div class="label">Reason</div><div class="value">page_orchestrator_registration_failed</div></div>
+      <div><div class="label">Commit</div><div class="value">none</div></div>
+    </div>
+  </header>
+
+	  <section>
+	    <h2>Before Evidence</h2>
+	    <div class="image-grid"><figure><img src="page_before.png" alt="Rendered page before review"><figcaption>Rendered page before review</figcaption></figure><figure><img src="page_candidates.png" alt="Annotated candidate bounding boxes"><figcaption>Annotated candidate bounding boxes</figcaption></figure></div>
+	  </section>
+  
+  <section>
+    <h2>Selected Candidates</h2>
+    <div class="candidate"><code>cand:p0029:0000:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.04473802296802251,
+    0.8507378272760927,
+    0.05821938948197798
+  ],
+  "block_id": "actual:p29:block:0",
+  "block_index": 0,
+  "candidate_id": "cand:p0029:0000:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009487,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text_length": 94
+  },
+  "json_pointer": "/pages/28/blocks/0",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "NIST SP 800-53, REV. 5 SECURITY AND PRIVACY CONTROLS FOR INFORMATION SYSTEMS AND ORGANIZATIONS"
+}</pre></div><div class="candidate"><code>cand:p0029:0001:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.05679397390346334,
+    0.8517353332120609,
+    0.07054738324097913
+  ],
+  "block_id": "actual:p29:block:1",
+  "block_index": 1,
+  "candidate_id": "cand:p0029:0001:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009692,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Header",
+    "text_length": 97
+  },
+  "json_pointer": "/pages/28/blocks/1",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "_________________________________________________________________________________________________"
+}</pre></div><div class="candidate"><code>cand:p0029:0002:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.9414804632013495,
+    0.8528853273080066,
+    0.9549618345318418
+  ],
+  "block_id": "actual:p29:block:2",
+  "block_index": 2,
+  "candidate_id": "cand:p0029:0002:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.009516,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": "page_chrome",
+    "source_type": "Footer",
+    "text_length": 18
+  },
+  "json_pointer": "/pages/28/blocks/2",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "CHAPTER ONE PAGE 2"
+}</pre></div><div class="candidate"><code>cand:p0029:0003:side_chrome</code><div>side_chrome</div><pre>{
+  "bbox": [
+    0.0296323533151664,
+    0.28780303338561397,
+    0.049705879361021756,
+    0.7406287915778883
+  ],
+  "block_id": "actual:p29:block:3",
+  "block_index": 3,
+  "candidate_id": "cand:p0029:0003:side_chrome",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:header_footer_noise",
+    "preset_type:side_chrome",
+    "hardening_interest",
+    "boundary_geometry"
+  ],
+  "features": {
+    "bbox_area": 0.00909,
+    "block_type": "header_footer_noise",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Boilerplate",
+    "text_length": 92
+  },
+  "json_pointer": "/pages/28/blocks/3",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "side_chrome",
+  "text_excerpt": "This publication is available free of charge from: https://doi.org/10.6028/NIST.SP.800 -53r5"
+}</pre></div><div class="candidate"><code>cand:p0029:0004:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14699210372625612,
+    0.08994257570517183,
+    0.8513088849634906,
+    0.2610700780695135
+  ],
+  "block_id": "actual:p29:block:4",
+  "block_index": 4,
+  "candidate_id": "cand:p0029:0004:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "long_text_region"
+  ],
+  "features": {
+    "bbox_area": 0.120528,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 905
+  },
+  "json_pointer": "/pages/28/blocks/4",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "The answers to these questions are not given in isolation but rather in the context of a risk management process for the organization that identifies, assesses, responds to, and monitors security and privacy risks arising from its information and systems on an ongoing basis.8 The security and privacy controls in this publication are recommended for use by organizations to satisfy their information security and privacy requirements. The control catalog can be viewed as a toolbox containing a coll"
+}</pre></div><div class="candidate"><code>cand:p0029:0005:text</code><div>text</div><pre>{
+  "bbox": [
+    0.1469563502891391,
+    0.274642597545277,
+    0.8465516333486519,
+    0.3949290188876065
+  ],
+  "block_id": "actual:p29:block:5",
+  "block_index": 5,
+  "candidate_id": "cand:p0029:0005:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "long_text_region"
+  ],
+  "features": {
+    "bbox_area": 0.084152,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 620
+  },
+  "json_pointer": "/pages/28/blocks/5",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "It is important that responsible officials understand the security and privacy risks that could adversely affect organizational operations and assets, individuals, other organizations, and the Nation.9 These officials must also understand the current status of their security and privacy programs and the controls planned or in place to protect information, information systems, and organizations in order to make informed judgments and investments that respond to identified risks in an acceptable m"
+}</pre></div><div class="candidate"><code>cand:p0029:0006:section_heading</code><div>section_heading</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.40794796413845485,
+    0.46735885719847836,
+    0.43244826191603536
+  ],
+  "block_id": "actual:p29:block:6",
+  "block_index": 6,
+  "candidate_id": "cand:p0029:0006:section_heading",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:section_heading",
+    "preset_type:section_heading",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.007847,
+    "block_type": "section_heading",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Title",
+    "text_length": 29
+  },
+  "json_pointer": "/pages/28/blocks/6",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "section_heading",
+  "text_excerpt": "1.1 PURPOSE AND APPLICABILITY"
+}</pre></div><div class="candidate"><code>cand:p0029:0007:text</code><div>text</div><pre>{
+  "bbox": [
+    0.14704102160883883,
+    0.43759409586588544,
+    0.8521096223320057,
+    0.6934954710681029
+  ],
+  "block_id": "actual:p29:block:7",
+  "block_index": 7,
+  "candidate_id": "cand:p0029:0007:text",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:paragraph_block",
+    "preset_type:text",
+    "long_text_region"
+  ],
+  "features": {
+    "bbox_area": 0.180428,
+    "block_type": "paragraph_block",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Body",
+    "text_length": 1320
+  },
+  "json_pointer": "/pages/28/blocks/7",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "text",
+  "text_excerpt": "This publication establishes controls for systems and organizations. The controls can be implemented within any organization or system that processes, stores, or transmits information. The use of these controls is mandatory for federal information systems10 in accordance with Office of Management and Budget (OMB) Circular A-130 [OMB A-130] and the provisions of the Federal Information Security Modernization Act11 [FISMA], which requires the implementation of minimum controls to protect federal i"
+}</pre></div><div class="candidate"><code>cand:p0029:0008:footnote</code><div>footnote</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.7316741943359375,
+    0.8115618337992749,
+    0.7468787299262153
+  ],
+  "block_id": "actual:p29:block:8",
+  "block_index": 8,
+  "candidate_id": "cand:p0029:0008:footnote",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:footnote",
+    "preset_type:footnote",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.010103,
+    "block_type": "footnote",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Footnote",
+    "text_length": 104
+  },
+  "json_pointer": "/pages/28/blocks/8",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "footnote",
+  "text_excerpt": "8 The Risk Management Framework in [SP 800-37] is an example of a comprehensive risk management process."
+}</pre></div><div class="candidate"><code>cand:p0029:0009:footnote</code><div>footnote</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.7481136129360006,
+    0.648906882292305,
+    0.7633181485262784
+  ],
+  "block_id": "actual:p29:block:9",
+  "block_index": 9,
+  "candidate_id": "cand:p0029:0009:footnote",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:footnote",
+    "preset_type:footnote",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.00763,
+    "block_type": "footnote",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Footnote",
+    "text_length": 88
+  },
+  "json_pointer": "/pages/28/blocks/9",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "footnote",
+  "text_excerpt": "9 This includes risk to critical infrastructure and key resources described in [HSPD-7]."
+}</pre></div><div class="candidate"><code>cand:p0029:0010:footnote</code><div>footnote</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.7644772770428898,
+    0.8488316754110499,
+    0.7935454243361347
+  ],
+  "block_id": "actual:p29:block:10",
+  "block_index": 10,
+  "candidate_id": "cand:p0029:0010:footnote",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:footnote",
+    "preset_type:footnote",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.020399,
+    "block_type": "footnote",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Footnote",
+    "text_length": 162
+  },
+  "json_pointer": "/pages/28/blocks/10",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "footnote",
+  "text_excerpt": "10 A federal information system is an information system used or operated by an agency, a contractor of an agency, or another organization on behalf of an agency."
+}</pre></div><div class="candidate"><code>cand:p0029:0011:footnote</code><div>footnote</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.7947803073459201,
+    0.8470737232881433,
+    0.8654393668126579
+  ],
+  "block_id": "actual:p29:block:12",
+  "block_index": 11,
+  "candidate_id": "cand:p0029:0011:footnote",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:footnote",
+    "preset_type:footnote",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.049462,
+    "block_type": "footnote",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Footnote",
+    "text_length": 548
+  },
+  "json_pointer": "/pages/28/blocks/11",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "footnote",
+  "text_excerpt": "11 Information systems that have been designated as national security systems, as defined in 44 U.S.C., Section 3542, are not subject to the requirements in [FISMA]. However, the controls established in this publication may be selected for national security systems as otherwise required (e.g., the Privacy Act of 1974) or with the approval of federal officials exercising policy authority over such systems. [CNSSP 22] and [CNSSI 1253] provide guidance for national security systems. [DODI 8510.01] "
+}</pre></div><div class="candidate"><code>cand:p0029:0012:footnote</code><div>footnote</div><pre>{
+  "bbox": [
+    0.14705882352941177,
+    0.8666742498224432,
+    0.851950053296058,
+    0.9096060088186553
+  ],
+  "block_id": "actual:p29:block:14",
+  "block_index": 12,
+  "candidate_id": "cand:p0029:0012:footnote",
+  "confidence": 0.8,
+  "detection_reason": [
+    "block_type:footnote",
+    "preset_type:footnote",
+    "hardening_interest"
+  ],
+  "features": {
+    "bbox_area": 0.030262,
+    "block_type": "footnote",
+    "has_toc_entries": false,
+    "semantic_role": null,
+    "source_type": "Footnote",
+    "text_length": 338
+  },
+  "json_pointer": "/pages/28/blocks/12",
+  "page_index": 28,
+  "page_number": 29,
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "preset_type": "footnote",
+  "text_excerpt": "12 While the controls established in this publication are mandatory for federal information systems and organizations, other organizations such as state, local, and tribal governments as well as private sector organizations are encouraged to consider using these guidelines, as appropriate. See [SP 800-53B] for federal control baselines."
+}</pre></div>
+  </section>
+
+  <section>
+    <h2>Review Validation</h2>
+    <pre>{
+  "candidate_count": 13,
+  "errors": [
+    "page_orchestrator_registration_failed"
+  ],
+  "expected_candidate_ids": [
+    "cand:p0029:0000:side_chrome",
+    "cand:p0029:0001:side_chrome",
+    "cand:p0029:0002:side_chrome",
+    "cand:p0029:0003:side_chrome",
+    "cand:p0029:0004:text",
+    "cand:p0029:0005:text",
+    "cand:p0029:0006:section_heading",
+    "cand:p0029:0007:text",
+    "cand:p0029:0008:footnote",
+    "cand:p0029:0009:footnote",
+    "cand:p0029:0010:footnote",
+    "cand:p0029:0011:footnote",
+    "cand:p0029:0012:footnote"
+  ],
+  "ok": false,
+  "page_case": {
+    "case_id": "page_case_0001_p0029",
+    "page_number": 29
+  },
+  "schema": "pdf_lab.second_pass.review_validation.v1",
+  "seen_candidate_ids": []
+}</pre>
+  </section>
+
+  <section>
+    <h2>Page Case</h2>
+    <pre>{
+  "candidate_ids": [
+    "cand:p0029:0000:side_chrome",
+    "cand:p0029:0001:side_chrome",
+    "cand:p0029:0002:side_chrome",
+    "cand:p0029:0003:side_chrome",
+    "cand:p0029:0004:text",
+    "cand:p0029:0005:text",
+    "cand:p0029:0006:section_heading",
+    "cand:p0029:0007:text",
+    "cand:p0029:0008:footnote",
+    "cand:p0029:0009:footnote",
+    "cand:p0029:0010:footnote",
+    "cand:p0029:0011:footnote",
+    "cand:p0029:0012:footnote"
+  ],
+  "case_id": "page_case_0001_p0029",
+  "forced_by_human_annotation": false,
+  "page_index": 28,
+  "page_number": 29,
+  "preset_counts": {
+    "footnote": 5,
+    "section_heading": 1,
+    "side_chrome": 4,
+    "text": 3
+  },
+  "selection_probability_basis": {
+    "candidate_count_on_page": 13,
+    "candidate_share_estimate": 1.0,
+    "forced_page": false,
+    "method": "max(weighted_page_score_inclusion_estimate,candidate_share_estimate)",
+    "page_score": 48.5,
+    "total_candidate_count": 13,
+    "total_page_score": 48.5,
+    "weighted_page_score_inclusion_estimate": 1.0
+  },
+  "selection_probability_estimate": 1.0,
+  "selection_reason": [
+    "high_risk_preset",
+    "high_risk_candidate",
+    "boundary_geometry",
+    "high_candidate_score"
+  ],
+  "selection_score": 48.5,
+  "strata": [
+    "geometry:boundary",
+    "preset:footnote",
+    "preset:section_heading",
+    "preset:side_chrome",
+    "preset:text",
+    "risk:high"
+  ]
+}</pre>
+  </section>
+
+  <section>
+    <h2>Artifacts</h2>
+    <ul><li><a href="state.json">state.json</a></li><li><a href="sampled_candidate_manifest.json">sampled_candidate_manifest.json</a></li><li><a href="page_before.json">page_before.json</a></li><li><a href="page_before.png">page_before.png</a></li><li><a href="page_candidates.png">page_candidates.png</a></li><li><a href="selected_candidates.json">selected_candidates.json</a></li><li><a href="candidate_presets.json">candidate_presets.json</a></li><li><a href="review_request.json">review_request.json</a></li><li><a href="review_request_validation.json">review_request_validation.json</a></li><li><a href="scillm_orchestrator_page_dag_spec.json">scillm_orchestrator_page_dag_spec.json</a></li><li><a href="scillm_orchestrator_page_dag_spec_validation.json">scillm_orchestrator_page_dag_spec_validation.json</a></li><li><a href="scillm_orchestrator_page_submission.json">scillm_orchestrator_page_submission.json</a></li><li><a href="scillm_orchestrator_page_submission_validation.json">scillm_orchestrator_page_submission_validation.json</a></li><li><a href="scillm_page_orchestrator_run_request.json">scillm_page_orchestrator_run_request.json</a></li><li><a href="scillm_page_orchestrator_run_error.json">scillm_page_orchestrator_run_error.json</a></li><li><a href="scillm_page_orchestrator_run_validation.json">scillm_page_orchestrator_run_validation.json</a></li><li><a href="review_validation.json">review_validation.json</a></li></ul>
+  </section>
+</main>
+</body>
+</html>

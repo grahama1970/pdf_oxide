@@ -1,0 +1,4954 @@
+{
+  "apply_mode": "release",
+  "candidate_count": 0,
+  "candidates": [],
+  "census_failure_count": 492,
+  "census_failures": [
+    {
+      "duration_s": 0.166,
+      "error": "page 1 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 0,
+      "page_number": 1,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 2 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 1,
+      "page_number": 2,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 3 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 2,
+      "page_number": 3,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 4 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 3,
+      "page_number": 4,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 5 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 4,
+      "page_number": 5,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 6 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 5,
+      "page_number": 6,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 7 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 6,
+      "page_number": 7,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 8 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 7,
+      "page_number": 8,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 9 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 8,
+      "page_number": 9,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 10 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 9,
+      "page_number": 10,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 11 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 10,
+      "page_number": 11,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 12 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 11,
+      "page_number": 12,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 13 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 12,
+      "page_number": 13,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 14 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 13,
+      "page_number": 14,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 15 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 14,
+      "page_number": 15,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 16 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 15,
+      "page_number": 16,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 17 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 16,
+      "page_number": 17,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.117,
+      "error": "page 18 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 17,
+      "page_number": 18,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 19 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 18,
+      "page_number": 19,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 20 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 19,
+      "page_number": 20,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 21 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 20,
+      "page_number": 21,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 22 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 21,
+      "page_number": 22,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 23 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 22,
+      "page_number": 23,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 24 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 23,
+      "page_number": 24,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 25 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 24,
+      "page_number": 25,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 26 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 25,
+      "page_number": 26,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 27 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 26,
+      "page_number": 27,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 28 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 27,
+      "page_number": 28,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 29 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 28,
+      "page_number": 29,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 30 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 29,
+      "page_number": 30,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 31 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 30,
+      "page_number": 31,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 32 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 31,
+      "page_number": 32,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 33 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 32,
+      "page_number": 33,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 34 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 33,
+      "page_number": 34,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 35 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 34,
+      "page_number": 35,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 36 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 35,
+      "page_number": 36,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 37 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 36,
+      "page_number": 37,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 38 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 37,
+      "page_number": 38,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 39 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 38,
+      "page_number": 39,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 40 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 39,
+      "page_number": 40,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 41 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 40,
+      "page_number": 41,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 42 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 41,
+      "page_number": 42,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 43 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 42,
+      "page_number": 43,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 44 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 43,
+      "page_number": 44,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 45 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 44,
+      "page_number": 45,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 46 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 45,
+      "page_number": 46,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 47 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 46,
+      "page_number": 47,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 48 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 47,
+      "page_number": 48,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 49 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 48,
+      "page_number": 49,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 50 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 49,
+      "page_number": 50,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 51 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 50,
+      "page_number": 51,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 52 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 51,
+      "page_number": 52,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 53 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 52,
+      "page_number": 53,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 54 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 53,
+      "page_number": 54,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 55 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 54,
+      "page_number": 55,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 56 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 55,
+      "page_number": 56,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 57 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 56,
+      "page_number": 57,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 58 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 57,
+      "page_number": 58,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.167,
+      "error": "page 59 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 58,
+      "page_number": 59,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 60 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 59,
+      "page_number": 60,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 61 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 60,
+      "page_number": 61,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 62 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 61,
+      "page_number": 62,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 63 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 62,
+      "page_number": 63,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 64 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 63,
+      "page_number": 64,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.169,
+      "error": "page 65 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 64,
+      "page_number": 65,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 66 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 65,
+      "page_number": 66,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 67 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 66,
+      "page_number": 67,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 68 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 67,
+      "page_number": 68,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 69 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 68,
+      "page_number": 69,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 70 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 69,
+      "page_number": 70,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 71 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 70,
+      "page_number": 71,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 72 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 71,
+      "page_number": 72,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 73 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 72,
+      "page_number": 73,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 74 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 73,
+      "page_number": 74,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 75 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 74,
+      "page_number": 75,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 76 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 75,
+      "page_number": 76,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 77 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 76,
+      "page_number": 77,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 78 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 77,
+      "page_number": 78,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 79 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 78,
+      "page_number": 79,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 80 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 79,
+      "page_number": 80,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.166,
+      "error": "page 81 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 80,
+      "page_number": 81,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 82 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 81,
+      "page_number": 82,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 83 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 82,
+      "page_number": 83,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 84 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 83,
+      "page_number": 84,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 85 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 84,
+      "page_number": 85,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 86 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 85,
+      "page_number": 86,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 87 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 86,
+      "page_number": 87,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 88 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 87,
+      "page_number": 88,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 89 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 88,
+      "page_number": 89,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 90 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 89,
+      "page_number": 90,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 91 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 90,
+      "page_number": 91,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 92 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 91,
+      "page_number": 92,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 93 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 92,
+      "page_number": 93,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 94 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 93,
+      "page_number": 94,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 95 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 94,
+      "page_number": 95,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 96 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 95,
+      "page_number": 96,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 97 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 96,
+      "page_number": 97,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 98 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 97,
+      "page_number": 98,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 99 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 98,
+      "page_number": 99,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 100 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 99,
+      "page_number": 100,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 101 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 100,
+      "page_number": 101,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 102 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 101,
+      "page_number": 102,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 103 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 102,
+      "page_number": 103,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 104 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 103,
+      "page_number": 104,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 105 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 104,
+      "page_number": 105,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 106 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 105,
+      "page_number": 106,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 107 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 106,
+      "page_number": 107,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 108 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 107,
+      "page_number": 108,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 109 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 108,
+      "page_number": 109,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 110 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 109,
+      "page_number": 110,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 111 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 110,
+      "page_number": 111,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 112 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 111,
+      "page_number": 112,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 113 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 112,
+      "page_number": 113,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 114 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 113,
+      "page_number": 114,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 115 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 114,
+      "page_number": 115,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 116 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 115,
+      "page_number": 116,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 117 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 116,
+      "page_number": 117,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 118 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 117,
+      "page_number": 118,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 119 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 118,
+      "page_number": 119,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 120 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 119,
+      "page_number": 120,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 121 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 120,
+      "page_number": 121,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 122 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 121,
+      "page_number": 122,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 123 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 122,
+      "page_number": 123,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 124 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 123,
+      "page_number": 124,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 125 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 124,
+      "page_number": 125,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 126 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 125,
+      "page_number": 126,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 127 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 126,
+      "page_number": 127,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 128 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 127,
+      "page_number": 128,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 129 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 128,
+      "page_number": 129,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 130 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 129,
+      "page_number": 130,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 131 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 130,
+      "page_number": 131,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 132 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 131,
+      "page_number": 132,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 133 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 132,
+      "page_number": 133,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 134 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 133,
+      "page_number": 134,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 135 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 134,
+      "page_number": 135,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 136 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 135,
+      "page_number": 136,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 137 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 136,
+      "page_number": 137,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 138 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 137,
+      "page_number": 138,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 139 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 138,
+      "page_number": 139,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 140 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 139,
+      "page_number": 140,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 141 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 140,
+      "page_number": 141,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.117,
+      "error": "page 142 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 141,
+      "page_number": 142,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.117,
+      "error": "page 143 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 142,
+      "page_number": 143,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 144 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 143,
+      "page_number": 144,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 145 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 144,
+      "page_number": 145,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 146 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 145,
+      "page_number": 146,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 147 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 146,
+      "page_number": 147,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 148 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 147,
+      "page_number": 148,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 149 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 148,
+      "page_number": 149,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 150 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 149,
+      "page_number": 150,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 151 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 150,
+      "page_number": 151,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 152 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 151,
+      "page_number": 152,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 153 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 152,
+      "page_number": 153,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 154 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 153,
+      "page_number": 154,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 155 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 154,
+      "page_number": 155,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 156 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 155,
+      "page_number": 156,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 157 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 156,
+      "page_number": 157,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 158 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 157,
+      "page_number": 158,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 159 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 158,
+      "page_number": 159,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 160 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 159,
+      "page_number": 160,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 161 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 160,
+      "page_number": 161,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 162 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 161,
+      "page_number": 162,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 163 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 162,
+      "page_number": 163,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 164 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 163,
+      "page_number": 164,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 165 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 164,
+      "page_number": 165,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 166 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 165,
+      "page_number": 166,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 167 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 166,
+      "page_number": 167,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 168 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 167,
+      "page_number": 168,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 169 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 168,
+      "page_number": 169,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 170 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 169,
+      "page_number": 170,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 171 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 170,
+      "page_number": 171,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 172 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 171,
+      "page_number": 172,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 173 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 172,
+      "page_number": 173,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 174 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 173,
+      "page_number": 174,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 175 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 174,
+      "page_number": 175,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 176 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 175,
+      "page_number": 176,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 177 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 176,
+      "page_number": 177,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 178 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 177,
+      "page_number": 178,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 179 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 178,
+      "page_number": 179,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 180 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 179,
+      "page_number": 180,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 181 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 180,
+      "page_number": 181,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 182 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 181,
+      "page_number": 182,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 183 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 182,
+      "page_number": 183,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 184 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 183,
+      "page_number": 184,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 185 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 184,
+      "page_number": 185,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 186 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 185,
+      "page_number": 186,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 187 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 186,
+      "page_number": 187,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 188 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 187,
+      "page_number": 188,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 189 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 188,
+      "page_number": 189,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 190 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 189,
+      "page_number": 190,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 191 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 190,
+      "page_number": 191,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 192 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 191,
+      "page_number": 192,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 193 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 192,
+      "page_number": 193,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 194 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 193,
+      "page_number": 194,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 195 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 194,
+      "page_number": 195,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 196 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 195,
+      "page_number": 196,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 197 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 196,
+      "page_number": 197,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 198 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 197,
+      "page_number": 198,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 199 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 198,
+      "page_number": 199,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 200 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 199,
+      "page_number": 200,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 201 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 200,
+      "page_number": 201,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 202 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 201,
+      "page_number": 202,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 203 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 202,
+      "page_number": 203,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 204 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 203,
+      "page_number": 204,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 205 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 204,
+      "page_number": 205,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 206 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 205,
+      "page_number": 206,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 207 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 206,
+      "page_number": 207,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 208 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 207,
+      "page_number": 208,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 209 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 208,
+      "page_number": 209,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 210 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 209,
+      "page_number": 210,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 211 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 210,
+      "page_number": 211,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 212 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 211,
+      "page_number": 212,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 213 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 212,
+      "page_number": 213,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 214 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 213,
+      "page_number": 214,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 215 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 214,
+      "page_number": 215,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 216 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 215,
+      "page_number": 216,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 217 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 216,
+      "page_number": 217,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 218 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 217,
+      "page_number": 218,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 219 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 218,
+      "page_number": 219,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 220 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 219,
+      "page_number": 220,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 221 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 220,
+      "page_number": 221,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 222 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 221,
+      "page_number": 222,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 223 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 222,
+      "page_number": 223,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 224 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 223,
+      "page_number": 224,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 225 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 224,
+      "page_number": 225,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 226 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 225,
+      "page_number": 226,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 227 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 226,
+      "page_number": 227,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 228 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 227,
+      "page_number": 228,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 229 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 228,
+      "page_number": 229,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 230 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 229,
+      "page_number": 230,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 231 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 230,
+      "page_number": 231,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 232 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 231,
+      "page_number": 232,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 233 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 232,
+      "page_number": 233,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 234 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 233,
+      "page_number": 234,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 235 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 234,
+      "page_number": 235,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 236 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 235,
+      "page_number": 236,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 237 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 236,
+      "page_number": 237,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 238 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 237,
+      "page_number": 238,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 239 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 238,
+      "page_number": 239,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 240 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 239,
+      "page_number": 240,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 241 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 240,
+      "page_number": 241,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 242 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 241,
+      "page_number": 242,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 243 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 242,
+      "page_number": 243,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 244 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 243,
+      "page_number": 244,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 245 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 244,
+      "page_number": 245,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 246 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 245,
+      "page_number": 246,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 247 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 246,
+      "page_number": 247,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 248 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 247,
+      "page_number": 248,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 249 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 248,
+      "page_number": 249,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 250 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 249,
+      "page_number": 250,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 251 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 250,
+      "page_number": 251,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 252 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 251,
+      "page_number": 252,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 253 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 252,
+      "page_number": 253,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 254 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 253,
+      "page_number": 254,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 255 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 254,
+      "page_number": 255,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 256 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 255,
+      "page_number": 256,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 257 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 256,
+      "page_number": 257,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 258 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 257,
+      "page_number": 258,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 259 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 258,
+      "page_number": 259,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 260 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 259,
+      "page_number": 260,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 261 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 260,
+      "page_number": 261,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 262 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 261,
+      "page_number": 262,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 263 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 262,
+      "page_number": 263,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 264 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 263,
+      "page_number": 264,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 265 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 264,
+      "page_number": 265,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 266 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 265,
+      "page_number": 266,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 267 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 266,
+      "page_number": 267,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 268 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 267,
+      "page_number": 268,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 269 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 268,
+      "page_number": 269,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 270 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 269,
+      "page_number": 270,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 271 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 270,
+      "page_number": 271,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 272 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 271,
+      "page_number": 272,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 273 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 272,
+      "page_number": 273,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 274 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 273,
+      "page_number": 274,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 275 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 274,
+      "page_number": 275,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 276 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 275,
+      "page_number": 276,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 277 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 276,
+      "page_number": 277,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 278 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 277,
+      "page_number": 278,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 279 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 278,
+      "page_number": 279,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 280 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 279,
+      "page_number": 280,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 281 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 280,
+      "page_number": 281,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 282 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 281,
+      "page_number": 282,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 283 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 282,
+      "page_number": 283,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 284 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 283,
+      "page_number": 284,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 285 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 284,
+      "page_number": 285,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 286 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 285,
+      "page_number": 286,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 287 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 286,
+      "page_number": 287,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 288 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 287,
+      "page_number": 288,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 289 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 288,
+      "page_number": 289,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 290 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 289,
+      "page_number": 290,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 291 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 290,
+      "page_number": 291,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 292 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 291,
+      "page_number": 292,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 293 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 292,
+      "page_number": 293,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 294 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 293,
+      "page_number": 294,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 295 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 294,
+      "page_number": 295,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 296 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 295,
+      "page_number": 296,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 297 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 296,
+      "page_number": 297,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 298 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 297,
+      "page_number": 298,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 299 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 298,
+      "page_number": 299,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 300 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 299,
+      "page_number": 300,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.117,
+      "error": "page 301 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 300,
+      "page_number": 301,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 302 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 301,
+      "page_number": 302,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 303 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 302,
+      "page_number": 303,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 304 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 303,
+      "page_number": 304,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 305 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 304,
+      "page_number": 305,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 306 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 305,
+      "page_number": 306,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 307 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 306,
+      "page_number": 307,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 308 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 307,
+      "page_number": 308,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 309 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 308,
+      "page_number": 309,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 310 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 309,
+      "page_number": 310,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 311 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 310,
+      "page_number": 311,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 312 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 311,
+      "page_number": 312,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 313 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 312,
+      "page_number": 313,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 314 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 313,
+      "page_number": 314,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 315 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 314,
+      "page_number": 315,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 316 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 315,
+      "page_number": 316,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 317 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 316,
+      "page_number": 317,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 318 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 317,
+      "page_number": 318,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.117,
+      "error": "page 319 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 318,
+      "page_number": 319,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 320 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 319,
+      "page_number": 320,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 321 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 320,
+      "page_number": 321,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 322 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 321,
+      "page_number": 322,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 323 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 322,
+      "page_number": 323,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 324 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 323,
+      "page_number": 324,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 325 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 324,
+      "page_number": 325,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 326 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 325,
+      "page_number": 326,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 327 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 326,
+      "page_number": 327,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 328 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 327,
+      "page_number": 328,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 329 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 328,
+      "page_number": 329,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 330 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 329,
+      "page_number": 330,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 331 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 330,
+      "page_number": 331,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 332 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 331,
+      "page_number": 332,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 333 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 332,
+      "page_number": 333,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 334 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 333,
+      "page_number": 334,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 335 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 334,
+      "page_number": 335,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 336 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 335,
+      "page_number": 336,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 337 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 336,
+      "page_number": 337,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 338 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 337,
+      "page_number": 338,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 339 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 338,
+      "page_number": 339,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 340 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 339,
+      "page_number": 340,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 341 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 340,
+      "page_number": 341,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 342 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 341,
+      "page_number": 342,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 343 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 342,
+      "page_number": 343,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 344 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 343,
+      "page_number": 344,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 345 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 344,
+      "page_number": 345,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 346 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 345,
+      "page_number": 346,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 347 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 346,
+      "page_number": 347,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 348 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 347,
+      "page_number": 348,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 349 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 348,
+      "page_number": 349,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 350 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 349,
+      "page_number": 350,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 351 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 350,
+      "page_number": 351,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 352 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 351,
+      "page_number": 352,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 353 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 352,
+      "page_number": 353,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 354 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 353,
+      "page_number": 354,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 355 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 354,
+      "page_number": 355,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 356 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 355,
+      "page_number": 356,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 357 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 356,
+      "page_number": 357,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 358 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 357,
+      "page_number": 358,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 359 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 358,
+      "page_number": 359,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 360 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 359,
+      "page_number": 360,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 361 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 360,
+      "page_number": 361,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 362 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 361,
+      "page_number": 362,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 363 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 362,
+      "page_number": 363,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 364 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 363,
+      "page_number": 364,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 365 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 364,
+      "page_number": 365,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 366 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 365,
+      "page_number": 366,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 367 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 366,
+      "page_number": 367,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 368 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 367,
+      "page_number": 368,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 369 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 368,
+      "page_number": 369,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 370 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 369,
+      "page_number": 370,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 371 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 370,
+      "page_number": 371,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 372 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 371,
+      "page_number": 372,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 373 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 372,
+      "page_number": 373,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 374 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 373,
+      "page_number": 374,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 375 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 374,
+      "page_number": 375,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 376 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 375,
+      "page_number": 376,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 377 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 376,
+      "page_number": 377,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 378 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 377,
+      "page_number": 378,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 379 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 378,
+      "page_number": 379,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 380 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 379,
+      "page_number": 380,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 381 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 380,
+      "page_number": 381,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 382 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 381,
+      "page_number": 382,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 383 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 382,
+      "page_number": 383,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 384 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 383,
+      "page_number": 384,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 385 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 384,
+      "page_number": 385,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 386 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 385,
+      "page_number": 386,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 387 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 386,
+      "page_number": 387,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 388 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 387,
+      "page_number": 388,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 389 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 388,
+      "page_number": 389,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 390 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 389,
+      "page_number": 390,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 391 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 390,
+      "page_number": 391,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 392 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 391,
+      "page_number": 392,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 393 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 392,
+      "page_number": 393,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 394 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 393,
+      "page_number": 394,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 395 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 394,
+      "page_number": 395,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 396 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 395,
+      "page_number": 396,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 397 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 396,
+      "page_number": 397,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 398 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 397,
+      "page_number": 398,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 399 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 398,
+      "page_number": 399,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 400 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 399,
+      "page_number": 400,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 401 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 400,
+      "page_number": 401,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 402 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 401,
+      "page_number": 402,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 403 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 402,
+      "page_number": 403,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 404 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 403,
+      "page_number": 404,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 405 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 404,
+      "page_number": 405,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 406 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 405,
+      "page_number": 406,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 407 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 406,
+      "page_number": 407,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 408 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 407,
+      "page_number": 408,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 409 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 408,
+      "page_number": 409,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 410 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 409,
+      "page_number": 410,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 411 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 410,
+      "page_number": 411,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 412 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 411,
+      "page_number": 412,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 413 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 412,
+      "page_number": 413,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 414 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 413,
+      "page_number": 414,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 415 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 414,
+      "page_number": 415,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 416 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 415,
+      "page_number": 416,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 417 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 416,
+      "page_number": 417,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 418 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 417,
+      "page_number": 418,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 419 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 418,
+      "page_number": 419,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 420 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 419,
+      "page_number": 420,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 421 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 420,
+      "page_number": 421,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 422 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 421,
+      "page_number": 422,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 423 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 422,
+      "page_number": 423,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 424 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 423,
+      "page_number": 424,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 425 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 424,
+      "page_number": 425,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 426 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 425,
+      "page_number": 426,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 427 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 426,
+      "page_number": 427,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 428 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 427,
+      "page_number": 428,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 429 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 428,
+      "page_number": 429,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 430 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 429,
+      "page_number": 430,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 431 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 430,
+      "page_number": 431,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 432 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 431,
+      "page_number": 432,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 433 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 432,
+      "page_number": 433,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 434 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 433,
+      "page_number": 434,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.165,
+      "error": "page 435 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 434,
+      "page_number": 435,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 436 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 435,
+      "page_number": 436,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 437 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 436,
+      "page_number": 437,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 438 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 437,
+      "page_number": 438,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.116,
+      "error": "page 439 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 438,
+      "page_number": 439,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.117,
+      "error": "page 440 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 439,
+      "page_number": 440,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 441 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 440,
+      "page_number": 441,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 442 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 441,
+      "page_number": 442,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 443 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 442,
+      "page_number": 443,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 444 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 443,
+      "page_number": 444,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 445 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 444,
+      "page_number": 445,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 446 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 445,
+      "page_number": 446,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 447 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 446,
+      "page_number": 447,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 448 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 447,
+      "page_number": 448,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 449 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 448,
+      "page_number": 449,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 450 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 449,
+      "page_number": 450,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 451 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 450,
+      "page_number": 451,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 452 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 451,
+      "page_number": 452,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 453 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 452,
+      "page_number": 453,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 454 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 453,
+      "page_number": 454,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 455 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 454,
+      "page_number": 455,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.114,
+      "error": "page 456 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 455,
+      "page_number": 456,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 457 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 456,
+      "page_number": 457,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 458 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 457,
+      "page_number": 458,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 459 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 458,
+      "page_number": 459,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 460 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 459,
+      "page_number": 460,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 461 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 460,
+      "page_number": 461,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 462 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 461,
+      "page_number": 462,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 463 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 462,
+      "page_number": 463,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 464 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 463,
+      "page_number": 464,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 465 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 464,
+      "page_number": 465,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 466 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 465,
+      "page_number": 466,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 467 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 466,
+      "page_number": 467,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 468 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 467,
+      "page_number": 468,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 469 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 468,
+      "page_number": 469,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 470 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 469,
+      "page_number": 470,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 471 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 470,
+      "page_number": 471,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 472 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 471,
+      "page_number": 472,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 473 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 472,
+      "page_number": 473,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 474 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 473,
+      "page_number": 474,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 475 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 474,
+      "page_number": 475,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 476 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 475,
+      "page_number": 476,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 477 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 476,
+      "page_number": 477,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 478 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 477,
+      "page_number": 478,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 479 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 478,
+      "page_number": 479,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 480 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 479,
+      "page_number": 480,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 481 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 480,
+      "page_number": 481,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 482 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 481,
+      "page_number": 482,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 483 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 482,
+      "page_number": 483,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 484 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 483,
+      "page_number": 484,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 485 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 484,
+      "page_number": 485,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 486 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 485,
+      "page_number": 486,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 487 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 486,
+      "page_number": 487,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 488 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 487,
+      "page_number": 488,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 489 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 488,
+      "page_number": 489,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 490 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 489,
+      "page_number": 490,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 491 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 490,
+      "page_number": 491,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    },
+    {
+      "duration_s": 0.115,
+      "error": "page 492 census subprocess failed with exit code 1",
+      "error_type": "RuntimeError",
+      "page_index": 491,
+      "page_number": 492,
+      "page_timeout_s": 90.0,
+      "schema": "pdf_lab.second_pass.page_census_failure.v1",
+      "status": "substrate_error"
+    }
+  ],
+  "command": "scripts/pdf_lab/build_pdf_element_candidate_manifest.py --pdf /mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --apply-mode release --out artifacts/pdf_lab/next_candidate_selection_after_page28_20260721Tnow/candidate_manifest.json --page-timeout-s 90 --debug-log artifacts/pdf_lab/next_candidate_selection_after_page28_20260721Tnow/candidate_manifest_debug.log --progress-path artifacts/pdf_lab/next_candidate_selection_after_page28_20260721Tnow/candidate_census_progress.json",
+  "created_at": "2026-07-21T12:12:46.338672+00:00",
+  "extracted_page_count": 0,
+  "git_head": "1becfd792225911c0c681b2c6638a8dfb698f356",
+  "ledger_path": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "page_count": 492,
+  "page_count_with_candidates": 0,
+  "pages": [],
+  "pdf_id": "NIST_SP_800-53r5:fc63bcd61715d018",
+  "pdf_path": "/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf",
+  "preset_counts": {},
+  "preset_types": [
+    "appendix",
+    "equation",
+    "figure",
+    "footnote",
+    "list",
+    "reference",
+    "section_heading",
+    "side_chrome",
+    "table",
+    "text",
+    "toc",
+    "unknown_layout"
+  ],
+  "schema": "pdf_lab.second_pass.candidate_manifest.v1"
+}

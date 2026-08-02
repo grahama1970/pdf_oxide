@@ -1,0 +1,79 @@
+{
+  "artifacts": [
+    "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command-receipt.json",
+    "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command.json",
+    "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness.stderr.txt",
+    "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness.stdout.txt"
+  ],
+  "command_results": [
+    {
+      "command": [
+        "/tmp/pdf_oxide_next_page_20260721/.venv/bin/python",
+        "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/page29_tau_runner.py"
+      ],
+      "command_spec_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/compiled-command-specs/page29-runner/tau-dispatch-command.json",
+      "command_spec_sha256": "sha256:5a2af09834504d448aec504edfb6364468c19a3c4a49adc6a32617daf9f537a4",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"context\": {\"artifacts\": [\"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command-receipt.json\", \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029\", \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_validation.json\", \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_request.json\"], \"summary\": \"Tau-dispatched page29 harness finished without review_validation ok:true.\"}, \"github\": {\"repo\": \"grahama1970/pdf_oxide\", \"target\": \"page_case_0001_p0029\"}, \"goal\": {\"goal_hash\": \"sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978\", \"goal_id\": \"pdf-lab-all-page-candidates-hardening\", \"goal_version\": \"2026-06-04\"}, \"next_agent\": {\"executor\": \"human\", \"name\": \"human\", \"reason\": \"Stop after one page-case run for audit before any repair or broader iteration.\"}, \"previous_subagent\": \"page29-runner\", \"rationale\": \"The Tau DAG contract controls dispatch; PDF Lab owns the existing page harness artifacts.\", \"required_evidence\": [\"pdf_lab_page_second_pass_run_receipt\"], \"result\": {\"evidence\": [{\"kind\": \"pdf_lab_page_second_pass_run_receipt\", \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command-receipt.json\", \"status\": \"BLOCKED\"}, {\"kind\": \"pdf_lab_page_second_pass_output_dir\", \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029\", \"status\": \"PRESENT\"}, {\"kind\": \"pdf_lab_review_validation\", \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_validation.json\"}, {\"kind\": \"pdf_lab_review_request\", \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_request.json\"}], \"status\": \"BLOCKED\", \"summary\": \"Tau-dispatched page29 harness finished without review_validation ok:true.\"}, \"schema\": \"tau.agent_handoff.v1\", \"stop_condition\": \"Stop at human or a fail-closed DAG invariant.\"}\n",
+      "timed_out": false,
+      "timeout_s": 300.0,
+      "timeout_s_source": "command_spec"
+    }
+  ],
+  "errors": [],
+  "live": true,
+  "loop_step": 1,
+  "mocked": false,
+  "ok": true,
+  "receipt_dir": null,
+  "response_projection": {
+    "comment": {
+      "body": "## Tau Agent Handoff\n\n- Result: `BLOCKED`\n- Summary: Tau-dispatched page29 harness finished without review_validation ok:true.\n- Next agent: `human`\n- Executor: `human`\n- Stop condition: Stop at human or a fail-closed DAG invariant.\n\n<!-- tau-agent-handoff:v1 -->\n```json\n{\n  \"context\": {\n    \"artifacts\": [\n      \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command-receipt.json\",\n      \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029\",\n      \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_validation.json\",\n      \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_request.json\"\n    ],\n    \"summary\": \"Tau-dispatched page29 harness finished without review_validation ok:true.\"\n  },\n  \"github\": {\n    \"repo\": \"grahama1970/pdf_oxide\",\n    \"target\": \"page_case_0001_p0029\"\n  },\n  \"goal\": {\n    \"goal_hash\": \"sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978\",\n    \"goal_id\": \"pdf-lab-all-page-candidates-hardening\",\n    \"goal_version\": \"2026-06-04\"\n  },\n  \"next_agent\": {\n    \"executor\": \"human\",\n    \"name\": \"human\",\n    \"reason\": \"Stop after one page-case run for audit before any repair or broader iteration.\"\n  },\n  \"previous_subagent\": \"page29-runner\",\n  \"rationale\": \"The Tau DAG contract controls dispatch; PDF Lab owns the existing page harness artifacts.\",\n  \"required_evidence\": [\n    \"pdf_lab_page_second_pass_run_receipt\"\n  ],\n  \"result\": {\n    \"evidence\": [\n      {\n        \"kind\": \"pdf_lab_page_second_pass_run_receipt\",\n        \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness-command-receipt.json\",\n        \"status\": \"BLOCKED\"\n      },\n      {\n        \"kind\": \"pdf_lab_page_second_pass_output_dir\",\n        \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029\",\n        \"status\": \"PRESENT\"\n      },\n      {\n        \"kind\": \"pdf_lab_review_validation\",\n        \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_validation.json\"\n      },\n      {\n        \"kind\": \"pdf_lab_review_request\",\n        \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_request.json\"\n      }\n    ],\n    \"status\": \"BLOCKED\",\n    \"summary\": \"Tau-dispatched page29 harness finished without review_validation ok:true.\"\n  },\n  \"schema\": \"tau.agent_handoff.v1\",\n  \"stop_condition\": \"Stop at human or a fail-closed DAG invariant.\"\n}\n```\n"
+    },
+    "dry_run": true,
+    "errors": [],
+    "labels": {
+      "add": [
+        "agent-work",
+        "next:human",
+        "executor:human"
+      ],
+      "remove": []
+    },
+    "next_agent": "human",
+    "ok": true,
+    "schema": "tau.agent_handoff_projection_receipt.v1",
+    "target": {
+      "repo": "grahama1970/pdf_oxide",
+      "target": "page_case_0001_p0029"
+    }
+  },
+  "runner": "command",
+  "schema": "tau.agent_handoff_dispatch_receipt.v1",
+  "selected_agent": "page29-runner",
+  "start_projection": {
+    "comment": {
+      "body": "## Tau Agent Handoff\n\n- Result: `DAG_DISPATCH_REQUESTED`\n- Summary: Tau is dispatching entry node page29-runner.\n- Next agent: `page29-runner`\n- Executor: `local`\n- Stop condition: Stop at a terminal DAG node or any fail-closed invariant violation.\n\n<!-- tau-agent-handoff:v1 -->\n```json\n{\n  \"context\": {\n    \"artifacts\": [\n      \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/dag-contract.json\"\n    ],\n    \"dag_agent_role\": \"page29-runner\",\n    \"dag_node_id\": \"page29-runner\",\n    \"summary\": \"Dispatch DAG contract pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z.\",\n    \"tau_dag_node\": {\n      \"agent\": \"page29-runner\",\n      \"dag_id\": \"pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z\",\n      \"executor\": \"local\",\n      \"goal\": {\n        \"goal_hash\": \"sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978\",\n        \"goal_id\": \"pdf-lab-all-page-candidates-hardening\",\n        \"goal_version\": \"2026-06-04\"\n      },\n      \"node_id\": \"page29-runner\",\n      \"required_evidence\": [\n        \"pdf_lab_page_second_pass_run_receipt\"\n      ],\n      \"target\": {\n        \"allowed_paths\": [\n          \"artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/**\",\n          \"artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/**\"\n        ],\n        \"repo\": \"grahama1970/pdf_oxide\",\n        \"target\": \"page_case_0001_p0029\"\n      }\n    }\n  },\n  \"github\": {\n    \"repo\": \"grahama1970/pdf_oxide\",\n    \"target\": \"page_case_0001_p0029\"\n  },\n  \"goal\": {\n    \"goal_hash\": \"sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978\",\n    \"goal_id\": \"pdf-lab-all-page-candidates-hardening\",\n    \"goal_version\": \"2026-06-04\"\n  },\n  \"next_agent\": {\n    \"executor\": \"local\",\n    \"name\": \"page29-runner\",\n    \"reason\": \"Entry node for DAG pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z using role page29-runner.\"\n  },\n  \"previous_subagent\": \"human\",\n  \"rationale\": \"The DAG contract is the authoritative workflow and immutable goal boundary.\",\n  \"required_evidence\": [\n    \"pdf_lab_page_second_pass_run_receipt\"\n  ],\n  \"result\": {\n    \"evidence\": [\n      {\n        \"kind\": \"dag_contract\",\n        \"path\": \"/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/dag-contract.json\",\n        \"schema\": \"tau.dag_contract.v1\",\n        \"sha256\": \"sha256:a0bd2d314d15c7ca24e9ef6b6a9f07a9ba6f87c41233f8a8ad30f5be570d8a40\"\n      }\n    ],\n    \"status\": \"DAG_DISPATCH_REQUESTED\",\n    \"summary\": \"Tau is dispatching entry node page29-runner.\"\n  },\n  \"schema\": \"tau.agent_handoff.v1\",\n  \"stop_condition\": \"Stop at a terminal DAG node or any fail-closed invariant violation.\"\n}\n```\n"
+    },
+    "dry_run": true,
+    "errors": [],
+    "labels": {
+      "add": [
+        "agent-work",
+        "next:page29-runner",
+        "executor:local"
+      ],
+      "remove": []
+    },
+    "next_agent": "page29-runner",
+    "ok": true,
+    "schema": "tau.agent_handoff_projection_receipt.v1",
+    "target": {
+      "repo": "grahama1970/pdf_oxide",
+      "target": "page_case_0001_p0029"
+    }
+  },
+  "status": "COMPLETED",
+  "stop_reason": "response_consumed"
+}

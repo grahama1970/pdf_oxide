@@ -1,0 +1,82 @@
+{
+  "active_goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+  "active_subagents": [],
+  "completed_subagents": [
+    {
+      "agent": "page29-runner",
+      "node_id": "page29-runner"
+    }
+  ],
+  "dag_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1230Z",
+  "entry_node": "page29-runner",
+  "event_count": 3,
+  "events": [
+    {
+      "command_spec_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run/compiled-command-specs/page29-runner/tau-dispatch-command.json",
+      "event": "step_started",
+      "loop_step": 1,
+      "selected_agent": "page29-runner",
+      "status": "RUNNING",
+      "ts": "2026-07-21T12:26:36Z"
+    },
+    {
+      "event": "step_completed",
+      "loop_step": 1,
+      "ok": true,
+      "selected_agent": "page29-runner",
+      "status": "COMPLETED",
+      "stop_reason": "response_consumed",
+      "ts": "2026-07-21T12:27:00Z"
+    },
+    {
+      "event": "loop_waiting",
+      "loop_step": 1,
+      "selected_agent": "human",
+      "status": "WAITING",
+      "stop_reason": "next_agent_is_human",
+      "ts": "2026-07-21T12:27:00Z"
+    }
+  ],
+  "last_event": {
+    "event": "loop_waiting",
+    "loop_step": 1,
+    "selected_agent": "human",
+    "status": "WAITING",
+    "stop_reason": "next_agent_is_human",
+    "ts": "2026-07-21T12:27:00Z"
+  },
+  "live": true,
+  "mocked": false,
+  "node_count": 1,
+  "node_progress": [
+    {
+      "agent": "page29-runner",
+      "attempt": 1,
+      "last_event_at": "2026-07-21T12:27:00Z",
+      "node_id": "page29-runner",
+      "status": "COMPLETED"
+    }
+  ],
+  "ok": true,
+  "proof_scope": {
+    "does_not_prove": [
+      "The active subprocess will finish successfully.",
+      "Provider/model semantic quality.",
+      "Final DAG acceptance before dag-receipt.json is written."
+    ],
+    "proves": [
+      "Tau has written a durable local progress artifact for this DAG run.",
+      "Operators can inspect active and completed subagents before the final DAG receipt exists."
+    ]
+  },
+  "provider_live": false,
+  "run_dir": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1230Z/tau/run",
+  "scheduler": "handoff-loop",
+  "schema": "tau.dag_progress.v1",
+  "status": "PASS",
+  "terminal_nodes": [
+    "human"
+  ],
+  "updated_at": "2026-07-21T12:27:00Z",
+  "verdict": "PASS"
+}

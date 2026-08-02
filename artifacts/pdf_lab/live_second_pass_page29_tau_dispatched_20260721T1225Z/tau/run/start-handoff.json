@@ -1,0 +1,66 @@
+{
+  "context": {
+    "artifacts": [
+      "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/dag-contract.json"
+    ],
+    "dag_agent_role": "page29-runner",
+    "dag_node_id": "page29-runner",
+    "summary": "Dispatch DAG contract pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z.",
+    "tau_dag_node": {
+      "agent": "page29-runner",
+      "context": {},
+      "dag_id": "pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z",
+      "executor": "local",
+      "goal": {
+        "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+        "goal_id": "pdf-lab-all-page-candidates-hardening",
+        "goal_version": "2026-06-04"
+      },
+      "node_id": "page29-runner",
+      "required_evidence": [
+        "pdf_lab_page_second_pass_run_receipt"
+      ],
+      "target": {
+        "allowed_paths": [
+          "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/**",
+          "artifacts/pdf_lab/next_candidate_selection_page29_20260721T1220Z/**"
+        ],
+        "repo": "grahama1970/pdf_oxide",
+        "target": "page_case_0001_p0029"
+      }
+    }
+  },
+  "github": {
+    "repo": "grahama1970/pdf_oxide",
+    "target": "page_case_0001_p0029"
+  },
+  "goal": {
+    "goal_hash": "sha256:43810ac3a5d7762caf4f43cf0d6259d18108b8a19e29daefde1bb86073997978",
+    "goal_id": "pdf-lab-all-page-candidates-hardening",
+    "goal_version": "2026-06-04"
+  },
+  "next_agent": {
+    "executor": "local",
+    "name": "page29-runner",
+    "reason": "Entry node for DAG pdf-oxide-page29-second-pass-tau-dispatch-20260721T1225Z using role page29-runner."
+  },
+  "previous_subagent": "human",
+  "rationale": "The DAG contract is the authoritative workflow and immutable goal boundary.",
+  "required_evidence": [
+    "pdf_lab_page_second_pass_run_receipt"
+  ],
+  "result": {
+    "evidence": [
+      {
+        "kind": "dag_contract",
+        "path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/dag-contract.json",
+        "schema": "tau.dag_contract.v1",
+        "sha256": "sha256:a0bd2d314d15c7ca24e9ef6b6a9f07a9ba6f87c41233f8a8ad30f5be570d8a40"
+      }
+    ],
+    "status": "DAG_DISPATCH_REQUESTED",
+    "summary": "Tau is dispatching entry node page29-runner."
+  },
+  "schema": "tau.agent_handoff.v1",
+  "stop_condition": "Stop at a terminal DAG node or any fail-closed invariant violation."
+}

@@ -1,0 +1,1 @@
+{"case_dir": "artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029", "page_number": 29, "terminal_status": "blocked_substrate"}

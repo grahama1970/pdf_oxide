@@ -1,0 +1,40 @@
+{
+  "command_exit_code": 0,
+  "command_timed_out": false,
+  "live": true,
+  "mocked": false,
+  "observed": {
+    "html_review_artifact_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review.html",
+    "review_request_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_request.json",
+    "review_validation_errors": [
+      "page_orchestrator_registration_failed"
+    ],
+    "review_validation_ok": false,
+    "review_validation_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029/page_case_0001_p0029/review_validation.json",
+    "review_validation_status": null,
+    "run_dir_exists": true,
+    "validation_result_status": null
+  },
+  "page_case_id": "page_case_0001_p0029",
+  "page_number": 29,
+  "proof_scope": {
+    "does_not_prove": [
+      "A Tau-native VLM chat-completions adapter.",
+      "A Tau creator-reviewer repair loop.",
+      "Provider/model semantic quality.",
+      "GitHub mutation or Criterion 6 live apply."
+    ],
+    "proves": [
+      "Tau dispatched one bounded local command node for page_case_0001_p0029.",
+      "The existing PDF Lab one-page harness was exercised with live review-mode and dry-run patch/commit modes.",
+      "The command emitted local artifacts and stdout/stderr receipts under the Tau command artifact directory."
+    ]
+  },
+  "run_dir": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/page_case_0001_p0029",
+  "schema": "pdf_lab.tau_dispatched_page_second_pass_receipt.v1",
+  "scillm_timeout_s": 120,
+  "status": "BLOCKED",
+  "stderr_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness.stderr.txt",
+  "stdout_path": "/tmp/pdf_oxide_next_page_20260721/artifacts/pdf_lab/live_second_pass_page29_tau_dispatched_20260721T1225Z/tau/run/command-loop/command-artifacts/command-loop-step-001/harness.stdout.txt",
+  "tau_command_timeout_s": 260
+}
