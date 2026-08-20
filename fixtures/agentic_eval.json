@@ -66,6 +66,24 @@
       }
     },
     {
+      "name": "issue-6-flowchart-text-survives",
+      "type": "positive",
+      "real_world": true,
+      "description": "800-53Ar5 p46 flowchart: the five texts issue #6 recorded as lost must all survive extraction. Matching normalizes the document's own encoding -- NFKC for fi/ffi ligatures and U+019F 'Ɵ' for the 'ti' pair ('NoƟfy', 'AcƟon'), which PyMuPDF reproduces identically, so it is the PDF's ToUnicode, not extractor damage. The original loss report and an earlier re-test both missed the Ɵ quirk and counted surviving text as lost. Issue: https://github.com/grahama1970/pdf_oxide/issues/6",
+      "command": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_content_loss_issue6.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"present\": 5",
+          "\"missing\": []",
+          "\"passed\": true"
+        ]
+      }
+    },
+    {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
       "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions.",
