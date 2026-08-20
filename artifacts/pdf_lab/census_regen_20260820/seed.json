@@ -578,7 +578,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Treat the wrapped all-caps continuation as part of the same table row/cell content, not as a section heading.",
    "extraction_defect": "The wrapped continuation line EXCEPTION is classified as a section_heading, although it is part of the same table cell text in the final row.",
    "finding_id": "p20_table_continuation_false_heading",
@@ -601,7 +601,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/summary.json"
    ],
    "source_count": 8,
-   "visible_evidence": "The final visible table row contains the revision text wrapping across multiple lines in the REVISION column, ending with the word EXCEPTION; the PAGE column contains 106."
+   "visible_evidence": "The final visible table row contains the revision text wrapping across multiple lines in the REVISION column, ending with the word EXCEPTION; the PAGE column contains 106.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.569200+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -698,7 +705,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Preserve each ruled row as one table row with separate DATE, TYPE, REVISION, and PAGE cells; wrapped text within a cell should remain cell continuation text, not separate paragraph or heading blocks.",
    "extraction_defect": "Some adjacent rows are merged into one paragraph block, while other single table rows are split into separate revision-continuation and page-number blocks. One continuation line is also misclassified as a section heading.",
    "finding_id": "p20_table_row_merge_split",
@@ -717,7 +724,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "Several visible table rows are separated by horizontal grid lines, while some long revision cells wrap across multiple lines inside a single row and the PAGE value remains in the rightmost cell."
+   "visible_evidence": "Several visible table rows are separated by horizontal grid lines, while some long revision cells wrap across multiple lines inside a single row and the PAGE value remains in the rightmost cell.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.571927+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain. Rows serialize individually in the table block."
+   }
   },
   {
    "block_ids": [
@@ -732,7 +746,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Maintain each visible table row as a separate row record or separate linearized row block.",
    "extraction_defect": "Distinct table rows are merged into single paragraph blocks, losing row boundaries and separate page-column associations.",
    "finding_id": "p20_table_row_merges",
@@ -751,7 +765,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The overlay shows block 17 spanning two distinct visible table rows for AT-3 Discussion and AT-3 Related Controls, and block 34 spanning two distinct visible table rows for CM-1 Discussion and CM-2b.2."
+   "visible_evidence": "The overlay shows block 17 spanning two distinct visible table rows for AT-3 Discussion and AT-3 Related Controls, and block 34 spanning two distinct visible table rows for CM-1 Discussion and CM-2b.2.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.574611+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -796,7 +817,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Detect this region as a table and preserve row/cell structure, with DATE/TYPE/REVISION/PAGE as table headers and each revision-history entry as a table row rather than paragraph or section-heading content.",
    "extraction_defect": "The table is not recognized as a table. The header row is labeled section_heading, body cells are emitted as paragraph_block fragments, and some rows are merged together into single paragraph blocks while some wrapped cell continuations are split into separate blocks. Block 16 is also incorrectly promoted to section_heading even though it is merely wrapped text inside the REVISION cell.",
    "finding_id": "p21_table_false_negative",
@@ -819,7 +840,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/summary.json"
    ],
    "source_count": 8,
-   "visible_evidence": "The clean image shows a single ruled table with column headers DATE, TYPE, REVISION, and PAGE. All visible body content from the first 12-10-2020 row through the MP-3 References row appears inside table cells with vertical and horizontal grid lines."
+   "visible_evidence": "The clean image shows a single ruled table with column headers DATE, TYPE, REVISION, and PAGE. All visible body content from the first 12-10-2020 row through the MP-3 References row appears inside table cells with vertical and horizontal grid lines.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.577228+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -833,7 +861,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Keep the block as a table, but preserve all text lines within each table cell when serializing rows.",
    "extraction_defect": "The current table text omits some continuation-line content from multi-line REVISION cells, producing truncated rows such as entries ending at “Mission/business” or “MA-1 and” before the page value.",
    "finding_id": "p21_table_multiline_cell_text_loss",
@@ -852,7 +880,14 @@
     "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The visible table contains multi-line REVISION cells where continuation lines remain inside the same row, such as CP-1a.1, IA-1a.1, IR-1a.1, MA-4(2), and MP-1a.1 rows. These continuation lines are visibly present before the PAGE column."
+   "visible_evidence": "The visible table contains multi-line REVISION cells where continuation lines remain inside the same row, such as CP-1a.1, IA-1a.1, IR-1a.1, MA-4(2), and MP-1a.1 rows. These continuation lines are visibly present before the PAGE column.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.579243+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Live word-level diff at 7af7632a (post char-dedup fix): every >=4-letter word PyMuPDF extracts on the page is present in pdf_oxide extract_text + lattice serialization (0 missing). The char-dedup glyph-loss root cause is fixed and guarded by check_table_cell_truncation_p19.py."
+   }
   },
   {
    "block_ids": [
@@ -952,7 +987,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Preserve each visible grid row as one table row with separate cells; continuation lines inside a REVISION cell should remain within that cell, and separate ruled rows should not be merged.",
    "extraction_defect": "Wrapped cells are split into multiple independent paragraph blocks and page-number blocks, while some adjacent rows are merged into one paragraph block despite visible horizontal row separators.",
    "finding_id": "p21_table_row_boundary_errors",
@@ -971,7 +1006,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "Several visible table rows wrap within the REVISION cell while the PAGE value remains in a separate rightmost cell; other adjacent table rows are separated by horizontal gridlines."
+   "visible_evidence": "Several visible table rows wrap within the REVISION cell while the PAGE value remains in a separate rightmost cell; other adjacent table rows are separated by horizontal gridlines.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.581196+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -985,7 +1027,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Keep as table, but preserve all visible wrapped cell text within each logical table row and column.",
    "extraction_defect": "The table block is structurally classified correctly, but its serialized text omits some wrapped continuation fragments from REVISION cells, e.g. visible trailing text such as the second quoted term in CP-10(3) and continuation fragments in other multi-line cells are not preserved in the current table text.",
    "finding_id": "p21_table_wrapped_cell_text_loss",
@@ -1004,7 +1046,14 @@
     "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The page image shows a continuous four-column table. Several REVISION cells wrap to multiple visual lines, including rows such as CP-10(3), MA-4(2), and multiple policy baseline rows where continuation text remains inside the same REVISION cell before the PAGE column."
+   "visible_evidence": "The page image shows a continuous four-column table. Several REVISION cells wrap to multiple visual lines, including rows such as CP-10(3), MA-4(2), and multiple policy baseline rows where continuation text remains inside the same REVISION cell before the PAGE column.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.583825+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Live word-level diff at 7af7632a (post char-dedup fix): every >=4-letter word PyMuPDF extracts on the page is present in pdf_oxide extract_text + lattice serialization (0 missing). The char-dedup glyph-loss root cause is fixed and guarded by check_table_cell_truncation_p19.py."
+   }
   },
   {
    "block_ids": [
@@ -1047,7 +1096,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Detect and emit this region as a table with column headers and row/cell structure, preserving wrapped text within the REVISION cell and PAGE values in their own column.",
    "extraction_defect": "The extractor misses the visible table structure and flattens the table into prose-like blocks. Several paragraph blocks also merge multiple distinct table rows, while wrapped revision-cell continuation lines and page-number cells are sometimes split into separate paragraph blocks.",
    "finding_id": "p22_missed_revision_table",
@@ -1066,7 +1115,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The clean page shows a ruled, blue-shaded table with column headers DATE, TYPE, REVISION, and PAGE, followed by many bordered table rows. The overlay boxes cover the table content but classify the header as a section heading and the row content as paragraph blocks."
+   "visible_evidence": "The clean page shows a ruled, blue-shaded table with column headers DATE, TYPE, REVISION, and PAGE, followed by many bordered table rows. The overlay boxes cover the table content but classify the header as a section heading and the row content as paragraph blocks.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.586067+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -1109,7 +1165,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Represent this region as a table with a table header row and table body rows/cells, preserving DATE, TYPE, REVISION, and PAGE columns rather than paragraph flow.",
    "extraction_defect": "The table is flattened into a section_heading plus paragraph_block records. Multiple visible table rows are merged into single paragraph blocks, while wrapped revision cells and page-number cells are sometimes split into separate paragraph blocks. Column structure is lost.",
    "finding_id": "p22_table_false_negative_revision_history",
@@ -1128,7 +1184,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The clean image shows a single blue shaded grid table with visible vertical and horizontal ruling, four columns labeled DATE, TYPE, REVISION, PAGE, and many body rows continuing down the page."
+   "visible_evidence": "The clean image shows a single blue shaded grid table with visible vertical and horizontal ruling, four columns labeled DATE, TYPE, REVISION, PAGE, and many body rows continuing down the page.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.588365+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -1171,7 +1234,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Detect and materialize the ruled table as a table, with a table header row and row/cell structure rather than section_heading/paragraph blocks.",
    "extraction_defect": "The table header is classified as section_heading, and table rows/cells are emitted as paragraph_block objects. Several visible rows are merged into single paragraph blocks while wrapped revision cells and page-number cells are split into separate paragraph blocks, losing the table grid and row/cell relationships.",
    "finding_id": "p22_table_not_materialized",
@@ -1190,7 +1253,14 @@
     "artifacts/pdf_lab/project_agent_hardening/fresh_next30_agentic_second_pass_20260601Tnow_final_full_rerun_v2/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The page body is a bordered, shaded table spanning the central page area. It has a blue header row labeled DATE, TYPE, REVISION, PAGE and many ruled data rows beneath it, with repeated date/type cells, revision text cells, and page-number cells."
+   "visible_evidence": "The page body is a bordered, shaded table spanning the central page area. It has a blue header row labeled DATE, TYPE, REVISION, PAGE and many ruled data rows beneath it, with repeated date/type cells, revision text cells, and page-number cells.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.590348+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Fresh census evidence at 385f46e0: page materializes as one type=table block plus 4 header_footer_noise chrome blocks; no section_heading/paragraph_block table fragments remain."
+   }
   },
   {
    "block_ids": [
@@ -1204,7 +1274,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Keep as table, but preserve all wrapped intra-cell continuation lines as part of the same row and column text.",
    "extraction_defect": "The current table extraction preserves the table structure but omits wrapped continuation text from multiple REVISION cells. Examples visible on the page include continuation text after 'Organization-level; Mission/business' and reference target lines after 'to', while the JSON rows end prematurely before the PAGE column.",
    "finding_id": "p22_table_wrapped_cell_loss",
@@ -1223,7 +1293,14 @@
     "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_watermark_filter_revision_rerun/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The visible table contains several REVISION cells spanning multiple lines, including rows where the continuation line contains essential text such as the remainder of quoted replacement strings or reference targets."
+   "visible_evidence": "The visible table contains several REVISION cells spanning multiple lines, including rows where the continuation line contains essential text such as the remainder of quoted replacement strings or reference targets.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.593212+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Live word-level diff at 7af7632a (post char-dedup fix): every >=4-letter word PyMuPDF extracts on the page is present in pdf_oxide extract_text + lattice serialization (0 missing). The char-dedup glyph-loss root cause is fixed and guarded by check_table_cell_truncation_p19.py."
+   }
   },
   {
    "block_ids": [
@@ -1237,7 +1314,7 @@
      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/release_extraction_blocks.json"
     }
    ],
-   "current_status": "unverified",
+   "current_status": "resolved_by_current_extraction",
    "expected_type_or_action": "Keep as table, but table cell text assembly should include all visible wrapped lines within each cell before serializing rows.",
    "extraction_defect": "The current table block preserves the table structure but omits or truncates visible continuation lines from wrapped REVISION cells, especially continuation text after quoted replacement phrases and bracketed reference targets.",
    "finding_id": "p22_table_wrapped_cell_truncation",
@@ -1256,7 +1333,14 @@
     "artifacts/pdf_lab/project_agent_hardening/ruled_table_after_final_patch_target_rerun/summary.json"
    ],
    "source_count": 4,
-   "visible_evidence": "The table contains multiple REVISION cells whose text wraps onto two or more visible lines within the same row, including rows for PE-1a.1, PL-1a.1, PL-2 References, PL-7 References, PM-24 References, PM-25 References, PM-32 References, PS-1a.1, and PT-1a.1."
+   "visible_evidence": "The table contains multiple REVISION cells whose text wraps onto two or more visible lines within the same row, including rows for PE-1a.1, PL-1a.1, PL-2 References, PL-7 References, PM-24 References, PM-25 References, PM-32 References, PS-1a.1, and PT-1a.1.",
+   "adjudication": {
+    "adjudicator": "claude-agentic-second-pass",
+    "decided_at": "2026-08-20T16:20:38.595321+00:00",
+    "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
+    "commit": "7af7632a489906169af7a19a4d7f25dda23c4d55",
+    "evidence": "Live word-level diff at 7af7632a (post char-dedup fix): every >=4-letter word PyMuPDF extracts on the page is present in pdf_oxide extract_text + lattice serialization (0 missing). The char-dedup glyph-loss root cause is fixed and guarded by check_table_cell_truncation_p19.py."
+   }
   },
   {
    "block_ids": [

@@ -2895,6 +2895,13 @@ impl PdfDocument {
         #[cfg(feature = "perf-trace")]
         let _t2 = std::time::Instant::now();
 
+        // TJ kerning can draw a glyph run out of left-to-right order inside one
+        // line (NIST 800-53r5 p187 draws the 'o' of "orders" after "rders,").
+        // Reorder by x WITHIN each maximal consecutive same-baseline run only:
+        // a run is one visual line of one column, so this cannot interleave
+        // columns, while global spatial sorting would.
+        Self::reorder_intra_line_runs(&mut spans);
+
         let mut text = Self::assemble_text_pymupdf_style(&spans);
 
         #[cfg(feature = "perf-trace")]
@@ -4532,6 +4539,30 @@ impl PdfDocument {
     /// 2. Detect column boundaries from consistent large gaps across lines
     /// 3. If columns found: split lines at boundary, output left then right
     /// 4. If single column: output lines top-to-bottom
+    /// Sort spans by x within each maximal run of consecutive spans sharing a
+    /// baseline (y within 2pt). Content-stream order is rendering order and TJ
+    /// kerning can emit glyphs out of left-to-right sequence; a consecutive
+    /// same-baseline run is one visual line of one column, so an intra-run
+    /// x-sort restores reading order without interleaving columns. Sequence is
+    /// the tie-breaker so equal-x spans keep stream order.
+    fn reorder_intra_line_runs(spans: &mut [TextSpan]) {
+        let mut start = 0;
+        while start < spans.len() {
+            let mut end = start + 1;
+            while end < spans.len() && (spans[end].bbox.y - spans[end - 1].bbox.y).abs() < 2.0 {
+                end += 1;
+            }
+            spans[start..end].sort_by(|a, b| {
+                a.bbox
+                    .x
+                    .partial_cmp(&b.bbox.x)
+                    .unwrap_or(std::cmp::Ordering::Equal)
+                    .then(a.sequence.cmp(&b.sequence))
+            });
+            start = end;
+        }
+    }
+
     fn assemble_text_pymupdf_style(spans: &[TextSpan]) -> String {
         if spans.is_empty() {
             return String::new();
@@ -5818,6 +5849,8 @@ impl PdfDocument {
 
             if let Some(spans) = mcid_map.get(&mcid) {
                 consumed_mcids.insert(mcid);
+                let mut spans: Vec<&crate::layout::TextSpan> = spans.iter().collect();
+                sort_mcid_spans_reading_order(&mut spans);
                 for span in spans {
                     if let Some(prev) = prev_span {
                         let y_diff = (prev.bbox.y - span.bbox.y).abs();
@@ -5868,7 +5901,12 @@ impl PdfDocument {
                 unconsumed.len()
             );
             for (_mcid, spans) in &unconsumed {
-                for span in *spans {
+                // Same reading-order requirement as structure-referenced runs:
+                // stored order is rendering order and TJ kerning can emit
+                // glyphs out of sequence (see sort_mcid_spans_reading_order).
+                let mut spans: Vec<&crate::layout::TextSpan> = spans.iter().collect();
+                sort_mcid_spans_reading_order(&mut spans);
+                for span in spans {
                     if let Some(prev) = prev_span {
                         let y_diff = (prev.bbox.y - span.bbox.y).abs();
                         if y_diff > 2.0 {
@@ -6012,6 +6050,8 @@ impl PdfDocument {
 
             if let Some(spans) = mcid_map.get(&mcid) {
                 consumed_mcids.insert(mcid);
+                let mut spans: Vec<&crate::layout::TextSpan> = spans.iter().collect();
+                sort_mcid_spans_reading_order(&mut spans);
                 for span in spans {
                     if let Some(prev) = prev_span {
                         let y_diff = (prev.bbox.y - span.bbox.y).abs();
@@ -6053,7 +6093,12 @@ impl PdfDocument {
                 unconsumed.len()
             );
             for (_mcid, spans) in &unconsumed {
-                for span in *spans {
+                // Same reading-order requirement as structure-referenced runs:
+                // stored order is rendering order and TJ kerning can emit
+                // glyphs out of sequence (see sort_mcid_spans_reading_order).
+                let mut spans: Vec<&crate::layout::TextSpan> = spans.iter().collect();
+                sort_mcid_spans_reading_order(&mut spans);
+                for span in spans {
                     if let Some(prev) = prev_span {
                         let y_diff = (prev.bbox.y - span.bbox.y).abs();
                         if y_diff > 2.0 {
@@ -7804,8 +7849,7 @@ impl PdfDocument {
                 let fingerprint: Option<Vec<(String, ObjectRef)>> = font_dict
                     .iter()
                     .map(|(name, font)| {
-                        font.as_reference()
-                            .map(|font_ref| (name.clone(), font_ref))
+                        font.as_reference().map(|font_ref| (name.clone(), font_ref))
                     })
                     .collect::<Option<Vec<_>>>()
                     .map(|mut entries| {
@@ -13356,4 +13400,58 @@ mod tests {
         // Must return true — compressed objects are valid by virtue of being in the xref
         assert!(validate_object_at_offset(&mut cursor, &xref, obj_ref));
     }
+}
+
+/// Sort spans of one marked-content run into reading order with a TOTAL
+/// order: cluster spans into lines first (y within 2pt of the line's running
+/// mean), order lines top-to-bottom (PDF y grows upward), then x ascending
+/// within a line with span sequence as tie-breaker.
+///
+/// A pairwise "same line" comparator is NOT a total order across a multi-line
+/// run (a~b and b~c do not imply a~c), and sort_by with a non-transitive
+/// comparator leaves the result unspecified — observed on NIST 800-53r5 p187,
+/// where the out-of-sequence 'o' of "orders" stayed misplaced after a pairwise
+/// sort. Content-stream order is rendering order; TJ kerning can draw a glyph
+/// run out of sequence.
+fn sort_mcid_spans_reading_order<'a>(spans: &mut Vec<&'a crate::layout::TextSpan>) {
+    if spans.len() < 2 {
+        return;
+    }
+    // Cluster into lines by y proximity.
+    let mut order: Vec<usize> = (0..spans.len()).collect();
+    order.sort_by(|&a, &b| {
+        spans[b]
+            .bbox
+            .y
+            .partial_cmp(&spans[a].bbox.y)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    let mut line_of = vec![0usize; spans.len()];
+    let mut current_line = 0usize;
+    let mut line_y = spans[order[0]].bbox.y;
+    for &i in &order {
+        let y = spans[i].bbox.y;
+        if (line_y - y).abs() > 2.0 {
+            current_line += 1;
+            line_y = y;
+        }
+        line_of[i] = current_line;
+    }
+    let keyed: std::collections::HashMap<usize, usize> = spans
+        .iter()
+        .enumerate()
+        .map(|(i, s)| (s.sequence as usize, line_of[i]))
+        .collect();
+    spans.sort_by(|a, b| {
+        let la = keyed[&(a.sequence as usize)];
+        let lb = keyed[&(b.sequence as usize)];
+        la.cmp(&lb)
+            .then(
+                a.bbox
+                    .x
+                    .partial_cmp(&b.bbox.x)
+                    .unwrap_or(std::cmp::Ordering::Equal),
+            )
+            .then(a.sequence.cmp(&b.sequence))
+    });
 }
