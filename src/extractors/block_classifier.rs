@@ -2548,7 +2548,14 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
             // Indentation classification.
             let dx = next.bbox.x - anchor_x;
             let is_continuation = next.block_type == Body && dx > 0.5 && dx <= anchor_fs * 4.0;
-            let is_sibling_list = next.block_type == List && dx.abs() <= 2.0;
+            // Sibling absorption applies to symbol-bullet runs only (wrapped
+            // bullet continuations remain one list block, issue #28). Explicit
+            // enumerated siblings — `a.`, `b.`, `1.`, `(a)` — are item-level
+            // list elements and must remain separate blocks (issues #2, #3:
+            // NIST 800-53r5 p45/p46 merged `e.`–`h.` and the numbered children
+            // of `h.` into single blocks).
+            let is_sibling_list =
+                next.block_type == List && dx.abs() <= 2.0 && starts_with_symbol_bullet(&next.text);
             if !is_continuation && !is_sibling_list {
                 break;
             }
@@ -2563,6 +2570,20 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
         }
         i += 1;
     }
+}
+
+/// Whether the text opens with a symbol bullet (as opposed to an explicit
+/// enumerated marker such as `a.`, `1.`, or `(a)`).
+fn starts_with_symbol_bullet(text: &str) -> bool {
+    let trimmed = text.trim_start();
+    trimmed.starts_with('•')
+        || trimmed.starts_with('·')
+        || trimmed.starts_with('◦')
+        || trimmed.starts_with('▪')
+        || trimmed.starts_with('▸')
+        || trimmed.starts_with('-')
+        || trimmed.starts_with('–')
+        || trimmed.starts_with('—')
 }
 
 fn is_page_number(text: &str, y_ratio: f32) -> bool {

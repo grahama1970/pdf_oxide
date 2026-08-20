@@ -49,6 +49,23 @@
       }
     },
     {
+      "name": "issue-3-nested-list-item-segmentation",
+      "type": "positive",
+      "real_world": true,
+      "description": "NIST 800-53r5 p46 (0-based 45): AC-2 items e.-h. and the numbered children of h. must materialize as separate item-level list blocks, not merged runs. Root cause was merge_list_runs_and_continuations absorbing ANY same-x List sibling; the guard now restricts sibling absorption to symbol-bullet runs (which must keep merging, per closed issue #28) while explicit enumerated markers a./1./(a) stay separate. Verify is the in-tree corpus test, which was observed failing before the guard and passing after. Issue: https://github.com/grahama1970/pdf_oxide/issues/3",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python -m pytest -q tests/test_nist_page46_nested_list_segmentation.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "1 passed"
+        ]
+      }
+    },
+    {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
       "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions.",
