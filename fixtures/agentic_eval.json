@@ -103,6 +103,24 @@
       }
     },
     {
+      "name": "issue-20-bbox-space-stamped-and-convention-proven",
+      "type": "positive",
+      "real_world": true,
+      "description": "Issue #20: every bbox-bearing artifact declares its coordinate space. A live annotation call (1512.03385v1) and a live snapshot page (NIST 800-53r5 p45) must both carry a bbox_space stamp valid against contracts/bbox_space_v1.schema.json, and the declared convention pdf_points_bottom_left_xywh is proven against a PyMuPDF search-rect oracle: the bottom-left reading must contain the anchor line and the top-left reading must not (the honesty half keeps the checker falsifiable). Measured before stamping existed: block top edge 593.4 vs oracle 595.8 bottom-left; top-left off by ~500pt. Issue: https://github.com/grahama1970/pdf_oxide/issues/20",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python scripts/pdf_lab/check_bbox_space_issue20.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"problems\": []",
+          "\"passed\": true"
+        ]
+      }
+    },
+    {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
       "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions. Also runs detect_run_in_lead guards (bold-colon lead accepted; all-bold lines, colon-less leads, and late-bold emphasis rejected).",

@@ -36,7 +36,7 @@ _REQUIRED_TOP_LEVEL_FIELDS = {
     "accuracy_estimate",
     "items",
 }
-_OPTIONAL_TOP_LEVEL_FIELDS = {"engine_name", "engine_version"}
+_OPTIONAL_TOP_LEVEL_FIELDS = {"engine_name", "engine_version", "bbox_space"}
 _TEXT_EXCERPT_LIMIT = 20_000
 
 
@@ -400,8 +400,27 @@ def build_annotation_call(
         items.append(item)
 
     block_count = len(result.blocks)
+    from .bbox_space import BBOX_SPACE, BBOX_SPACE_SCHEMA, document_bbox_space_stamp
+
+    try:
+        from . import open as _open  # noqa: PLC0415
+
+        _doc = _open(str(result.source_pdf))
+        bbox_space: Dict[str, Any] = document_bbox_space_stamp(_doc, result.page_count)
+    except Exception as exc:  # noqa: BLE001
+        # The space DECLARATION must never be dropped (issue #20); only the
+        # per-page crop/rotation enrichment degrades when the source PDF
+        # cannot be reopened (e.g. synthetic fixtures). Record why, loudly.
+        bbox_space = {
+            "schema": BBOX_SPACE_SCHEMA,
+            "space": BBOX_SPACE,
+            "pages": {},
+            "pages_unavailable_reason": f"{type(exc).__name__}: {exc}",
+        }
+
     payload = {
         "schema": ANNOTATION_CALL_SCHEMA,
+        "bbox_space": bbox_space,
         "pdf_sha256": _sha256_file(Path(result.source_pdf)),
         "engine_name": "pdf-oxide",
         "engine_version": VERSION,

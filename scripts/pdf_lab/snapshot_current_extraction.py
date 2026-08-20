@@ -1959,10 +1959,18 @@ def _extract_page(pdf_path: Path, page_index: int, ledger_path: Path | None, app
     blocks = _repair_nist_page455_body_boilerplate_counterexample(blocks)
     blocks = _add_toc_lineage(blocks, pdf_path, page_index + 1)
 
+    from pdf_oxide.bbox_space import bbox_space_stamp  # noqa: PLC0415
+
     return {
         "page": page_index + 1,
         "pdf_page_index": page_index,
         "page_dimensions_pts": [page_w, page_h],
+        "bbox_space": bbox_space_stamp(
+            page_w,
+            page_h,
+            crop_box=doc.page_crop_box(page_index),
+            rotation=doc.page_rotation(page_index) or 0,
+        ),
         "ledger_path": ledger_used,
         "apply_mode": apply_mode,
         "blocks": blocks,
