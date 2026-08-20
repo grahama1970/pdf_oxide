@@ -2699,15 +2699,27 @@ impl TextExtractor {
         let mut deduplicated = Vec::with_capacity(self.chars.len());
         let mut prev_y_rounded: Option<i32> = None;
         let mut prev_x: Option<f32> = None;
+        let mut prev_char: Option<char> = None;
 
         for ch in self.chars.iter() {
             let y_rounded = ch.bbox.y.round() as i32;
             let x = ch.bbox.x;
 
-            // Check if this char overlaps with the previous one
-            let should_skip = if let (Some(prev_y), Some(prev_x_val)) = (prev_y_rounded, prev_x) {
-                // Same line and within 2pt horizontally
-                y_rounded == prev_y && (x - prev_x_val).abs() < 2.0
+            // Check if this char overlaps with the previous one.
+            //
+            // Only an IDENTICAL character counts as a duplicate. Double-drawn
+            // shadow text re-emits the same glyph at (nearly) the same origin;
+            // a DIFFERENT character 2pt away is real content. Spaces are only
+            // ~2pt wide, so the glyph following a narrow space lands right at
+            // this threshold — the untyped version of this check deleted one
+            // real glyph after a space per affected line (NIST 800-53r5 p19:
+            // "privacy" -> "rivacy", "mapped" -> "apped", "federal" ->
+            // "ederal"), losing 1 of 36 'p' glyphs on the page.
+            let should_skip = if let (Some(prev_y), Some(prev_x_val), Some(prev_ch)) =
+                (prev_y_rounded, prev_x, prev_char)
+            {
+                // Same line, same character, within 2pt horizontally
+                y_rounded == prev_y && ch.char == prev_ch && (x - prev_x_val).abs() < 2.0
             } else {
                 false
             };
@@ -2716,6 +2728,7 @@ impl TextExtractor {
                 deduplicated.push(ch.clone());
                 prev_y_rounded = Some(y_rounded);
                 prev_x = Some(x);
+                prev_char = Some(ch.char);
             } else {
                 log::trace!(
                     "Deduplicating overlapping char '{}' at X={:.1}, Y={:.1} (too close to previous)",

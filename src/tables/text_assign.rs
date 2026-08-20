@@ -74,11 +74,36 @@ fn assign_with_char_splitting(
     for ch in chars {
         let x_mid = ch.x_mid();
         // Find column containing this character's center
+        let mut assigned = false;
         for (c, &(cx0, cx1)) in table.cols.iter().enumerate() {
             if x_mid >= cx0 && x_mid <= cx1 {
                 col_chars[c].push(ch);
+                assigned = true;
                 break;
             }
+        }
+        // Column intervals are disjoint, so a glyph whose center falls inside
+        // the gap between two columns (the ruling-line thickness) matches no
+        // interval. Dropping it loses real text — observed live on NIST
+        // 800-53r5 p19, where the 'p' of a wrapped "privacy" vanished,
+        // serializing as "rivacy". Assign such glyphs to the nearest column
+        // instead of discarding them.
+        if !assigned && !table.cols.is_empty() {
+            let (nearest, _) = table
+                .cols
+                .iter()
+                .enumerate()
+                .map(|(c, &(cx0, cx1))| {
+                    let dist = if x_mid < cx0 {
+                        cx0 - x_mid
+                    } else {
+                        x_mid - cx1
+                    };
+                    (c, dist)
+                })
+                .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal))
+                .expect("non-empty cols");
+            col_chars[nearest].push(ch);
         }
     }
 

@@ -1,0 +1,17 @@
+{
+  "commit": "385f46e012366a5d92158c752b37abdeb886ec11",
+  "created_at": "2026-08-20T16:06:52.818048+00:00",
+  "evidence_root": "artifacts/pdf_lab/census_regen_20260820/current_evidence",
+  "previous_status_counts": {
+    "resolved_by_current_extraction": 47,
+    "unverified": 299
+  },
+  "reconciliation": "artifacts/pdf_lab/census_regen_20260820/seed.json",
+  "schema": "pdf_oxide.nist_historical_deterministic_reconciliation_report.v1",
+  "status_counts": {
+    "resolved_by_current_extraction": 47,
+    "unverified": 299
+  },
+  "updated_count": 0,
+  "updates": []
+}

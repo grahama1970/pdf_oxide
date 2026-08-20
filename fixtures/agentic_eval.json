@@ -121,6 +121,23 @@
       }
     },
     {
+      "name": "p19-char-dedup-glyph-loss",
+      "type": "positive",
+      "real_world": true,
+      "description": "Char-dedup glyph loss: deduplicate_overlapping_chars dropped any glyph within 2pt of the previous glyph's x-origin regardless of identity; spaces are ~2pt wide so the first glyph after a narrow space was deleted ('privacy'->'rivacy', 'mapped'->'apped', 'establishes'->'stablishes', 'federal'->'ederal' on NIST 800-53r5 printed p19). Dedup now requires the SAME character. Guard asserts glyph-count parity between extract_chars and extract_spans and intact words in the lattice serialization. Observed failing pre-fix (35 vs 36 'p' glyphs, four truncated forms) and passing post-fix.",
+      "command": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_table_cell_truncation_p19.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"problems\": []",
+          "\"passed\": true"
+        ]
+      }
+    },
+    {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
       "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions. Also runs detect_run_in_lead guards (bold-colon lead accepted; all-bold lines, colon-less leads, and late-bold emphasis rejected).",
