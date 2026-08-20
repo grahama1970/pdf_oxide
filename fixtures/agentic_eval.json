@@ -1,0 +1,88 @@
+{
+  "version": 2,
+  "skill": "pdf_oxide",
+  "trials": 2,
+  "proof_scope": "Live extraction regression guards for resolved pdf_oxide issues. Each corpus case drives the real extractor over the real source PDF named in its issue and asserts that the specific defect stays fixed. Commands run with this fixtures/ directory as the working directory.",
+  "claims": {
+    "proves": "the named defect in each referenced issue does not reproduce on the current build, and the library suite stays green; each case was observed failing on the pre-fix code before being accepted",
+    "does_not_prove": "full-document extraction accuracy, semantic correctness beyond the asserted predicate, or that unrelated PUA-emitting fonts such as Wingdings are handled -- this crate has Symbol and ZapfDingbats encoding tables but no Wingdings table"
+  },
+  "cases": [
+    {
+      "name": "issue-21-symbol-pua-bullet-decodes",
+      "type": "positive",
+      "description": "NASA SP-2016-6105 p19 ships SymbolMT as Type0/Identity-H whose ToUnicode CMap maps the bullet straight to U+F0B7. That Private Use Area codepoint must not survive into extracted text, and the anchor paragraph must still be extracted -- a zero PUA count with no anchor block would only prove the paragraph was dropped. Observed pre-fix: exit 1, U+F0B7 present, block_type Body. Observed post-fix: exit 0, bullet decoded, block_type List. Issue: https://github.com/grahama1970/pdf_oxide/issues/21",
+      "real_world": true,
+      "command": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_pua_issue21.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"pua_total\": 0",
+          "\"anchor_found\": true",
+          "\"anchor_clean\": true",
+          "\"passed\": true"
+        ],
+        "stdout_excludes": [
+          "U+F0B7"
+        ]
+      }
+    },
+    {
+      "name": "issue-21-checker-still-detects-pua-negative-control",
+      "type": "negative",
+      "real_world": true,
+      "description": "Adversarial control against a blind checker. Page 38 of the same PDF carries 16 U+F0D8 codepoints from ADKAIK+Wingdings-Regular, which this crate deliberately does NOT map (no Wingdings encoding table). The checker must therefore exit 1 there and name the codepoint. If this case ever starts exiting 0, the detector has gone blind and the positive case above proves nothing. This is not hypothetical: an earlier version of the check used a regex character class whose escape degraded to a literal hyphen, so it counted U+002D and would have reported a clean page either way.",
+      "command": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_pua_issue21.py",
+        "38"
+      ],
+      "expected": {
+        "exit_code": 1,
+        "stdout_contains": [
+          "U+F0D8",
+          "\"passed\": false"
+        ]
+      }
+    },
+    {
+      "name": "issue-21-symbol-pua-unit-guards",
+      "type": "positive",
+      "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions.",
+      "command": [
+        "cargo",
+        "test",
+        "--lib",
+        "normalize_symbol_pua"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "4 passed",
+          "0 failed"
+        ]
+      }
+    },
+    {
+      "name": "full-lib-suite-no-regression",
+      "type": "positive",
+      "description": "Font decoding sits on the hot path for every extraction, so any change there must leave the whole library suite green. Baseline when this case was written: 4623 passed, 0 failed.",
+      "command": [
+        "cargo",
+        "test",
+        "--lib",
+        "--features",
+        "python,rendering,office"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "0 failed"
+        ]
+      }
+    }
+  ]
+}

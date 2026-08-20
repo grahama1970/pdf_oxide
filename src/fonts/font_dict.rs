@@ -1898,6 +1898,32 @@ impl FontInfo {
                         );
                         // Fall through to Priority 2
                     } else {
+                        // Symbol-font PUA normalization.
+                        //
+                        // Word and similar producers emit SymbolMT / ZapfDingbats as
+                        // Type0/Identity-H and write a ToUnicode CMap that maps straight into
+                        // the U+F000-U+F0FF Private Use Area rather than to real Unicode. The
+                        // CMap is not broken, so the checks above pass and we would return the
+                        // PUA codepoint verbatim; it then survives into extracted text and
+                        // breaks search, RAG and diffing downstream.
+                        //
+                        // Remap through the font's standard encoding table when the base font
+                        // names a symbol encoding we actually have. Note the low byte is NOT a
+                        // Latin-1 codepoint: Symbol 0xB7 is bullet (U+2022), not middle dot
+                        // (U+00B7), so the table lookup is required and subtraction is wrong.
+                        //
+                        // Deliberately narrow: PUA from any other font is left alone, because
+                        // custom icon fonts use that range legitimately.
+                        if let Some(normalized) = self.normalize_symbol_pua(unicode) {
+                            log::debug!(
+                                "ToUnicode CMap: font='{}' code=0x{:02X} → '{}' (PUA '{}' normalized via symbol encoding)",
+                                self.base_font,
+                                char_code,
+                                normalized,
+                                unicode
+                            );
+                            return Some(normalized);
+                        }
                         log::debug!(
                             "ToUnicode CMap: font='{}' code=0x{:02X} → '{}'",
                             self.base_font,
@@ -2639,6 +2665,40 @@ impl FontInfo {
     /// PDF Spec: ISO 32000-1:2008, Table 5.20 - Font descriptor flags
     /// Bit 3: Symbolic - Font contains glyphs outside Adobe standard Latin character set
     /// Bit 6: Nonsymbolic - Font uses Adobe standard Latin character set (mutually exclusive with bit 3)
+    /// Remap a Private Use Area codepoint emitted by a symbol font's ToUnicode CMap
+    /// back to real Unicode using that font's standard encoding table.
+    ///
+    /// Returns `None` unless `text` is exactly one character in U+F000-U+F0FF *and*
+    /// the base font names an encoding we have a table for. Everything else is left
+    /// untouched, so PUA from custom icon fonts still survives extraction.
+    ///
+    /// The low byte is an index into the font's encoding, not a Latin-1 codepoint:
+    /// Symbol 0xB7 is bullet (U+2022), not middle dot (U+00B7).
+    fn normalize_symbol_pua(&self, text: &str) -> Option<String> {
+        let mut chars = text.chars();
+        let ch = chars.next()?;
+        if chars.next().is_some() {
+            return None;
+        }
+
+        let code_point = ch as u32;
+        if !(0xF000..=0xF0FF).contains(&code_point) {
+            return None;
+        }
+        let code = (code_point - 0xF000) as u8;
+
+        let name_lower = self.base_font.to_lowercase();
+        let mapped = if name_lower.contains("zapf") || name_lower.contains("dingbat") {
+            zapf_dingbats_encoding_lookup(code)
+        } else if name_lower.contains("symbol") {
+            symbol_encoding_lookup(code)
+        } else {
+            None
+        }?;
+
+        Some(mapped.to_string())
+    }
+
     pub fn is_symbolic(&self) -> bool {
         // Priority 1: Check FontDescriptor /Flags bit 3
         if let Some(flags_value) = self.flags {
@@ -5619,6 +5679,54 @@ mod tests {
     fn test_symbol_encoding_unmapped() {
         assert_eq!(symbol_encoding_lookup(0x00), None);
         assert_eq!(symbol_encoding_lookup(0x01), None);
+    }
+
+    // =========================================================================
+    // normalize_symbol_pua — issue #21 regression guard
+    //
+    // NASA SP-2016-6105 p19 ships SymbolMT as Type0/Identity-H with a ToUnicode
+    // CMap that maps the bullet straight to U+F0B7. The CMap is well-formed, so
+    // it is returned verbatim and the Private Use Area codepoint survives into
+    // extracted text.
+    // =========================================================================
+
+    #[test]
+    fn test_normalize_symbol_pua_maps_symbol_bullet() {
+        let font = make_font(|f| f.base_font = "ADILJJ+SymbolMT".to_string());
+        // Symbol 0xB7 is bullet (U+2022), NOT middle dot (U+00B7). A plain
+        // subtraction of 0xF000 would produce the wrong character here.
+        assert_eq!(font.normalize_symbol_pua("\u{F0B7}"), Some("\u{2022}".to_string()));
+    }
+
+    #[test]
+    fn test_normalize_symbol_pua_ignores_non_symbol_fonts() {
+        // Custom icon fonts use the PUA legitimately; leave them alone.
+        let font = make_font(|f| f.base_font = "ArialMT".to_string());
+        assert_eq!(font.normalize_symbol_pua("\u{F0B7}"), None);
+
+        // Wingdings has no encoding table in this crate, so it must fall through
+        // rather than be mapped through the Symbol table and produce a wrong glyph.
+        let wingdings = make_font(|f| f.base_font = "ADKAIK+Wingdings-Regular".to_string());
+        assert_eq!(wingdings.normalize_symbol_pua("\u{F0D8}"), None);
+    }
+
+    #[test]
+    fn test_normalize_symbol_pua_ignores_non_pua_and_multichar() {
+        let font = make_font(|f| f.base_font = "SymbolMT".to_string());
+        // Already-real Unicode must pass through untouched.
+        assert_eq!(font.normalize_symbol_pua("\u{2022}"), None);
+        // Outside the U+F000-U+F0FF window the low byte is not an encoding index.
+        assert_eq!(font.normalize_symbol_pua("\u{E000}"), None);
+        // Multi-character mappings are ligature/expansion results, not glyph codes.
+        assert_eq!(font.normalize_symbol_pua("\u{F0B7}\u{F0B7}"), None);
+        assert_eq!(font.normalize_symbol_pua(""), None);
+    }
+
+    #[test]
+    fn test_normalize_symbol_pua_zapf_dingbats() {
+        let font = make_font(|f| f.base_font = "ZapfDingbats".to_string());
+        let expected = zapf_dingbats_encoding_lookup(0x6C).map(|c| c.to_string());
+        assert_eq!(font.normalize_symbol_pua("\u{F06C}"), expected);
     }
 
     // =========================================================================
