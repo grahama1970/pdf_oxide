@@ -84,6 +84,24 @@
       }
     },
     {
+      "name": "issue-2-page45-annotation-requirements",
+      "type": "positive",
+      "real_world": true,
+      "description": "NIST 800-53r5 AC-1 page (0-based 44): item-level list materialization each-exactly-once with no Related Controls absorption, labeled_enhancements + nist_control_enhancements_none, section_link + nist_quick_link, exactly one unsplit AC-1 heading, and no chrome-text leakage. Item 1's original one-merged-region criterion is superseded by issue #3's item-level contract (1fd6c066); a merged view belongs to downstream structural grouping, not core. Issue: https://github.com/grahama1970/pdf_oxide/issues/2",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python scripts/pdf_lab/check_page45_issue2.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"problems\": []",
+          "\"passed\": true"
+        ]
+      }
+    },
+    {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
       "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions.",
