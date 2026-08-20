@@ -11,7 +11,7 @@
     {
       "name": "issue-21-symbol-pua-bullet-decodes",
       "type": "positive",
-      "description": "NASA SP-2016-6105 p19 ships SymbolMT as Type0/Identity-H whose ToUnicode CMap maps the bullet straight to U+F0B7. That Private Use Area codepoint must not survive into extracted text, and the anchor paragraph must still be extracted -- a zero PUA count with no anchor block would only prove the paragraph was dropped. Observed pre-fix: exit 1, U+F0B7 present, block_type Body. Observed post-fix: exit 0, bullet decoded, block_type List. Issue: https://github.com/grahama1970/pdf_oxide/issues/21",
+      "description": "NASA SP-2016-6105 p19 ships SymbolMT as Type0/Identity-H whose ToUnicode CMap maps the bullet straight to U+F0B7. That Private Use Area codepoint must not survive into extracted text, and the anchor paragraph must still be extracted -- a zero PUA count with no anchor block would only prove the paragraph was dropped. Observed pre-fix: exit 1, U+F0B7 present, block_type Body. Observed post-fix: exit 0, bullet decoded, block_type List. Issue: https://github.com/grahama1970/pdf_oxide/issues/21 Extended: the same run also asserts requirement (2) — the bold run-in heading is marked as run_in_lead ('Technical Management Processes:') on the anchor block.",
       "real_world": true,
       "command": [
         "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
@@ -23,7 +23,8 @@
           "\"pua_total\": 0",
           "\"anchor_found\": true",
           "\"anchor_clean\": true",
-          "\"passed\": true"
+          "\"passed\": true",
+          "\"anchor_lead_marked\": true"
         ],
         "stdout_excludes": [
           "U+F0B7"
@@ -104,18 +105,17 @@
     {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
-      "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions.",
+      "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions. Also runs detect_run_in_lead guards (bold-colon lead accepted; all-bold lines, colon-less leads, and late-bold emphasis rejected).",
       "command": [
-        "cargo",
-        "test",
-        "--lib",
-        "normalize_symbol_pua"
+        "bash",
+        "-c",
+        "cd .. && cargo test --lib normalize_symbol_pua 2>&1 | grep 'test result:' && cargo test --lib detect_run_in_lead 2>&1 | grep 'test result:'"
       ],
       "expected": {
         "exit_code": 0,
         "stdout_contains": [
           "4 passed",
-          "0 failed"
+          "2 passed"
         ]
       }
     },

@@ -3631,6 +3631,7 @@ impl PyPdfDocument {
             dict.set_item("font_size", b.font_size)?;
             dict.set_item("font_name", &b.font_name)?;
             dict.set_item("is_bold", b.is_bold)?;
+            dict.set_item("run_in_lead", b.run_in_lead.as_deref())?;
             dict.set_item("confidence", b.confidence)?;
             dict.set_item("header_level", b.header_level)?;
             // Header validation details (when available)
@@ -3724,6 +3725,7 @@ impl PyPdfDocument {
             dict.set_item("font_size", b.font_size)?;
             dict.set_item("font_name", &b.font_name)?;
             dict.set_item("is_bold", b.is_bold)?;
+            dict.set_item("run_in_lead", b.run_in_lead.as_deref())?;
             dict.set_item("confidence", b.confidence)?;
             dict.set_item("header_level", b.header_level)?;
             block_list.append(dict)?;

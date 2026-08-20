@@ -58,6 +58,10 @@ def main() -> int:
                         "block_type": block.get("block_type") or block.get("type"),
                         "pua_count": len(pua_chars(text)),
                         "leading_40": text[:40],
+                        # Issue #21 requirement (2): the bold run-in heading is
+                        # separately classified as run_in_lead rather than via a
+                        # mid-line block split.
+                        "run_in_lead": block.get("run_in_lead"),
                     }
                 )
         if found:
@@ -68,6 +72,9 @@ def main() -> int:
     # to extract the paragraph at all.
     anchor_found = bool(anchors)
     anchor_clean = all(a["pua_count"] == 0 for a in anchors)
+    anchor_lead_marked = all(
+        a.get("run_in_lead") == "Technical Management Processes:" for a in anchors
+    )
 
     report = {
         "source_pdf": PDF,
@@ -77,7 +84,8 @@ def main() -> int:
         "anchor_blocks": anchors,
         "anchor_found": anchor_found,
         "anchor_clean": anchor_clean,
-        "passed": total == 0 and anchor_found and anchor_clean,
+        "anchor_lead_marked": anchor_lead_marked,
+        "passed": total == 0 and anchor_found and anchor_clean and anchor_lead_marked,
     }
     print(json.dumps(report, indent=2, ensure_ascii=False))
     return 0 if report["passed"] else 1

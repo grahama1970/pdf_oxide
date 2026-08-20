@@ -971,6 +971,7 @@ mod tests {
         use crate::extractors::block_classifier::NumberingType;
 
         let header = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Title,
             text: "1.2 Methods".to_string(),
@@ -983,6 +984,7 @@ mod tests {
             header_validation: None,
         };
         let body1 = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Body,
             text: "We used standard methods.".to_string(),
@@ -995,6 +997,7 @@ mod tests {
             header_validation: None,
         };
         let body2 = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Body,
             text: "Data was collected over 3 months.".to_string(),
@@ -1023,6 +1026,7 @@ mod tests {
     #[test]
     fn test_flat_sections_parent_assignment() {
         let h1 = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Title,
             text: "1 Introduction".to_string(),
@@ -1035,6 +1039,7 @@ mod tests {
             header_validation: None,
         };
         let h2 = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Title,
             text: "1.1 Background".to_string(),
@@ -1058,6 +1063,7 @@ mod tests {
     #[test]
     fn test_continuation_merge() {
         let h1 = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Title,
             text: "3 Results".to_string(),
@@ -1070,6 +1076,7 @@ mod tests {
             header_validation: None,
         };
         let body = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Body,
             text: "First result paragraph.".to_string(),
@@ -1082,6 +1089,7 @@ mod tests {
             header_validation: None,
         };
         let cont = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Title,
             text: "3 Results (continued)".to_string(),
@@ -1094,6 +1102,7 @@ mod tests {
             header_validation: None,
         };
         let body2 = ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Body,
             text: "Second result paragraph.".to_string(),

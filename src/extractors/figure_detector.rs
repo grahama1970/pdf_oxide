@@ -267,6 +267,7 @@ mod tests {
     fn test_find_caption() {
         let blocks = vec![
             ClassifiedBlock {
+                run_in_lead: None,
                 lines: Vec::new(),
                 block_type: BlockType::Body,
                 text: "Some body text".to_string(),
@@ -279,6 +280,7 @@ mod tests {
                 header_validation: None,
             },
             ClassifiedBlock {
+                run_in_lead: None,
                 lines: Vec::new(),
                 block_type: BlockType::Caption,
                 text: "Figure 3: Architecture diagram".to_string(),
@@ -301,6 +303,7 @@ mod tests {
     fn test_find_section() {
         let blocks = vec![
             ClassifiedBlock {
+                run_in_lead: None,
                 lines: Vec::new(),
                 block_type: BlockType::Title,
                 text: "1. Introduction".to_string(),
@@ -313,6 +316,7 @@ mod tests {
                 header_validation: None,
             },
             ClassifiedBlock {
+                run_in_lead: None,
                 lines: Vec::new(),
                 block_type: BlockType::Body,
                 text: "Body text".to_string(),
@@ -332,6 +336,7 @@ mod tests {
     #[test]
     fn test_no_caption_found() {
         let blocks = vec![ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type: BlockType::Body,
             text: "Just body".to_string(),
@@ -351,6 +356,7 @@ mod tests {
 
     fn classified_block(block_type: BlockType, text: &str, bbox: Rect) -> ClassifiedBlock {
         ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type,
             text: text.to_string(),

@@ -230,6 +230,12 @@ pub struct ClassifiedBlock {
     /// non-merged blocks this is a single entry. For Body blocks merged by
     /// `merge_consecutive_body`, one entry per original line in source order.
     pub lines: Vec<BlockLine>,
+    /// Bold run-in lead ending with ':' at the start of the block's first
+    /// line (after any bullet marker), e.g. "Technical Management
+    /// Processes:" in a NASA handbook list item. The lead stays inside
+    /// `text`; this field marks it so downstream consumers can treat it as
+    /// a heading/term without a mid-line block split. Issue #21.
+    pub run_in_lead: Option<String>,
 }
 
 pub struct BlockClassifier {
@@ -373,6 +379,17 @@ impl BlockClassifier {
             }
             let mut block = self.classify_line(line_spans);
             block.lines = vec![BlockLine::from_spans(line_spans)];
+            if matches!(block.block_type, BlockType::Body | BlockType::List) {
+                let mut sorted: Vec<&TextSpan> = line_spans.to_vec();
+                sorted.sort_by(|a, b| {
+                    a.bbox
+                        .x
+                        .partial_cmp(&b.bbox.x)
+                        .unwrap_or(std::cmp::Ordering::Equal)
+                        .then(a.sequence.cmp(&b.sequence))
+                });
+                block.run_in_lead = detect_run_in_lead(&sorted);
+            }
             underlined.push(self.has_text_underline(&block.bbox, block.font_size));
             blocks.push(block);
         }
@@ -839,7 +856,58 @@ impl BlockClassifier {
             header_level,
             header_validation,
             lines: Vec::new(),
+            run_in_lead: None,
         }
+    }
+}
+
+/// Detect a bold run-in lead: consecutive bold spans at the start of the line
+/// (after an optional bullet marker) whose joined text ends with ':'. The
+/// remainder of the line must be non-bold body text, otherwise the whole line
+/// is simply a bold heading and belongs to header classification instead.
+fn detect_run_in_lead(sorted_spans: &[&TextSpan]) -> Option<String> {
+    use crate::layout::text_block::FontWeight;
+
+    let mut iter = sorted_spans.iter().peekable();
+    // Skip leading bullet-marker spans (symbol bullets or a symbol-font PUA
+    // bullet that decodes later in the pipeline).
+    while let Some(span) = iter.peek() {
+        let t = span.text.trim();
+        let is_marker = !t.is_empty()
+            && t.chars()
+                .all(|c| "•·◦▪▸-–—\u{F0B7}".contains(c) || c.is_whitespace());
+        if is_marker && !t.is_empty() {
+            iter.next();
+        } else {
+            break;
+        }
+    }
+
+    let mut lead = String::new();
+    let mut saw_bold = false;
+    let mut trailing_non_bold = false;
+    for span in iter {
+        if span.font_weight == FontWeight::Bold {
+            if trailing_non_bold {
+                // Bold resumes after body text: not a run-in lead shape.
+                return None;
+            }
+            lead.push_str(&span.text);
+            saw_bold = true;
+        } else if span.text.trim().is_empty() {
+            if !trailing_non_bold {
+                lead.push_str(&span.text);
+            }
+        } else {
+            trailing_non_bold = true;
+        }
+    }
+
+    let lead = lead.trim();
+    if saw_bold && trailing_non_bold && lead.ends_with(':') && lead.len() > 1 {
+        Some(lead.to_string())
+    } else {
+        None
     }
 }
 
@@ -2982,6 +3050,36 @@ mod tests {
         }
     }
 
+    #[test]
+    fn test_detect_run_in_lead_bold_colon_lead() {
+        // "\u{F0B7} Technical Management Processes: The technical..." shape
+        // from NASA SP-2016-6105 p19 (issue #21 requirement 2).
+        let bullet = make_span("\u{F0B7} ", 72.0, 600.0, 12.0, false);
+        let lead = make_span("Technical Management Processes:", 80.0, 600.0, 12.0, true);
+        let body =
+            make_span(" The technical management processes are used", 200.0, 600.0, 12.0, false);
+        let spans = [&bullet, &lead, &body];
+        assert_eq!(detect_run_in_lead(&spans), Some("Technical Management Processes:".to_string()));
+    }
+
+    #[test]
+    fn test_detect_run_in_lead_rejects_non_lead_shapes() {
+        // Entirely bold line: that is a heading, not a run-in lead.
+        let all_bold = make_span("Chapter Title:", 72.0, 600.0, 12.0, true);
+        assert_eq!(detect_run_in_lead(&[&all_bold]), None);
+
+        // Bold lead without the colon.
+        let no_colon = make_span("Technical Management", 72.0, 600.0, 12.0, true);
+        let body = make_span(" processes are used", 180.0, 600.0, 12.0, false);
+        assert_eq!(detect_run_in_lead(&[&no_colon, &body]), None);
+
+        // Bold resuming after body text is emphasis, not a lead.
+        let lead = make_span("Note:", 72.0, 600.0, 12.0, true);
+        let mid = make_span(" some text ", 110.0, 600.0, 12.0, false);
+        let late_bold = make_span("important:", 170.0, 600.0, 12.0, true);
+        assert_eq!(detect_run_in_lead(&[&lead, &mid, &late_bold]), None);
+    }
+
     fn test_block(
         block_type: BlockType,
         text: &str,
@@ -2998,6 +3096,7 @@ mod tests {
             is_bold,
             confidence: 0.8,
             header_level: None,
+            run_in_lead: None,
             header_validation: None,
             lines: Vec::new(),
         }

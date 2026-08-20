@@ -355,8 +355,8 @@ fn merge_paragraphs(blocks: &[ClassifiedBlock]) -> Vec<MergedBlock> {
                     // unbolded and would fall through to body. Position decides.
                     BlockType::ChapterLabel if block.font_size > prev.font_size * 0.8 => {
                         block_type = BlockType::Title
-                    }
-                    _ => {}
+                    },
+                    _ => {},
                 }
             }
         }
@@ -407,6 +407,7 @@ mod tests {
         block_type: BlockType,
     ) -> ClassifiedBlock {
         ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type,
             text: text.to_string(),
@@ -494,14 +495,7 @@ mod tests {
     #[test]
     fn test_wide_single_column_body_joins_footnote_flow() {
         let blocks = vec![
-            make_block(
-                "Wide single-column paragraph.",
-                50.0,
-                100.0,
-                400.0,
-                40.0,
-                BlockType::Body,
-            ),
+            make_block("Wide single-column paragraph.", 50.0, 100.0, 400.0, 40.0, BlockType::Body),
             make_block(
                 "1 Continuation classified as a footnote.",
                 50.0,

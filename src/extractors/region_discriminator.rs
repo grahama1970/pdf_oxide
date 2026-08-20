@@ -325,7 +325,10 @@ fn collect_evidence(
             // clipped to the candidate region, instead of charging the empty
             // space between them as label ink.
             evidence.tiny_label_area += if block.lines.is_empty() {
-                block.bbox.intersection(region).map_or(0.0, |bbox| bbox.area())
+                block
+                    .bbox
+                    .intersection(region)
+                    .map_or(0.0, |bbox| bbox.area())
             } else {
                 block
                     .lines
@@ -460,6 +463,7 @@ mod tests {
 
     fn block(block_type: BlockType, text: &str, bbox: Rect, font_size: f32) -> ClassifiedBlock {
         ClassifiedBlock {
+            run_in_lead: None,
             lines: Vec::new(),
             block_type,
             text: text.to_string(),
@@ -513,12 +517,7 @@ mod tests {
             Rect::new(50.0, 100.0, 240.0, 10.0),
             9.0,
         );
-        let mut first = block(
-            BlockType::Body,
-            "0 10 20",
-            Rect::new(60.0, 120.0, 180.0, 50.0),
-            5.0,
-        );
+        let mut first = block(BlockType::Body, "0 10 20", Rect::new(60.0, 120.0, 180.0, 50.0), 5.0);
         first.lines = vec![BlockLine {
             bbox: Rect::new(60.0, 120.0, 20.0, 5.0),
             text: "0 10 20".to_string(),
@@ -527,12 +526,7 @@ mod tests {
             is_bold: false,
             span_sequences: Vec::new(),
         }];
-        let mut second = block(
-            BlockType::Body,
-            "legend",
-            Rect::new(70.0, 125.0, 170.0, 45.0),
-            5.0,
-        );
+        let mut second = block(BlockType::Body, "legend", Rect::new(70.0, 125.0, 170.0, 45.0), 5.0);
         second.lines = vec![BlockLine {
             bbox: Rect::new(210.0, 160.0, 20.0, 5.0),
             text: "legend".to_string(),
@@ -550,8 +544,7 @@ mod tests {
             PathContent::line(170.0, 140.0, 200.0, 165.0),
         ];
 
-        let decisions =
-            discriminate_vector_regions(&[caption, first, second], &paths, &[], 792.0);
+        let decisions = discriminate_vector_regions(&[caption, first, second], &paths, &[], 792.0);
 
         assert_eq!(decisions.len(), 1);
         assert_eq!(decisions[0].class, RegionClass::Figure);
