@@ -124,6 +124,7 @@ def cmd_apply(decisions_path: Path) -> int:
         entry["current_status"] = d["status"]
         entry["adjudication"] = {
             "adjudicator": "claude-agentic-second-pass",
+            "status": d["status"],
             "decided_at": datetime.now(timezone.utc).isoformat(),
             "evidence_root": str(EVIDENCE),
             "commit": subprocess.run(

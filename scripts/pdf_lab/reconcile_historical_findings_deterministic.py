@@ -255,6 +255,13 @@ def main() -> int:
     previous_statuses = Counter(entry["current_status"] for entry in reconciliation.get("entries") or [])
 
     for entry in reconciliation.get("entries") or []:
+        # An agent-adjudicated status carries quoted evidence, commit and
+        # timestamp; the conservative structural pass must not silently revert
+        # it back to "unverified" (observed 2026-08-20: this loop reset 280
+        # adjudicated entries). Deterministic reconciliation only fills in
+        # statuses for entries no adjudicator has decided.
+        if entry.get("adjudication"):
+            continue
         result = reconcile_entry(entry, extractions.get(int(entry["page"])))
         old_status = entry.get("current_status")
         entry["current_status"] = result["status"]
