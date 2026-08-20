@@ -1,0 +1,853 @@
+{
+  "artifacts": [
+    "artifacts/pdf_lab/census_regen_20260820/current_evidence/manifest.json",
+    "artifacts/pdf_lab/census_regen_20260820/current_evidence/extraction_debug.log"
+  ],
+  "blocked_page_count": 0,
+  "command": "scripts/pdf_lab/materialize_historical_finding_current_evidence.py --pdf /home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf --ledger python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json --reconciliation artifacts/pdf_lab/census_regen_20260820/seed.json --out artifacts/pdf_lab/census_regen_20260820/current_evidence",
+  "commit": "af0680fc393f267b2e6e49abfc84d403ec0c8a45",
+  "created_at": "2026-08-20T16:58:14.207823+00:00",
+  "ledger": "python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json",
+  "materialized_page_count": 55,
+  "page_count": 55,
+  "pages": [
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0015",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0015/bbox_overlay_current.png",
+      "block_count": 44,
+      "counts": {
+        "header_footer_noise": 4,
+        "section_heading": 1,
+        "toc": 1,
+        "toc_entry": 38
+      },
+      "page": 15,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0015/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0015/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0019",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0019/bbox_overlay_current.png",
+      "block_count": 7,
+      "counts": {
+        "header_footer_noise": 4,
+        "paragraph_block": 1,
+        "section_heading": 1,
+        "table": 1
+      },
+      "page": 19,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0019/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0019/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 20,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0020/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 21,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0021/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 22,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0022/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0023",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0023/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 23,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0023/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0023/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0024",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0024/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 24,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0024/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0024/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030/bbox_overlay_current.png",
+      "block_count": 14,
+      "counts": {
+        "footnote": 2,
+        "header_footer_noise": 4,
+        "list": 2,
+        "paragraph_block": 4,
+        "section_heading": 2
+      },
+      "page": 30,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0046",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0046/bbox_overlay_current.png",
+      "block_count": 28,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 21,
+        "paragraph_block": 1,
+        "section_heading": 1,
+        "unknown_region": 1
+      },
+      "page": 46,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0046/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0046/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0051",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0051/bbox_overlay_current.png",
+      "block_count": 19,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 9,
+        "paragraph_block": 5,
+        "section_heading": 1
+      },
+      "page": 51,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0051/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0051/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0100",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0100/bbox_overlay_current.png",
+      "block_count": 24,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 2,
+        "paragraph_block": 9,
+        "reference": 1,
+        "section_heading": 7,
+        "unknown_region": 1
+      },
+      "page": 100,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0100/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0100/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0116",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0116/bbox_overlay_current.png",
+      "block_count": 21,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 7,
+        "paragraph_block": 5,
+        "reference": 1,
+        "section_heading": 3,
+        "unknown_region": 1
+      },
+      "page": 116,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0116/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0116/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0137",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0137/bbox_overlay_current.png",
+      "block_count": 24,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 7,
+        "paragraph_block": 9,
+        "reference": 1,
+        "section_heading": 3
+      },
+      "page": 137,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0137/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0137/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0157",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0157/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "header_footer_noise": 4,
+        "reference": 1,
+        "table": 1
+      },
+      "page": 157,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0157/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0157/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0165",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0165/bbox_overlay_current.png",
+      "block_count": 24,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 9,
+        "paragraph_block": 8,
+        "reference": 1,
+        "section_heading": 2
+      },
+      "page": 165,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0165/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0165/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0178",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0178/bbox_overlay_current.png",
+      "block_count": 25,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 3,
+        "paragraph_block": 12,
+        "reference": 1,
+        "section_heading": 5
+      },
+      "page": 178,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0178/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0178/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0186",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0186/bbox_overlay_current.png",
+      "block_count": 27,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 13,
+        "paragraph_block": 6,
+        "reference": 1,
+        "section_heading": 3
+      },
+      "page": 186,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0186/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0186/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0187",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0187/bbox_overlay_current.png",
+      "block_count": 26,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 6,
+        "paragraph_block": 11,
+        "section_heading": 5
+      },
+      "page": 187,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0187/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0187/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0190",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0190/bbox_overlay_current.png",
+      "block_count": 26,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 9,
+        "paragraph_block": 5,
+        "reference": 1,
+        "section_heading": 5,
+        "unknown_region": 2
+      },
+      "page": 190,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0190/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0190/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0194",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0194/bbox_overlay_current.png",
+      "block_count": 23,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 6,
+        "paragraph_block": 7,
+        "reference": 1,
+        "section_heading": 4,
+        "unknown_region": 1
+      },
+      "page": 194,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0194/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0194/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0200",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0200/bbox_overlay_current.png",
+      "block_count": 23,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 6,
+        "paragraph_block": 7,
+        "reference": 1,
+        "section_heading": 4,
+        "unknown_region": 1
+      },
+      "page": 200,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0200/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0200/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0222",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0222/bbox_overlay_current.png",
+      "block_count": 27,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 20,
+        "paragraph_block": 1,
+        "section_heading": 1,
+        "unknown_region": 1
+      },
+      "page": 222,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0222/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0222/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0232",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0232/bbox_overlay_current.png",
+      "block_count": 22,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 2,
+        "list": 8,
+        "paragraph_block": 4,
+        "reference": 2,
+        "section_heading": 1,
+        "unknown_region": 1
+      },
+      "page": 232,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0232/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0232/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0235",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0235/bbox_overlay_current.png",
+      "block_count": 21,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 2,
+        "list": 5,
+        "paragraph_block": 4,
+        "reference": 2,
+        "section_heading": 2,
+        "unknown_region": 2
+      },
+      "page": 235,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0235/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0235/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0251",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0251/bbox_overlay_current.png",
+      "block_count": 30,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 7,
+        "paragraph_block": 13,
+        "reference": 2,
+        "section_heading": 4
+      },
+      "page": 251,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0251/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0251/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0253",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0253/bbox_overlay_current.png",
+      "block_count": 29,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 1,
+        "list": 9,
+        "paragraph_block": 8,
+        "reference": 1,
+        "section_heading": 5,
+        "unknown_region": 1
+      },
+      "page": 253,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0253/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0253/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0254",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0254/bbox_overlay_current.png",
+      "block_count": 25,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 1,
+        "list": 8,
+        "paragraph_block": 5,
+        "reference": 2,
+        "section_heading": 3,
+        "unknown_region": 2
+      },
+      "page": 254,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0254/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0254/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0260",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0260/bbox_overlay_current.png",
+      "block_count": 23,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 5,
+        "paragraph_block": 10,
+        "reference": 1,
+        "section_heading": 3
+      },
+      "page": 260,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0260/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0260/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0264",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0264/bbox_overlay_current.png",
+      "block_count": 15,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 1,
+        "list": 5,
+        "paragraph_block": 3,
+        "reference": 1,
+        "section_heading": 1
+      },
+      "page": 264,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0264/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0264/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0298",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0298/bbox_overlay_current.png",
+      "block_count": 21,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 5,
+        "paragraph_block": 6,
+        "reference": 1,
+        "section_heading": 4,
+        "unknown_region": 1
+      },
+      "page": 298,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0298/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0298/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0336",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0336/bbox_overlay_current.png",
+      "block_count": 26,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 1,
+        "list": 3,
+        "paragraph_block": 9,
+        "reference": 1,
+        "section_heading": 7,
+        "unknown_region": 1
+      },
+      "page": 336,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0336/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0336/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0338",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0338/bbox_overlay_current.png",
+      "block_count": 29,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 1,
+        "list": 4,
+        "paragraph_block": 11,
+        "reference": 2,
+        "section_heading": 5,
+        "unknown_region": 2
+      },
+      "page": 338,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0338/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0338/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0355",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0355/bbox_overlay_current.png",
+      "block_count": 22,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 2,
+        "list": 2,
+        "paragraph_block": 8,
+        "reference": 2,
+        "section_heading": 4
+      },
+      "page": 355,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0355/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0355/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0382",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0382/bbox_overlay_current.png",
+      "block_count": 26,
+      "counts": {
+        "header_footer_noise": 4,
+        "labeled_enhancements": 1,
+        "list": 2,
+        "paragraph_block": 13,
+        "reference": 2,
+        "section_heading": 4
+      },
+      "page": 382,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0382/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0382/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0399",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0399/bbox_overlay_current.png",
+      "block_count": 29,
+      "counts": {
+        "header_footer_noise": 4,
+        "list": 2,
+        "paragraph_block": 14,
+        "reference": 2,
+        "section_heading": 6,
+        "unknown_region": 1
+      },
+      "page": 399,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0399/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0399/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0402",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0402/bbox_overlay_current.png",
+      "block_count": 31,
+      "counts": {
+        "header_footer_noise": 4,
+        "reference": 26,
+        "section_heading": 1
+      },
+      "page": 402,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0402/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0402/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0403",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0403/bbox_overlay_current.png",
+      "block_count": 26,
+      "counts": {
+        "header_footer_noise": 3,
+        "reference": 22,
+        "table": 1
+      },
+      "page": 403,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0403/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0403/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0404",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0404/bbox_overlay_current.png",
+      "block_count": 31,
+      "counts": {
+        "header_footer_noise": 3,
+        "reference": 26,
+        "section_heading": 1,
+        "table": 1
+      },
+      "page": 404,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0404/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0404/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0409",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0409/bbox_overlay_current.png",
+      "block_count": 21,
+      "counts": {
+        "header_footer_noise": 3,
+        "reference": 18
+      },
+      "page": 409,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0409/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0409/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0413",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0413/bbox_overlay_current.png",
+      "block_count": 24,
+      "counts": {
+        "header_footer_noise": 3,
+        "reference": 21
+      },
+      "page": 413,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0413/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0413/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0417",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0417/bbox_overlay_current.png",
+      "block_count": 23,
+      "counts": {
+        "header_footer_noise": 3,
+        "reference": 19,
+        "table": 1
+      },
+      "page": 417,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0417/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0417/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0419",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0419/bbox_overlay_current.png",
+      "block_count": 30,
+      "counts": {
+        "header_footer_noise": 3,
+        "reference": 26,
+        "table": 1
+      },
+      "page": 419,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0419/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0419/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0457",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0457/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 457,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0457/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0457/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0458",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0458/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 458,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0458/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0458/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0461",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0461/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 461,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0461/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0461/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0464",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0464/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 464,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0464/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0464/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0466",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0466/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 466,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0466/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0466/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0470",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0470/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 470,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0470/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0470/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0474",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0474/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 474,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0474/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0474/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0481",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0481/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 481,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0481/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0481/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0482",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0482/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 482,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0482/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0482/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0485",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0485/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 485,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0485/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0485/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0486",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0486/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 486,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0486/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0486/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0489",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0489/bbox_overlay_current.png",
+      "block_count": 6,
+      "counts": {
+        "caption": 1,
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 489,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0489/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0489/release_extraction_blocks.json",
+      "status": "materialized"
+    },
+    {
+      "artifact_dir": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0490",
+      "bbox_overlay": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0490/bbox_overlay_current.png",
+      "block_count": 5,
+      "counts": {
+        "header_footer_noise": 4,
+        "table": 1
+      },
+      "page": 490,
+      "page_image": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0490/page.png",
+      "release_extraction_blocks": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0490/release_extraction_blocks.json",
+      "status": "materialized"
+    }
+  ],
+  "pdf": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf",
+  "reconciliation": "artifacts/pdf_lab/census_regen_20260820/seed.json",
+  "schema": "pdf_oxide.nist_historical_current_evidence.v1"
+}
