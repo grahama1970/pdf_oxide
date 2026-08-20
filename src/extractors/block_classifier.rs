@@ -686,6 +686,26 @@ impl BlockClassifier {
             && bbox.x >= self.page_width * 0.08
             && bbox.x + bbox.width <= self.page_width * 0.92
             && (!is_bold || size_ratio <= 1.15);
+        // Enhancement-title lines look like list items — "(9) IDENTIFIER
+        // MANAGEMENT | ATTRIBUTE MAINTENANCE AND PROTECTION" — but the
+        // parenthesized number followed by an ALL-CAPS title with a literal
+        // '|' subtitle separator is a heading, not an item (NIST 800-53r5
+        // control-enhancement titles use exactly this shape on every control
+        // page). Classifying them as List also let the list-run merge absorb
+        // the following body text into the title block.
+        if is_enhancement_title(trimmed) && is_bodyish_list {
+            return self.make_block(
+                BlockType::Header,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.85,
+                Some(3),
+                None,
+            );
+        }
         if is_list_item(trimmed) && is_bodyish_list {
             return self.make_block(
                 BlockType::List,
@@ -2642,6 +2662,35 @@ fn merge_list_runs_and_continuations(blocks: &mut Vec<ClassifiedBlock>) {
 
 /// Whether the text opens with a symbol bullet (as opposed to an explicit
 /// enumerated marker such as `a.`, `1.`, or `(a)`).
+/// Whether the line is a numbered enhancement title rather than a list item:
+/// a parenthesized number, then an ALL-CAPS title containing a literal '|'
+/// subtitle separator ("(9) IDENTIFIER MANAGEMENT | ATTRIBUTE MAINTENANCE AND
+/// PROTECTION"). The '|' is in the document text itself, not a serializer
+/// artifact. Lower-case content after the marker means a genuine list item.
+fn is_enhancement_title(text: &str) -> bool {
+    let t = text.trim_start();
+    let Some(rest) = t.strip_prefix('(') else {
+        return false;
+    };
+    let Some(close) = rest.find(')') else {
+        return false;
+    };
+    if close == 0 || !rest[..close].chars().all(|c| c.is_ascii_digit()) {
+        return false;
+    }
+    let after = rest[close + 1..].trim_start();
+    let Some(bar) = after.find('|') else {
+        return false;
+    };
+    let title = after[..bar].trim();
+    if title.len() < 3 {
+        return false;
+    }
+    title
+        .chars()
+        .all(|c| c.is_ascii_uppercase() || c.is_ascii_digit() || " /,-–—&".contains(c))
+}
+
 fn starts_with_symbol_bullet(text: &str) -> bool {
     let trimmed = text.trim_start();
     trimmed.starts_with('•')
@@ -3048,6 +3097,22 @@ mod tests {
             horizontal_scaling: 100.0,
             primary_detected: false,
         }
+    }
+
+    #[test]
+    fn test_is_enhancement_title() {
+        assert!(is_enhancement_title(
+            "(9) IDENTIFIER MANAGEMENT | ATTRIBUTE MAINTENANCE AND PROTECTION"
+        ));
+        assert!(is_enhancement_title(
+            "(1) MAINTENANCE PERSONNEL | INDIVIDUALS WITHOUT APPROPRIATE ACCESS"
+        ));
+        // Genuine list items must not match.
+        assert!(!is_enhancement_title("(1) Accepts the use of common controls"));
+        assert!(!is_enhancement_title("(a) Implement procedures for the use"));
+        assert!(!is_enhancement_title("a. Establish a process"));
+        // No pipe separator -> not the enhancement-title shape.
+        assert!(!is_enhancement_title("(2) PERSONNEL SCREENING"));
     }
 
     #[test]
