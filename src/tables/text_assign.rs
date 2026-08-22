@@ -53,6 +53,7 @@ pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<
         }
     }
 
+    merge_withdrawn_note_spanning_cells(table);
     errors
 }
 
@@ -245,6 +246,73 @@ fn should_replace_cell_text(existing: &str, incoming: &str) -> bool {
     existing_compact.len() >= 4
         && incoming_compact.len() > existing_compact.len()
         && incoming_compact.starts_with(&existing_compact)
+}
+
+fn merge_withdrawn_note_spanning_cells(table: &mut Table) {
+    if table.cols.len() < 2 {
+        return;
+    }
+
+    for row in &mut table.cells {
+        for col_idx in 0..row.len().saturating_sub(1) {
+            let left = row[col_idx].text.trim();
+            let right = row[col_idx + 1].text.trim();
+            if !is_withdrawn_note_lead(left) || !is_withdrawn_note_continuation(right) {
+                continue;
+            }
+
+            row[col_idx].text = repair_withdrawn_note_join_artifacts(&join_cell_text(left, right));
+            row[col_idx + 1].text.clear();
+        }
+    }
+}
+
+fn is_withdrawn_note_lead(text: &str) -> bool {
+    let compact = text.split_whitespace().collect::<Vec<_>>().join(" ");
+    compact.starts_with("W:")
+        && (compact.contains("Incorporated into") || compact.contains("Moved to"))
+}
+
+fn is_withdrawn_note_continuation(text: &str) -> bool {
+    let compact = text.split_whitespace().collect::<Vec<_>>().join(" ");
+    !compact.is_empty() && compact != "√"
+}
+
+fn join_cell_text(left: &str, right: &str) -> String {
+    [left, right]
+        .iter()
+        .flat_map(|part| part.split_whitespace())
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn repair_withdrawn_note_join_artifacts(text: &str) -> String {
+    let words: Vec<&str> = text.split_whitespace().collect();
+    let mut repaired = Vec::with_capacity(words.len());
+    for (index, word) in words.iter().enumerate() {
+        if word.eq_ignore_ascii_case("a")
+            && words
+                .get(index + 1)
+                .is_some_and(|next| next.eq_ignore_ascii_case("and"))
+            && index > 0
+            && looks_like_control_reference(words[index - 1])
+        {
+            continue;
+        }
+        repaired.push(*word);
+    }
+    repaired.join(" ")
+}
+
+fn looks_like_control_reference(text: &str) -> bool {
+    let trimmed = text.trim_matches(|ch: char| matches!(ch, ',' | ';' | '.'));
+    let Some((family, suffix)) = trimmed.split_once('-') else {
+        return false;
+    };
+    family
+        .chars()
+        .all(|ch| ch.is_ascii_uppercase() || ch.is_ascii_digit())
+        && suffix.chars().any(|ch| ch.is_ascii_digit())
 }
 
 /// Calculate how much a text element spills outside its assigned cell.
@@ -852,6 +920,42 @@ mod tests {
 
         assert!(table.cells[0][0].text.is_empty());
         assert!(table.cells[0][1].text.is_empty());
+    }
+
+    #[test]
+    fn withdrawn_note_spanning_cells_are_merged() {
+        let mut table = Table::new(
+            vec![(0.0, 80.0), (80.0, 300.0), (300.0, 420.0), (420.0, 520.0)],
+            vec![(0.0, 50.0)],
+            Flavor::Stream,
+        );
+        table.cells[0][0].text = "PE-3(6)".into();
+        table.cells[0][1].text = "FACILITY PENETRATION TESTING".into();
+        table.cells[0][2].text = "W: Incorporated into".into();
+        table.cells[0][3].text = "CA-8.".into();
+
+        merge_withdrawn_note_spanning_cells(&mut table);
+
+        assert_eq!(table.cells[0][2].text, "W: Incorporated into CA-8.");
+        assert!(table.cells[0][3].text.is_empty());
+    }
+
+    #[test]
+    fn withdrawn_note_merge_removes_stray_split_article() {
+        let mut table = Table::new(
+            vec![(0.0, 80.0), (80.0, 300.0), (300.0, 420.0), (420.0, 520.0)],
+            vec![(0.0, 50.0)],
+            Flavor::Stream,
+        );
+        table.cells[0][0].text = "SA-6".into();
+        table.cells[0][1].text = "Software Usage Restrictions".into();
+        table.cells[0][2].text = "W: Incorporated into".into();
+        table.cells[0][3].text = "CM-10 a\nand SI-7.".into();
+
+        merge_withdrawn_note_spanning_cells(&mut table);
+
+        assert_eq!(table.cells[0][2].text, "W: Incorporated into CM-10 and SI-7.");
+        assert!(table.cells[0][3].text.is_empty());
     }
 
     #[test]

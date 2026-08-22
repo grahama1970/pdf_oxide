@@ -245,6 +245,27 @@
       }
     },
     {
+      "name": "issue-35-nist-withdrawn-row-note-cells",
+      "type": "positive",
+      "real_world": true,
+      "description": "Issue #35 guard for NIST SP 800-53r5 appendix tables on printed pages 474 and 481. The live checker extracts the real PDF through the shared table path and asserts that withdrawn-row notes spanning the implemented-by and assurance columns are serialized as one readable note cell with no orphaned continuation text in the assurance cell.",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python:scripts/pdf_lab .venv/bin/python scripts/pdf_lab/check_withdrawn_row_note_cells_issue35.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"passed\": true",
+          "\"problems\": []",
+          "\"W: Incorporated into CA-8.\"",
+          "\"W: Incorporated into CM-10 and SI-7.\"",
+          "\"SA-6\": ["
+        ]
+      }
+    },
+    {
       "name": "issue-34-census-adjudication-events-derived-status",
       "type": "positive",
       "real_world": true,
