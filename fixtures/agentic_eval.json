@@ -141,16 +141,42 @@
       "name": "census-word-fidelity-sweep",
       "type": "positive",
       "real_world": true,
-      "description": "Every 4+-letter word PyMuPDF extracts on each of the 55 census pages must appear in pdf_oxide extract_text + lattice serialization (NFKC + document 'Ɵ' normalization). Guards the 2026-08-20 fidelity root causes: identity-blind char dedup after narrow spaces, and intra-line TJ back-jumps in the untagged MuPDF-style assembler (release-path 'executive rders ... o'). Observed failing before those fixes on 8 pages; 0 pages missing after.",
+      "description": "Every alphanumeric token PyMuPDF extracts on each of the 55 census pages must have the same Counter multiplicity in pdf_oxide extract_text (NFKC + document 'Ɵ' normalization). This upgrades the old 4+-letter word-set guard and records the current positioned-region Counter gap separately so it cannot be mistaken for per-region proof.",
       "command": [
         "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
-        "../scripts/pdf_lab/check_word_fidelity_sweep.py"
+        "../scripts/pdf_lab/check_word_fidelity_sweep.py",
+        "--output",
+        "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json"
       ],
       "expected": {
         "exit_code": 0,
         "stdout_contains": [
-          "\"pages_with_missing_words\": 0",
+          "\"page_counter_mismatches\": 0",
+          "\"bulk_closure_count\": 111",
+          "\"region_counter_passed\": false",
           "\"passed\": true"
+        ],
+        "artifacts": [
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/pages_swept",
+            "equals": 55
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/bulk_closure_count",
+            "equals": 111
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/page_counter_mismatches",
+            "equals": 0
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_counter_passed",
+            "equals": false
+          }
         ]
       }
     },
