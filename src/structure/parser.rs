@@ -252,6 +252,7 @@ pub fn parse_structure_tree(document: &mut PdfDocument) -> Result<Option<StructT
 
     // Parse K (children) - can be a single element or array of elements
     let mut element_count: usize = 0;
+    let mut budget_exceeded = false;
 
     if let Some(k_obj) = struct_tree_dict.get("K") {
         let k_obj = resolve_object(document, k_obj)?;
@@ -280,8 +281,12 @@ pub fn parse_structure_tree(document: &mut PdfDocument) -> Result<Option<StructT
                         &page_map,
                         deadline,
                         &mut element_count,
+                        &mut budget_exceeded,
                     )? {
                         struct_tree.add_root_element(elem);
+                    }
+                    if budget_exceeded {
+                        return Ok(None);
                     }
                 }
             },
@@ -294,8 +299,12 @@ pub fn parse_structure_tree(document: &mut PdfDocument) -> Result<Option<StructT
                     &page_map,
                     deadline,
                     &mut element_count,
+                    &mut budget_exceeded,
                 )? {
                     struct_tree.add_root_element(elem);
+                }
+                if budget_exceeded {
+                    return Ok(None);
                 }
             },
         }
@@ -331,9 +340,14 @@ fn parse_struct_elem(
     page_map: &HashMap<u32, u32>,
     deadline: Deadline,
     element_count: &mut usize,
+    budget_exceeded: &mut bool,
 ) -> Result<Option<StructElem>, Error> {
     // Check budgets before doing work
-    if deadline.is_expired() || *element_count > MAX_STRUCT_ELEMENTS {
+    if deadline.is_expired() {
+        *budget_exceeded = true;
+        return Ok(None);
+    }
+    if *element_count > MAX_STRUCT_ELEMENTS {
         return Ok(None);
     }
     *element_count += 1;
@@ -408,6 +422,7 @@ fn parse_struct_elem(
             page_map,
             deadline,
             element_count,
+            budget_exceeded,
         )?;
     }
 
@@ -423,6 +438,7 @@ fn parse_k_children(
     page_map: &HashMap<u32, u32>,
     deadline: Deadline,
     element_count: &mut usize,
+    budget_exceeded: &mut bool,
 ) -> Result<(), Error> {
     match k_obj {
         Object::Integer(mcid) => {
@@ -437,7 +453,11 @@ fn parse_k_children(
             // Array of children
             for child_obj in arr {
                 // Check both time and element count budgets
-                if deadline.is_expired() || *element_count > MAX_STRUCT_ELEMENTS {
+                if deadline.is_expired() {
+                    *budget_exceeded = true;
+                    return Ok(());
+                }
+                if *element_count > MAX_STRUCT_ELEMENTS {
                     return Ok(());
                 }
 
@@ -461,6 +481,7 @@ fn parse_k_children(
                             page_map,
                             deadline,
                             element_count,
+                            budget_exceeded,
                         )? {
                             parent.add_child(StructChild::StructElem(Box::new(child_elem)));
                         } else {
@@ -482,6 +503,7 @@ fn parse_k_children(
                                     page_map,
                                     deadline,
                                     element_count,
+                                    budget_exceeded,
                                 )? {
                                     parent.add_child(StructChild::StructElem(Box::new(child_elem)));
                                 } else if let Some(mcr) =
@@ -510,9 +532,15 @@ fn parse_k_children(
 
         Object::Dictionary(_) => {
             // Single dictionary child
-            if let Some(child_elem) =
-                parse_struct_elem(document, k_obj, role_map, page_map, deadline, element_count)?
-            {
+            if let Some(child_elem) = parse_struct_elem(
+                document,
+                k_obj,
+                role_map,
+                page_map,
+                deadline,
+                element_count,
+                budget_exceeded,
+            )? {
                 parent.add_child(StructChild::StructElem(Box::new(child_elem)));
             } else {
                 // Try parsing as marked content reference
@@ -533,6 +561,7 @@ fn parse_k_children(
                         page_map,
                         deadline,
                         element_count,
+                        budget_exceeded,
                     )? {
                         parent.add_child(StructChild::StructElem(Box::new(child_elem)));
                     } else if let Some(mcr) = parse_marked_content_ref(&resolved, page_map)? {

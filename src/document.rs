@@ -2782,37 +2782,56 @@ impl PdfDocument {
         // Fast pre-check: skip pages that cannot produce text BEFORE the expensive
         // structure tree parse. This avoids paying 200ms+ structure tree cost for
         // cover pages and image-only pages that produce zero text.
-        {
+        let (page_cannot_have_text, content_read_ok, may_contain_text, no_content_text) = {
             let page = self.get_page(page_index)?;
             let page_dict = page.as_dict().ok_or_else(|| Error::ParseError {
                 offset: 0,
                 reason: "Page is not a dictionary".to_string(),
             })?;
-            let no_content_text = if self.page_cannot_have_text(page_dict) {
+            let page_cannot_have_text = self.page_cannot_have_text(page_dict);
+            let mut content_read_ok = false;
+            let mut may_contain_text = false;
+            let no_content_text = if page_cannot_have_text {
                 true
             } else {
                 // Also check content stream for BT/Do operators (SIMD-fast scan).
                 match self.get_page_content_data(page_index) {
-                    Ok(ref content_data) => !Self::may_contain_text(content_data),
+                    Ok(ref content_data) => {
+                        content_read_ok = true;
+                        may_contain_text = Self::may_contain_text(content_data);
+                        !may_contain_text
+                    },
                     Err(_) => false, // Can't read content stream — be conservative
                 }
             };
-            if no_content_text {
-                // No text in content stream. Still collect widget annotation text
-                // (form field values) and non-widget annotation text (sticky notes).
-                let widget_spans = self.extract_widget_spans(page_index);
-                let mut text = String::new();
-                for span in &widget_spans {
-                    if !span.text.is_empty() {
-                        if !text.is_empty() {
-                            text.push('\n');
-                        }
-                        text.push_str(&span.text);
+            (page_cannot_have_text, content_read_ok, may_contain_text, no_content_text)
+        };
+        if no_content_text {
+            branch_trace_extract_text(
+                page_index,
+                "annotations_only",
+                page_cannot_have_text,
+                content_read_ok,
+                may_contain_text,
+                None,
+                None,
+                None,
+                None,
+            );
+            // No text in content stream. Still collect widget annotation text
+            // (form field values) and non-widget annotation text (sticky notes).
+            let widget_spans = self.extract_widget_spans(page_index);
+            let mut text = String::new();
+            for span in &widget_spans {
+                if !span.text.is_empty() {
+                    if !text.is_empty() {
+                        text.push('\n');
                     }
+                    text.push_str(&span.text);
                 }
-                self.append_non_widget_annotation_text(page_index, &mut text);
-                return Ok(text);
             }
+            self.append_non_widget_annotation_text(page_index, &mut text);
+            return Ok(text);
         }
 
         // Check if this is a Tagged PDF with structure tree (cached after first check).
@@ -2826,6 +2845,7 @@ impl PdfDocument {
             },
         };
 
+        let has_structure_tree = cached_tree.is_some();
         if let Some(struct_tree) = cached_tree {
             // Build per-page traversal cache once, then O(1) lookup per page.
             // This avoids re-traversing the entire structure tree for each page.
@@ -2833,8 +2853,32 @@ impl PdfDocument {
                 let all_content = crate::structure::traverse_structure_tree_all_pages(&struct_tree);
                 self.structure_content_cache = Some(all_content);
             }
+            let cache = self.structure_content_cache.as_ref();
+            branch_trace_extract_text(
+                page_index,
+                "structure_order_cached",
+                page_cannot_have_text,
+                content_read_ok,
+                may_contain_text,
+                Some(has_structure_tree),
+                cache.map(|c| c.len()),
+                cache.map(|c| c.contains_key(&(page_index as u32))),
+                cache.map(|c| c.get(&(page_index as u32)).map_or(0, |items| items.len())),
+            );
             return self.extract_text_structure_order_cached(page_index);
         }
+
+        branch_trace_extract_text(
+            page_index,
+            "content_stream_order",
+            page_cannot_have_text,
+            content_read_ok,
+            may_contain_text,
+            Some(has_structure_tree),
+            None,
+            None,
+            None,
+        );
 
         // Untagged PDF: Use MuPDF-style incremental text assembly.
         // Process spans in content stream order (NOT sorted), using spacing/baseline
@@ -13413,6 +13457,73 @@ mod tests {
 /// where the out-of-sequence 'o' of "orders" stayed misplaced after a pairwise
 /// sort. Content-stream order is rendering order; TJ kerning can draw a glyph
 /// run out of sequence.
+/// Build profile the current binary was compiled with, as recorded in the
+/// `extract_text` branch trace. `debug_assertions` is the only profile-derived
+/// cfg the extraction path can observe.
+const fn build_profile_label() -> &'static str {
+    if cfg!(debug_assertions) {
+        "debug"
+    } else {
+        "release"
+    }
+}
+
+/// Record one `extract_text` branch-selection decision as a JSONL line when
+/// `PDF_OXIDE_BRANCH_TRACE` names a writable path. Disabled (single env lookup,
+/// no allocation past it) when the variable is unset.
+///
+/// Permanent guard for issue #33: the debug and release builds were reported to
+/// take different top-level `extract_text` branches on the tagged NIST
+/// SP 800-53r5 PDF. Every input to that decision is dumped here so the two
+/// profiles' traces can be diffed field-by-field instead of inferred from
+/// output text. `fixtures/agentic_eval.json` case
+/// `extract_text_branch_parity_debug_vs_release` runs that diff.
+#[allow(clippy::too_many_arguments)]
+fn branch_trace_extract_text(
+    page_index: usize,
+    branch: &str,
+    page_cannot_have_text: bool,
+    content_read_ok: bool,
+    may_contain_text: bool,
+    has_structure_tree: Option<bool>,
+    structure_cache_pages: Option<usize>,
+    page_in_structure_cache: Option<bool>,
+    page_structure_items: Option<usize>,
+) {
+    let Some(path) = std::env::var_os("PDF_OXIDE_BRANCH_TRACE") else {
+        return;
+    };
+    fn opt<T: std::fmt::Display>(value: Option<T>) -> String {
+        value.map_or_else(|| "null".to_string(), |v| v.to_string())
+    }
+    let line = format!(
+        concat!(
+            "{{\"profile\":\"{}\",\"page\":{},\"branch\":\"{}\",",
+            "\"page_cannot_have_text\":{},\"content_read_ok\":{},\"may_contain_text\":{},",
+            "\"has_structure_tree\":{},\"structure_cache_pages\":{},",
+            "\"page_in_structure_cache\":{},\"page_structure_items\":{}}}\n"
+        ),
+        build_profile_label(),
+        page_index,
+        branch,
+        page_cannot_have_text,
+        content_read_ok,
+        may_contain_text,
+        opt(has_structure_tree),
+        opt(structure_cache_pages),
+        opt(page_in_structure_cache),
+        opt(page_structure_items),
+    );
+    use std::io::Write as _;
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(path)
+    {
+        let _ = file.write_all(line.as_bytes());
+    }
+}
+
 fn sort_mcid_spans_reading_order<'a>(spans: &mut Vec<&'a crate::layout::TextSpan>) {
     if spans.len() < 2 {
         return;

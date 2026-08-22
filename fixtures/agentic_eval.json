@@ -189,6 +189,25 @@
       }
     },
     {
+      "name": "extract_text_branch_parity_debug_vs_release",
+      "type": "adversarial",
+      "real_world": true,
+      "description": "Issue #33 guard for the tagged NIST SP 800-53r5 PDF: debug and release builds must take the same top-level PdfDocument::extract_text branch on every page. The checker runs the real extract_text example in both profiles with PDF_OXIDE_BRANCH_TRACE enabled, parses the JSONL branch decisions, and diffs every predicate except the expected profile label. Observed pre-fix: debug returned a partial structure tree and used structure_order_cached on page 0, while release fell back to content_stream_order.",
+      "command": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/check_extract_text_branch_parity_issue33.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "BRANCH_PARITY_OK pages=492",
+          "\"content_stream_order\": 492",
+          "debug_trace=",
+          "release_trace="
+        ]
+      }
+    },
+    {
       "name": "issue-38-ligature-vs-decomposed-double-draw",
       "type": "positive",
       "description": "Ligature double-draw hole in identity-based char dedup: one draw layer emits the 'fi' ligature (U+FB01) and the duplicate layer emits decomposed 'f' + 'i' across the same advance, so identity comparison keeps every glyph and the visible text doubles. Observed pre-fix on the reverted logic: ligature-first yielded 'fix' as \"\\ufb01fix\" and decomposed-first yielded \"fi\\ufb01x\"; post-fix both collapse to a single rendering. Guard also pins the two non-goals: a real letter starting at or past the ligature's advance is kept, and the narrow-space glyph guard from the p19 fix still holds.",
