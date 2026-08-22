@@ -1,175 +1,199 @@
 # Handoff Report: pdf_oxide
 
-**Timestamp**: 2026-07-30T07:43:19-04:00  
-**Active Agent**: Codex  
-**Repository**: `/home/graham/workspace/experiments/pdf_oxide`  
-**Current Branch At Handoff**: `codex/issue-22-live-figure-content-20260728`  
-**Remote Target Requested**: `origin/main` (`git@github.com:grahama1970/pdf_oxide.git`)  
-**Immutable Goal**: NOT_MET
+**Timestamp**: 2026-08-22
+**Active Agent**: Claude (Fable 5, Claude Code)
+**Repository**: `/home/graham/workspace/experiments/pdf_oxide` (primary checkout — the ONLY valid work location)
+**Branch at handoff**: `main` @ `e2dc53e1`, identical to `origin/main`, 0 stranded commits
+**Immutable goal (PDF-EXTRACTION-GS001)**: NOT fully met — census at 320/346 resolved; 7 live defects, 19 unadjudicated
+
+Every factual claim below was verified by a command read-back on 2026-08-20/21;
+nothing is carried forward from older handoffs. The previous HANDOFF.md
+(2026-07-30, branch `codex/issue-22-live-figure-content-20260728`) is fully
+superseded: that branch's work was either landed on main or re-implemented
+minimally, and its census numbers were stale.
 
 ## 1. Project Overview
 
-`pdf_oxide` is a Rust-first PDF parser/extractor with Python bindings, CLI,
-WASM support, and PDF Lab evidence tooling. The project documentation describes
-it as a fast PDF toolkit for text extraction, image extraction, markdown
-conversion, creation, and editing. Project instructions also establish
-`docs/spec/pdf.md` as the authoritative PDF 1.7 reference for extraction
-semantics.
+- **Ecosystem**: Rust extractor with Python bindings (pyo3/maturin), plus PDF
+  Lab evidence tooling in Python under `scripts/pdf_lab/`.
+- **Core purpose**: fast PDF text/structure extraction; current hardening
+  target is a 346-finding historical defect census on NIST SP 800-53r5
+  (738 pages), adjudicated finding-by-finding against fresh extraction.
+- **Working method (established, do not regress)**: one failing predicate
+  BEFORE every fix; live corpus read-back AFTER; an agentic-evals fixture case
+  locking every resolved defect (`fixtures/agentic_eval.json`, currently
+  10/10 PASS, readiness READY, includes a negative control). GitHub closure
+  goes through `/ask fix-issues --execute` with a named verify command.
 
-The active PDF Lab objective is not a single page fix. `GOAL.md` defines the
-current immutable objective as all-candidates hardening: select one active page
-candidate/checklist item at a time, preserve visual and extraction evidence,
-create or update a focused regression before patching, prove the slice with
-deterministic artifacts, commit and push task-relevant code/artifacts, then
-advance only when the current candidate is proven or explicitly blocked.
+## 2. Current State
 
-## 2. Current State: Documentation vs Code Alignment
+### Census (the main scoreboard)
+`artifacts/pdf_lab/census_regen_20260820/seed.json` (committed):
 
-The codebase contains both the mature extraction implementation and the newer
-PDF Lab creator-reviewer evidence path. Recent work has focused on NIST SP
-800-53r5 extraction hardening, especially current evidence materialization,
-creator-reviewer defect schemas, preset repairs, semantic role labels, and
-focused regressions.
+```
+resolved_by_current_extraction : 320
+unverified                     :  19
+still_broken                   :   7
+```
 
-Doc/code alignment is partially good:
+Was 47/299 carried-forward since 07-29. Every adjudication carries quoted
+fresh evidence, commit, timestamp, and decided status (durable replay).
+Evidence root: `artifacts/pdf_lab/census_regen_20260820/current_evidence/`
+(55 pages, materialized at af0680fc). NOTE: page dirs are untracked bulk; the
+manifest + ledger + report are committed.
 
-- `pyproject.toml` now requires `pymupdf>=1.24.11` as a normal dependency.
-- `scripts/pdf_lab/snapshot_current_extraction.py` fails loudly when PyMuPDF is
-  unavailable.
-- The current creator-reviewer evidence path has executable schema validation
-  and focused tests.
-- PDF Lab proof receipts exist for the latest narrow hardening slices.
+### GitHub issues
+Open: **#15, #17 only** — both unmaintained-crate advisories (`paste`
+transitive via rav1e/tract-core; `ttf-parser` used directly AND via fontdb).
+No patched versions exist; they can never pass a verify command. They are a
+POLICY decision for the human, not agentic fixes. #2 #3 #6 #20 #21 #22 etc.
+all closed with per-issue verify receipts.
 
-The major alignment gap is process architecture, not basic PDF parsing. The
-review loop still needs to keep producing machine-executable defect objects
-instead of drifting into English observations, broad review runs, dashboard
-work, or GitHub issue churn that does not immediately create a failing local
-check.
+### Test/tooling state
+- `cargo test --lib --features python,rendering,office`: 4629 passed, 0 failed.
+- Word-fidelity sweep: 55/55 census pages, 0 missing words vs PyMuPDF.
+- All standing predicates PASS (`scripts/pdf_lab/check_*.py`).
+- Known pre-existing failures NOT owned by this pass: 6 pytest collection
+  errors (test_sampler_content.py etc.) and
+  test_nist_page456_control_table_headers.py cell-bbox test — both reproduce
+  with all recent changes stashed.
+- The 2 dirty tracked files (`.batch_state.json`, `security-scan_task_state.json`)
+  belong to other lanes. Do not clean or commit them.
 
-The active branch and `origin/main` are divergent. `origin/main` is at
-`a0ae2e4dc9698eafb0880ac551bcc265ac955e15`, while this worktree is at
-`bb03ba5f9b4c2fc9765aa6e9d64ce2c88a7f86aa`. Do not force-push or broad-reset.
+### Build/interpreter traps (cost hours; read carefully)
+1. `PYTHONPATH=python` tests load `python/pdf_oxide/pdf_oxide.abi3.so` — a
+   COMMITTED STALE BINARY unless you refresh it from the wheel after every
+   `maturin build`. Pattern: build wheel → `unzip -o` the `.so` → `cp` over
+   `python/pdf_oxide/pdf_oxide.abi3.so` → also `uv pip install --force-reinstall`
+   into `artifacts/pdf_lab/security_advisories_live_e2e/venv` (the 3.12 venv
+   the corpus predicates use).
+2. Always build the wheel with `--features python,rendering,office`; a build
+   without `rendering` makes annotation-call tests fail with a misleading
+   "Rendering feature not enabled".
+3. Debug and release builds take DIFFERENT top-level `extract_text` branches
+   for the tagged NIST PDF (see §4). Never conclude a fix works from a debug
+   binary alone; verify through the release wheel.
 
-## 3. What Is Working Well
+## 3. What Is Working Well (landed this pass, all on origin/main)
 
-- Focused creator-reviewer hardening slices have recent local proof receipts.
-- The latest page100 focused proof receipt exists at
-  `artifacts/pdf_lab/creator_reviewer_page100_field_paragraph_semantic_roles_20260729T2205Z/receipt.json`.
-- Recent receipts also exist for:
-  - `artifacts/pdf_lab/creator_reviewer_page23_table_hyphen_wrap_spacing_20260729T2145Z/receipt.json`
-  - `artifacts/pdf_lab/creator_reviewer_page20_table_hyphen_wrap_spacing_20260729T2135Z/receipt.json`
-  - `artifacts/pdf_lab/creator_reviewer_page382_field_split_child_bbox_20260729T2125Z/receipt.json`
-  - `artifacts/pdf_lab/creator_reviewer_page399_field_split_child_bbox_20260729T2115Z/receipt.json`
-- Fresh reconciliation evidence exists at
-  `artifacts/pdf_lab/current_candidate_reconciliation_after_page23_20260729T2200Z/deterministic_reconciliation_report.json`.
-- That reconciliation reported `resolved_by_current_extraction: 47` and
-  `unverified: 299`, so the queue is active and not closed.
-- PyMuPDF requirement and fail-loud behavior are present in project dependency
-  metadata and snapshot extraction code.
+| Commit | Fix | Guard |
+| --- | --- | --- |
+| 1fd6c066 | enumerated list siblings stay item-level (a./1./(a) no longer merge; symbol bullets still merge per #28) | tests/test_nist_page46_nested_list_segmentation.py |
+| 4442184f | SymbolMT Type0 ToUnicode→PUA bullets decode via symbol table (0xB7→U+2022, NOT −0xF000) | check_pua_issue21.py + 4 unit tests + Wingdings negative control |
+| 40759b93 | run_in_lead field marks bold "Title:" run-in leads (no mid-line split) | detect_run_in_lead unit tests + predicate |
+| 385f46e0 | bbox_space stamped in annotation calls + snapshot pages; convention PROVEN pdf_points_bottom_left_xywh vs PyMuPDF oracle | check_bbox_space_issue20.py (falsifiable both directions) |
+| 7af7632a | char dedup no longer deletes the glyph after a narrow space (identity now required) — was silent content loss in EVERY document | check_table_cell_truncation_p19.py (glyph-count parity) |
+| 6e338162 | intra-line TJ back-jump reading order fixed in BOTH assembler families (total-order sort; per-run x-sort on the untagged path) | check_word_fidelity_sweep.py (8 pages missing → 0) |
+| af0680fc | "(N) ALLCAPS \| ALLCAPS" enhancement titles classify as Header lvl 3, stop absorbing body | is_enhancement_title unit tests |
+| e2dc53e1 | deterministic reconciler can no longer revert adjudicated ledger entries | guard in reconcile script; replay-restored ledger |
 
-Recent hardening commits on the active branch:
+Harness: `scripts/pdf_lab/adjudicate_findings.py` (`packet --page N` /
+`apply --decisions f.jsonl`, fail-closed, provenance-stamped).
 
-- `bb03ba5f` Label page100 field paragraphs semantically
-- `c1e6a1b5` Prove page23 table hyphen wrap spacing
-- `c8592591` Fix page20 table hyphen wrap spacing
-- `07d393ee` Prove page382 field split child bboxes
-- `60547491` Align page399 field split child bboxes
-- `eddb8780` Harden page157 false table suppression
-- `9f44c6d5` Prove page186 list hyphen wrap spacing
-- `e3217f6b` Repair page235 body hyphen wrap spacing
+## 4. What Is Currently Broken / Open
 
-## 4. What Is Currently Broken Or Pending
+### Live defect families (7 still_broken, cell read-backs quoted in ledger)
+1. **Appendix-grid duplicated+truncated name cells** (p457/464/486):
+   `'DOMAIN AUTHENTICATION\nDOMAIN AUTHENTICAT'`, and the type glyph merged
+   into the number cell (`'AC-4(17)\nT'`). Both external reviewers (see §6)
+   independently predict the mechanism: small-caps emulated by TWO coincident
+   draw runs; the second run clipped by the cell. First probe: dump per-char
+   sequence/font/size/bbox for one such cell.
+2. **Withdrawn-row notes split across columns** (p474/481):
+   `'W: Incorporated into' | 'CM-10 a\nand SI-7.'` with a stray 'a'.
 
-The immutable all-candidates hardening goal is still **not met**. A sequence of
-successful slices is not completion of the goal.
+### Unadjudicated (19)
+p30 footnotes-as-body (3), p382/p399 field-split bbox synthesis (9 across
+both), p402/p404 shaded headings (4), p413 numeric false-list, p461
+caption-table association, p157_unnamed (malformed empty finding — flag to
+human rather than adjudicate).
 
-Known pending or broken areas:
+### Architectural debt (from the 2026-08-21 webgpt+webgemini review — run
+`ask-tau-review-...-8a3a1776ed9c`, both seats PASS, full responses in the run
+dir under node-artifacts/)
+- **BLOCKER for pass closure**: the debug/release branch divergence in
+  `extract_text` (src/document.rs, structure_content_cache branch near the
+  top of extract_text). Method both seats endorsed: instrument the single
+  branch-selection decision point, dump every input predicate under both
+  profiles, diff. Suspects: cfg(debug_assertions), FP sensitivity in 2pt
+  clustering, HashMap iteration order.
+- **Nearest-column fallback in src/tables/text_assign.rs is UNPROVEN** — it
+  was a wrong hypothesis kept as a guard, has no failing-first test, and can
+  force out-of-grid glyphs into confidently wrong cells. Needs its own
+  adversarial fixture (bound by max-gap proportional to ruling thickness) or
+  removal.
+- **`sort_mcid_spans_reading_order` keys a HashMap on span.sequence** —
+  uniqueness never verified; duplicates would silently corrupt line
+  assignment. One-command check, do it first.
+- **Identity-based char dedup hole**: a double-draw with ligature `ﬁ` on one
+  layer and decomposed `f`+`i` on the other now SURVIVES as duplicate text.
+- **The 111 bulk text-loss closures rest on a ≥4-letter word-SET sweep** —
+  blind to multiplicity, order, placement, short tokens. Both reviewers:
+  downgrade to "strong corroboration"; upgrade path is per-region token
+  Counters (all tokens, counts, coarse x/y bins) BEFORE any further bulk
+  adjudication.
+- **Ledger design**: adjudications and the reconciler are still competing
+  writers to `current_status`, separated only by one `if`. Target design
+  (both reviewers, identical): append-only adjudication events;
+  `current_status` a derived projection; reconciler writes only
+  `deterministic_status`.
+- reorder_intra_line_runs / MCID sort are UNTESTED on RTL, bidi, math,
+  rotated text — ranked the #1 cross-document regression risk by both seats.
 
-- The latest deterministic reconciliation still lists 299 unverified historical
-  findings.
-- Historical queue entries are stale unless re-materialized against current
-  extraction. Do not pick a stale text-only finding without fresh local
-  evidence.
-- `$ask` competition/provider work was unreliable in prior attempts and should
-  not be used as proof for PDF extraction correctness.
-- A real GitHub issue was filed for the agent-skills PDF Lab verifier mismatch:
-  `https://github.com/grahama1970/agent-skills/issues/1118`.
-- Full-repository tests were not run for this handoff-only step.
-- The current worktree has many unrelated modified and untracked files. Treat
-  them as user/other-agent work; do not clean, reset, stash, or stage broadly.
+## 5. Next Steps (ordered)
 
-No current focused PDF extraction regression failure is selected in this
-handoff. The next agent should select one from fresh current evidence.
+1. **Minutes**: verify `span.sequence` uniqueness per page (assert in the MCID
+   sort or prove global uniqueness); write the adversarial fixture for the
+   nearest-column fallback or revert it.
+2. **Slice A — token-Counter fidelity oracle**: per-region (coarse x/y bin)
+   token Counters, all token lengths, counts not sets, pdf_oxide vs PyMuPDF.
+   Land BEFORE further bulk adjudication (both reviewers' strongest
+   methodology point). Re-run over the 111 bulk closures as confirmation.
+3. **Slice B — duplicated small-caps cells** (biggest live defect family):
+   per-char dump of one cell to confirm the two-run mechanism, then a
+   run-aware/geometric dedup (not adjacent-char). Failing predicate exists in
+   the ledger quotes; formalize as a check script first.
+4. **Slice C — debug/release divergence root cause** (pass-closure blocker):
+   instrument the branch selection, diff predicates across profiles.
+5. Withdrawn-row column splits (p474/481), then the 19 unadjudicated via
+   `adjudicate_findings.py packet` — footnotes p30 first (3 findings).
+6. Ledger redesign to event-sourcing when next touching the census pipeline.
+7. Human decisions pending: #15/#17 policy (close as not-planned vs migrate
+   ttf-parser→harfrust and drop the tract 'ml' stack); Wingdings encoding
+   table (new ticket, out of #21's scope); p157_unnamed malformed finding.
 
-## 5. Recommended Next Steps
+## 6. Project Context Required for Success
 
-1. Resume the immutable PDF Lab hardening queue from fresh evidence, not from
-   old handoff prose or stale issue summaries.
-2. Start with
-   `artifacts/pdf_lab/current_candidate_reconciliation_after_page23_20260729T2200Z/deterministic_reconciliation_report.json`
-   and its `current_evidence` directory.
-3. Select exactly one current unresolved candidate and write down:
-   page id, block id or region id, actual label/bbox, expected label/bbox,
-   defect class, evidence paths, and why it is the next useful target.
-4. Create or update the executable defect fixture before patching. The defect
-   object should be machine-readable, not prose-only.
-5. Patch only the extractor or preset code needed for that single defect class.
-6. Re-materialize current evidence for the selected page/checklist item.
-7. Run the narrow deterministic checks for the touched files and the focused
-   regression.
-8. Commit and push only relevant code, tests, and proof receipts.
-9. Use `$ask` or browser oracles only when genuinely blocked or confused, with a
-   concrete bundle. Do not use an Ask response as closure proof.
+Read before continuing:
+- `fixtures/agentic_eval.json` — the regression contract; run via
+  `/home/graham/.claude/skills/agentic-evals/run.sh run fixtures/agentic_eval.json`.
+  Fixture rules learned the hard way: version 2, claims as an object, needs at
+  least one negative and one real_world case, commands run with fixtures/ as
+  cwd, no per-case env (wrap in `bash -c`), cargo output needs
+  `grep 'test result:'` (its tail is blank lines).
+- `scripts/pdf_lab/adjudicate_findings.py` and `check_*.py` — the predicates.
+- `artifacts/pdf_lab/census_regen_20260820/seed.json` — the ledger.
+- Review run (both seats' full POSITION/EVIDENCE/RISKS/ANSWERS/DISSENT):
+  `/mnt/storage12tb/skills/ask/outputs/.ask_artifacts/tau-dag-runs/ask-tau-review-the-pdf-oxide-agentic-sec-8a3a1776ed9c/node-artifacts/`
+- Corpus paths: NIST 800-53r5 at
+  `/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf`
+  (0-based index = printed page − 1 for this copy); 800-53Ar5 and NASA
+  handbook under `/mnt/storage12tb/extractor_corpus/`. The NASA ticket
+  document is `engineering/12 NASA_SP-2016-6105 Rev 2.pdf` (sha b8e28d12) —
+  NOT the inbox/government copy; testing the wrong copy once produced a false
+  "fixed" reading.
 
-The best next local artifact is a single failing executable defect object for
-one current unresolved candidate. The defect schema should normalize at least:
-
-- `document_id`
-- `page_id`
-- `source_pdf`
-- `candidate_id`
-- `actual.label`
-- `actual.bbox`
-- `expected.label`
-- `expected.bbox`
-- `evidence.page_image`
-- `evidence.annotated_image`
-- `evidence.current_extraction_json`
-- `defect_class`
-- `repair_owner`
-- `genericity`
-- `confidence`
-- `validator`
-
-## 6. Project Context Required For Success
-
-Read these files before continuing PDF Lab hardening:
-
-- `GOAL.md`
-- `AGENTS.md`
-- `README.md`
-- `scripts/pdf_lab/materialize_historical_finding_current_evidence.py`
-- `scripts/pdf_lab/reconcile_historical_findings_deterministic.py`
-- `scripts/pdf_lab/snapshot_current_extraction.py`
-- `scripts/pdf_lab/validate_creator_reviewer_defects.py`
-- `schemas/pdf_lab/creator_reviewer_defects.schema.json`
-- `python/pdf_oxide/presets/applier.py`
-- `python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json`
-- `tests/test_pdf_lab_creator_reviewer_defects.py`
-- `tests/test_pdf_lab_snapshot_current_extraction.py`
-
-Operational constraints:
-
-- Do not claim the immutable goal is complete from a partial page receipt.
-- Do not run broad Ask competitions as a substitute for local proof.
-- Do not prioritize Git cleanup over extraction correctness.
-- Do not use linguistic shortcuts or page-specific text phrases for extractor
-  classification.
-- Do not revert or clean unrelated dirty worktree paths.
-- Preserve visual/human evidence, current extraction JSON, and receipt artifacts
-  for every candidate slice.
-
-The immediate project state is therefore: the current branch has several
-focused hardening slices with receipts, `origin/main` is divergent, and the next
-PDF task is to select the next current unresolved extraction candidate and
-create the first failing executable defect check for it.
+Operational constraints (unchanged, operator-standing):
+- Work only in this primary checkout; never create worktrees. `main` is the
+  only branch and must stay directly pushable.
+- `/ask fix-issues` is the standard GitHub-issue loop (dry-run first,
+  `--workdir` required, close only on a passing verify).
+- Every resolved bug gets an agentic-evals fixture — non-negotiable.
+- Ask browser lanes: ONE attachment per webgpt/webgemini seat; no absolute
+  local paths or `~<digits>` in prompt bundles (preflight fails closed) —
+  sanitize, then submit. Stale provider tabs are rebindable with
+  `/browser-oracle open-bind`.
+- Measurement discipline: a regex character class written with `\uXXXX`
+  escapes can silently degrade (observed: it became a literal hyphen and
+  counted `-` as PUA, producing false readings in both directions). Use
+  explicit ord() ranges and give every checker a negative control.
