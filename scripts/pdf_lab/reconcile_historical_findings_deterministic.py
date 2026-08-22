@@ -16,6 +16,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from census_adjudication_events import project_current_statuses
+
+
 REPO = Path(__file__).resolve().parents[2]
 
 TABLE_TEXT_FIDELITY_TERMS = (
@@ -73,6 +76,10 @@ def read_json(path: Path) -> Any:
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def sorted_counts(counter: Counter) -> dict[str, int]:
+    return dict(sorted(counter.items(), key=lambda item: str(item[0])))
 
 
 def block_type(block: dict[str, Any]) -> str:
@@ -252,19 +259,13 @@ def main() -> int:
     reconciliation = read_json(args.reconciliation)
     extractions = load_page_extractions(args.evidence_root)
     updates = []
+    project_current_statuses(reconciliation)
     previous_statuses = Counter(entry["current_status"] for entry in reconciliation.get("entries") or [])
 
     for entry in reconciliation.get("entries") or []:
-        # An agent-adjudicated status carries quoted evidence, commit and
-        # timestamp; the conservative structural pass must not silently revert
-        # it back to "unverified" (observed 2026-08-20: this loop reset 280
-        # adjudicated entries). Deterministic reconciliation only fills in
-        # statuses for entries no adjudicator has decided.
-        if entry.get("adjudication"):
-            continue
         result = reconcile_entry(entry, extractions.get(int(entry["page"])))
-        old_status = entry.get("current_status")
-        entry["current_status"] = result["status"]
+        old_status = entry.get("deterministic_status")
+        entry["deterministic_status"] = result["status"]
         entry["reconciliation_reason"] = result["reason"]
         entry["reconciliation_evidence"] = result["evidence"]
         if result["status"] != old_status:
@@ -272,17 +273,22 @@ def main() -> int:
                 {
                     "page": entry["page"],
                     "finding_id": entry["finding_id"],
-                    "old_status": old_status,
-                    "status": result["status"],
+                    "old_deterministic_status": old_status,
+                    "deterministic_status": result["status"],
                     "reason": result["reason"],
                     "evidence": result["evidence"],
                 }
             )
 
+    current_status_counts = project_current_statuses(reconciliation)
     status_counts = Counter(entry["current_status"] for entry in reconciliation.get("entries") or [])
+    deterministic_status_counts = Counter(
+        entry.get("deterministic_status") for entry in reconciliation.get("entries") or []
+    )
     reconciliation["deterministic_reconciled_at"] = utc_now()
     reconciliation["deterministic_reconciled_commit"] = git_head()
-    reconciliation["status_counts"] = dict(sorted(status_counts.items()))
+    reconciliation["status_counts"] = current_status_counts
+    reconciliation["deterministic_status_counts"] = sorted_counts(deterministic_status_counts)
     reconciliation.setdefault("commands", []).append(" ".join(["python", *map(str, __import__("sys").argv)]))
     write_json(args.reconciliation, reconciliation)
 
@@ -293,12 +299,23 @@ def main() -> int:
         "reconciliation": str(args.reconciliation),
         "evidence_root": str(args.evidence_root),
         "updated_count": len(updates),
-        "previous_status_counts": dict(sorted(previous_statuses.items())),
-        "status_counts": dict(sorted(status_counts.items())),
+        "previous_status_counts": sorted_counts(previous_statuses),
+        "status_counts": sorted_counts(status_counts),
+        "deterministic_status_counts": sorted_counts(deterministic_status_counts),
         "updates": updates,
     }
     write_json(args.report, report)
-    print(json.dumps({"report": str(args.report), "updated_count": len(updates), "status_counts": dict(sorted(status_counts.items()))}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "report": str(args.report),
+                "updated_count": len(updates),
+                "status_counts": sorted_counts(status_counts),
+                "deterministic_status_counts": sorted_counts(deterministic_status_counts),
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 

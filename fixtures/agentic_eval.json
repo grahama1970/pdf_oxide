@@ -245,6 +245,27 @@
       }
     },
     {
+      "name": "issue-34-census-adjudication-events-derived-status",
+      "type": "positive",
+      "real_world": true,
+      "description": "Issue #34 guard for the NIST historical census ledger. The checker replays append-only adjudication events, proves projected current_status counts remain stable, and runs the deterministic reconciler over an adjudicated entry with missing evidence to prove it writes deterministic_status without overwriting the event-derived current_status.",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=scripts/pdf_lab .venv/bin/python scripts/pdf_lab/check_census_adjudication_events_issue34.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"passed\": true",
+          "\"counts_match\": true",
+          "\"current_status_preserved\": true",
+          "\"deterministic_overwrote_current\": false",
+          "\"event_count_after\": 299"
+        ]
+      }
+    },
+    {
       "name": "full-lib-suite-no-regression",
       "type": "positive",
       "description": "Font decoding sits on the hot path for every extraction, so any change there must leave the whole library suite green. Baseline when this case was written: 4623 passed, 0 failed.",

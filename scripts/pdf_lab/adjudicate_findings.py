@@ -31,6 +31,13 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from census_adjudication_events import (
+    append_adjudication_event,
+    migrate_legacy_adjudications,
+    project_current_statuses,
+)
+
+
 REPO = Path(__file__).resolve().parents[2]
 CENSUS = REPO / "artifacts/pdf_lab/census_regen_20260820"
 LEDGER = CENSUS / "seed.json"
@@ -51,6 +58,7 @@ def _page_blocks(page: int) -> list[dict]:
 
 def cmd_packet(page: int) -> int:
     ledger = _load_ledger()
+    project_current_statuses(ledger)
     entries = [
         e
         for e in ledger["entries"]
@@ -94,6 +102,7 @@ def cmd_packet(page: int) -> int:
 
 def cmd_apply(decisions_path: Path) -> int:
     ledger = _load_ledger()
+    project_current_statuses(ledger)
     index = {
         (e.get("page"), e.get("finding_id")): e
         for e in ledger["entries"]
@@ -115,14 +124,19 @@ def cmd_apply(decisions_path: Path) -> int:
                 "still_broken entries may be (re-)adjudicated"
             )
             continue
-        if d["status"] not in ("resolved_by_current_extraction", "still_broken"):
+        if d["status"] not in (
+            "resolved_by_current_extraction",
+            "still_broken",
+            "flag_for_human",
+        ):
             problems.append(f"{key}: bad status {d['status']!r}")
             continue
         if not str(d.get("evidence", "")).strip():
             problems.append(f"{key}: decision has no quoted evidence")
             continue
-        entry["current_status"] = d["status"]
-        entry["adjudication"] = {
+
+        event = {
+            "event_type": "human_flag" if d["status"] == "flag_for_human" else "adjudication_decision",
             "adjudicator": "claude-agentic-second-pass",
             "status": d["status"],
             "decided_at": datetime.now(timezone.utc).isoformat(),
@@ -132,18 +146,41 @@ def cmd_apply(decisions_path: Path) -> int:
             ).stdout.strip(),
             "evidence": d["evidence"],
         }
+        append_adjudication_event(entry, event)
         applied.append(key)
+
     if problems:
         print(json.dumps({"applied": 0, "problems": problems}, indent=1))
         return 1
+    counts = project_current_statuses(ledger)
     LEDGER.write_text(json.dumps(ledger, indent=1, ensure_ascii=False))
-    counts = Counter(e.get("current_status") for e in ledger["entries"])
     report = {
         "applied": len(applied),
         "applied_keys": [list(k) for k in applied],
-        "status_counts": dict(counts),
+        "status_counts": counts,
     }
     print(json.dumps(report, indent=1))
+    return 0
+
+
+def cmd_migrate_events(check_only: bool) -> int:
+    ledger = _load_ledger()
+    before = Counter(e.get("current_status") for e in ledger["entries"])
+    migration = migrate_legacy_adjudications(ledger)
+    after = Counter(e.get("current_status") for e in ledger["entries"])
+    report = {
+        **migration,
+        "before_status_counts": dict(sorted(before.items())),
+        "after_status_counts": dict(sorted(after.items())),
+        "counts_match": before == after,
+        "check_only": check_only,
+    }
+    if before != after:
+        print(json.dumps(report, indent=1, ensure_ascii=False))
+        return 1
+    if not check_only:
+        LEDGER.write_text(json.dumps(ledger, indent=1, ensure_ascii=False))
+    print(json.dumps(report, indent=1, ensure_ascii=False))
     return 0
 
 
@@ -154,9 +191,13 @@ def main() -> int:
     p1.add_argument("--page", type=int, required=True)
     p2 = sub.add_parser("apply")
     p2.add_argument("--decisions", type=Path, required=True)
+    p3 = sub.add_parser("migrate-events")
+    p3.add_argument("--check-only", action="store_true")
     args = ap.parse_args()
     if args.cmd == "packet":
         return cmd_packet(args.page)
+    if args.cmd == "migrate-events":
+        return cmd_migrate_events(args.check_only)
     return cmd_apply(args.decisions)
 
 
