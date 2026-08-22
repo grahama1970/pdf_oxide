@@ -189,6 +189,22 @@
       }
     },
     {
+      "name": "issue-38-ligature-vs-decomposed-double-draw",
+      "type": "positive",
+      "description": "Ligature double-draw hole in identity-based char dedup: one draw layer emits the 'fi' ligature (U+FB01) and the duplicate layer emits decomposed 'f' + 'i' across the same advance, so identity comparison keeps every glyph and the visible text doubles. Observed pre-fix on the reverted logic: ligature-first yielded 'fix' as \"\\ufb01fix\" and decomposed-first yielded \"fi\\ufb01x\"; post-fix both collapse to a single rendering. Guard also pins the two non-goals: a real letter starting at or past the ligature's advance is kept, and the narrow-space glyph guard from the p19 fix still holds.",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && cargo test --lib -- ligature_then_decomposed_double_draw_is_deduplicated decomposed_then_ligature_double_draw_is_deduplicated ligature_dedup_keeps_legitimate_adjacent_letters ligature_dedup_does_not_reopen_narrow_space_glyph_loss 2>&1 | grep 'test result: ok. 4 passed'"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "test result: ok. 4 passed"
+        ]
+      }
+    },
+    {
       "name": "full-lib-suite-no-regression",
       "type": "positive",
       "description": "Font decoding sits on the hot path for every extraction, so any change there must leave the whole library suite green. Baseline when this case was written: 4623 passed, 0 failed.",

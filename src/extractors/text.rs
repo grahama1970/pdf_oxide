@@ -17,6 +17,7 @@ use crate::geometry::Rect;
 use crate::layout::{Color, FontWeight, TextChar, TextSpan};
 use crate::object::{Object, ObjectRef};
 use crate::pipeline::config::WordBoundaryMode;
+use crate::text::ligature_processor::get_ligature_components;
 use crate::text::{BoundaryContext, CharacterInfo, DocumentScript, WordBoundaryDetector};
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
@@ -1942,6 +1943,14 @@ pub struct TextExtractor {
     cached_current_font: Option<Arc<FontInfo>>,
 }
 
+/// Horizontal slack (pt) allowed when deciding whether a glyph still falls
+/// inside an already-drawn ligature's advance. Component letters of the Latin
+/// ligatures come from `text::ligature_processor::get_ligature_components`;
+/// this pass deliberately does NOT use full NFKC, which also folds fullwidth
+/// forms, superscripts and no-break spaces — distinct ink that a positional
+/// dedup must never collapse.
+const LIGATURE_OVERLAP_EPSILON: f32 = 0.5;
+
 impl TextExtractor {
     /// Create a new text extractor with default configuration.
     ///
@@ -2696,10 +2705,19 @@ impl TextExtractor {
             return;
         }
 
-        let mut deduplicated = Vec::with_capacity(self.chars.len());
+        let mut deduplicated: Vec<TextChar> = Vec::with_capacity(self.chars.len());
         let mut prev_y_rounded: Option<i32> = None;
         let mut prev_x: Option<f32> = None;
         let mut prev_char: Option<char> = None;
+        // Ligature-vs-decomposed double draw: the first layer draws a single
+        // 'fi' glyph and the duplicate layer draws 'f' then 'i' across the same
+        // advance. Identity comparison sees three different characters and keeps
+        // all of them, so the visible text comes out as "fifi". While a ligature
+        // is "open" we hold its component letters and the x at which its advance
+        // ends; components that land inside that advance, in order, are the
+        // second draw of the same ink.
+        // (y_rounded, x_start, x_end, components, next component index)
+        let mut open_ligature: Option<(i32, f32, f32, &'static str, usize)> = None;
 
         for ch in self.chars.iter() {
             let y_rounded = ch.bbox.y.round() as i32;
@@ -2715,7 +2733,7 @@ impl TextExtractor {
             // real glyph after a space per affected line (NIST 800-53r5 p19:
             // "privacy" -> "rivacy", "mapped" -> "apped", "federal" ->
             // "ederal"), losing 1 of 36 'p' glyphs on the page.
-            let should_skip = if let (Some(prev_y), Some(prev_x_val), Some(prev_ch)) =
+            let mut should_skip = if let (Some(prev_y), Some(prev_x_val), Some(prev_ch)) =
                 (prev_y_rounded, prev_x, prev_char)
             {
                 // Same line, same character, within 2pt horizontally
@@ -2724,7 +2742,53 @@ impl TextExtractor {
                 false
             };
 
+            // An open ligature that this glyph cannot belong to is closed first,
+            // so a later real 'f' on the same line is never eaten.
+            if let Some((lig_y, _, lig_x_end, _, _)) = open_ligature {
+                // A component must start strictly inside the ligature's advance;
+                // a glyph sitting at or past its end is the next real letter.
+                if y_rounded != lig_y || x >= lig_x_end - LIGATURE_OVERLAP_EPSILON {
+                    open_ligature = None;
+                }
+            }
+
             if !should_skip {
+                if let Some((_, lig_x_start, _, components, cursor)) = open_ligature.as_mut() {
+                    let origin_ok = *cursor > 0 || (x - *lig_x_start).abs() < 2.0;
+                    let expected = components.chars().nth(*cursor);
+                    if origin_ok && expected == Some(ch.char) {
+                        // Decomposed re-draw of a ligature already kept.
+                        should_skip = true;
+                        *cursor += 1;
+                        if *cursor >= components.chars().count() {
+                            open_ligature = None;
+                        }
+                    } else {
+                        open_ligature = None;
+                    }
+                }
+            }
+
+            // Reverse order: the decomposed run was drawn first and the ligature
+            // glyph follows on top of it. Match the ligature against the letters
+            // just kept at the same origin.
+            if !should_skip {
+                if let Some(components) = get_ligature_components(ch.char) {
+                    if Self::preceding_chars_spell(&deduplicated, y_rounded, x, components) {
+                        should_skip = true;
+                    }
+                }
+            }
+
+            if !should_skip {
+                if let Some(components) = get_ligature_components(ch.char) {
+                    let advance = if ch.advance_width > 0.0 {
+                        ch.advance_width
+                    } else {
+                        ch.bbox.width
+                    };
+                    open_ligature = Some((y_rounded, x, x + advance, components, 0));
+                }
                 deduplicated.push(ch.clone());
                 prev_y_rounded = Some(y_rounded);
                 prev_x = Some(x);
@@ -2747,6 +2811,30 @@ impl TextExtractor {
         );
 
         self.chars = deduplicated;
+    }
+
+    /// True when the last `components.len()` kept glyphs are exactly those
+    /// component letters, on the same rounded line, starting at (nearly) the
+    /// same x-origin as the ligature glyph now being considered.
+    fn preceding_chars_spell(
+        kept: &[TextChar],
+        y_rounded: i32,
+        lig_x: f32,
+        components: &str,
+    ) -> bool {
+        let n = components.chars().count();
+        if kept.len() < n {
+            return false;
+        }
+        let tail = &kept[kept.len() - n..];
+        if tail
+            .iter()
+            .zip(components.chars())
+            .any(|(k, c)| k.char != c || k.bbox.y.round() as i32 != y_rounded)
+        {
+            return false;
+        }
+        (tail[0].bbox.x - lig_x).abs() < 2.0
     }
 
     /// Sort extracted text spans by reading order (top-to-bottom, left-to-right).
@@ -8257,6 +8345,82 @@ mod tests {
 
         extractor.deduplicate_overlapping_chars();
         assert_eq!(extractor.chars.len(), 2, "Chars on different lines should not be deduplicated");
+    }
+
+    fn lig_char(c: char, x: f32, y: f32, advance: f32) -> TextChar {
+        TextChar {
+            char: c,
+            bbox: Rect::new(x, y, advance, 12.0),
+            font_name: "F1".to_string(),
+            font_size: 12.0,
+            font_weight: FontWeight::Normal,
+            color: Color::black(),
+            mcid: None,
+            is_italic: false,
+            origin_x: x,
+            origin_y: y,
+            rotation_degrees: 0.0,
+            advance_width: advance,
+            matrix: None,
+        }
+    }
+
+    fn dedup_text(chars: Vec<TextChar>) -> String {
+        let mut extractor = TextExtractor::new();
+        extractor.chars = chars;
+        extractor.deduplicate_overlapping_chars();
+        extractor.chars.iter().map(|c| c.char).collect()
+    }
+
+    #[test]
+    fn ligature_then_decomposed_double_draw_is_deduplicated() {
+        // Layer 1 draws the 'fi' ligature; layer 2 redraws it as 'f' + 'i'
+        // across the same advance. Identity dedup kept all three glyphs.
+        let text = dedup_text(vec![
+            lig_char('\u{FB01}', 100.0, 700.0, 6.0),
+            lig_char('f', 100.0, 700.0, 3.2),
+            lig_char('i', 103.2, 700.0, 2.8),
+            lig_char('x', 106.0, 700.0, 6.0),
+        ]);
+        assert_eq!(text, "\u{FB01}x");
+    }
+
+    #[test]
+    fn decomposed_then_ligature_double_draw_is_deduplicated() {
+        let text = dedup_text(vec![
+            lig_char('f', 100.0, 700.0, 3.2),
+            lig_char('i', 103.2, 700.0, 2.8),
+            lig_char('\u{FB01}', 100.0, 700.0, 6.0),
+            lig_char('x', 106.0, 700.0, 6.0),
+        ]);
+        assert_eq!(text, "fix");
+    }
+
+    #[test]
+    fn ligature_dedup_keeps_legitimate_adjacent_letters() {
+        // "\u{FB01}fth" — the 'f' after the ligature is real text beyond the
+        // ligature's advance and must survive.
+        let text = dedup_text(vec![
+            lig_char('\u{FB01}', 100.0, 700.0, 6.0),
+            lig_char('f', 106.0, 700.0, 3.2),
+            lig_char('t', 109.2, 700.0, 3.0),
+            lig_char('h', 112.2, 700.0, 6.0),
+        ]);
+        assert_eq!(text, "\u{FB01}fth");
+    }
+
+    #[test]
+    fn ligature_dedup_does_not_reopen_narrow_space_glyph_loss() {
+        // Regression guard for the narrow-space hole: distinct glyphs ~2pt
+        // apart after a space are real content, ligature logic must not touch
+        // them.
+        let text = dedup_text(vec![
+            lig_char('a', 100.0, 700.0, 6.0),
+            lig_char(' ', 106.0, 700.0, 2.0),
+            lig_char('p', 107.5, 700.0, 6.0),
+            lig_char('r', 113.5, 700.0, 5.0),
+        ]);
+        assert_eq!(text, "a pr");
     }
 
     #[test]
