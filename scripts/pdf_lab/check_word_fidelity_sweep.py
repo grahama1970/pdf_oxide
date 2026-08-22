@@ -33,6 +33,7 @@ LEDGER = REPO / "artifacts/pdf_lab/census_regen_20260820/seed.json"
 TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+")
 DEFAULT_COLUMNS = 4
 DEFAULT_ROWS = 4
+DEFAULT_NEIGHBOR_RADIUS = 3
 EXPECTED_BULK_CLOSURES = 111
 
 
@@ -142,6 +143,58 @@ def compare_region_counters(
     return mismatches
 
 
+def parse_bin(value: str) -> tuple[int, int]:
+    match = re.fullmatch(r"r(\d+)c(\d+)", value)
+    if not match:
+        raise ValueError(f"invalid bin id: {value}")
+    return int(match.group(1)), int(match.group(2))
+
+
+def neighbor_counter_delta(
+    expected: dict[str, Counter[str]],
+    actual: dict[str, Counter[str]],
+    radius: int,
+) -> dict[str, Any]:
+    actual_remaining = {key: Counter(value) for key, value in actual.items()}
+    unresolved_expected: Counter[str] = Counter()
+
+    for expected_bin, expected_counter in expected.items():
+        expected_row, expected_col = parse_bin(expected_bin)
+        candidate_bins = sorted(
+            actual_remaining,
+            key=lambda actual_bin: max(
+                abs(parse_bin(actual_bin)[0] - expected_row),
+                abs(parse_bin(actual_bin)[1] - expected_col),
+            ),
+        )
+        for token, count in expected_counter.items():
+            remaining = count
+            for actual_bin in candidate_bins:
+                actual_row, actual_col = parse_bin(actual_bin)
+                distance = max(abs(actual_row - expected_row), abs(actual_col - expected_col))
+                if distance > radius:
+                    continue
+                consumed = min(remaining, actual_remaining[actual_bin][token])
+                if consumed:
+                    actual_remaining[actual_bin][token] -= consumed
+                    remaining -= consumed
+                if remaining == 0:
+                    break
+            if remaining:
+                unresolved_expected[token] += remaining
+
+    unresolved_actual: Counter[str] = Counter()
+    for counter in actual_remaining.values():
+        unresolved_actual.update(+counter)
+
+    return {
+        "missing_total": sum(unresolved_expected.values()),
+        "extra_total": sum(unresolved_actual.values()),
+        "missing": unresolved_expected.most_common(20),
+        "extra": unresolved_actual.most_common(20),
+    }
+
+
 def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[str, Any]:
     ledger = json.loads(LEDGER.read_text())
     entries = ledger["entries"]
@@ -154,6 +207,7 @@ def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[s
     page_detail: dict[str, dict[str, Any]] = {}
     region_detail: dict[str, dict[str, Any]] = {}
     region_bin_mismatches = 0
+    neighbor_detail: dict[str, dict[str, Any]] = {}
 
     for page_number in pages:
         page_index = page_number - 1
@@ -175,8 +229,17 @@ def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[s
             region_detail[str(page_number)] = mismatched_regions
             region_bin_mismatches += len(mismatched_regions)
 
+        neighbor_delta = neighbor_counter_delta(
+            expected_regions,
+            actual_regions,
+            DEFAULT_NEIGHBOR_RADIUS,
+        )
+        if neighbor_delta["missing_total"] or neighbor_delta["extra_total"]:
+            neighbor_detail[str(page_number)] = neighbor_delta
+
     page_counter_passed = not page_detail
     region_counter_passed = not region_detail
+    region_neighbor_counter_passed = not neighbor_detail
     bulk_closure_count_passed = len(bulk_entries) == EXPECTED_BULK_CLOSURES
     passed = (
         page_counter_passed
@@ -209,6 +272,14 @@ def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[s
         "region_counter_mismatches": len(region_detail),
         "region_bin_mismatches": region_bin_mismatches,
         "region_counter_passed": region_counter_passed,
+        "region_neighbor_radius": DEFAULT_NEIGHBOR_RADIUS,
+        "region_neighbor_counter_mismatches": len(neighbor_detail),
+        "region_neighbor_missing_total": sum(
+            item["missing_total"] for item in neighbor_detail.values()
+        ),
+        "region_neighbor_extra_total": sum(item["extra_total"] for item in neighbor_detail.values()),
+        "region_neighbor_counter_passed": region_neighbor_counter_passed,
+        "region_neighbor_detail": neighbor_detail,
         "region_detail": region_detail,
         "region_proof_boundary": (
             "diagnostic only unless require_region_parity is true; current positioned "
@@ -248,6 +319,11 @@ def stdout_summary(report: dict[str, Any]) -> dict[str, Any]:
         "region_counter_mismatches": report["region_counter_mismatches"],
         "region_bin_mismatches": report["region_bin_mismatches"],
         "region_counter_passed": report["region_counter_passed"],
+        "region_neighbor_radius": report["region_neighbor_radius"],
+        "region_neighbor_counter_mismatches": report["region_neighbor_counter_mismatches"],
+        "region_neighbor_missing_total": report["region_neighbor_missing_total"],
+        "region_neighbor_extra_total": report["region_neighbor_extra_total"],
+        "region_neighbor_counter_passed": report["region_neighbor_counter_passed"],
         "region_proof_boundary": report["region_proof_boundary"],
         "require_region_parity": report["require_region_parity"],
         "passed": report["passed"],

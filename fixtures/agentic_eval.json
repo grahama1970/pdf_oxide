@@ -154,6 +154,7 @@
           "\"page_counter_mismatches\": 0",
           "\"bulk_closure_count\": 111",
           "\"region_counter_passed\": false",
+          "\"region_neighbor_counter_mismatches\": 2",
           "\"passed\": true"
         ],
         "artifacts": [
@@ -176,6 +177,11 @@
             "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
             "json_pointer": "/region_counter_passed",
             "equals": false
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_neighbor_counter_mismatches",
+            "equals": 2
           }
         ]
       }
