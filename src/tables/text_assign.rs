@@ -82,28 +82,15 @@ fn assign_with_char_splitting(
                 break;
             }
         }
-        // Column intervals are disjoint, so a glyph whose center falls inside
-        // the gap between two columns (the ruling-line thickness) matches no
-        // interval. Dropping it loses real text — observed live on NIST
-        // 800-53r5 p19, where the 'p' of a wrapped "privacy" vanished,
-        // serializing as "rivacy". Assign such glyphs to the nearest column
-        // instead of discarding them.
-        if !assigned && !table.cols.is_empty() {
-            let (nearest, _) = table
-                .cols
-                .iter()
-                .enumerate()
-                .map(|(c, &(cx0, cx1))| {
-                    let dist = if x_mid < cx0 {
-                        cx0 - x_mid
-                    } else {
-                        x_mid - cx1
-                    };
-                    (c, dist)
-                })
-                .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal))
-                .expect("non-empty cols");
-            col_chars[nearest].push(ch);
+        // Column intervals are disjoint, so a glyph centered on a narrow
+        // ruling-line gap between two columns matches no interval. Dropping it
+        // loses real text, but assigning arbitrary out-of-grid glyphs to the
+        // nearest column creates confident false cells. Keep only narrow
+        // inter-column gap cases.
+        if !assigned {
+            if let Some(nearest) = nearest_column_for_narrow_gap(&table.cols, ch) {
+                col_chars[nearest].push(ch);
+            }
         }
     }
 
@@ -148,6 +135,36 @@ fn assign_with_char_splitting(
     }
 
     errors
+}
+
+fn nearest_column_for_narrow_gap(cols: &[(f64, f64)], ch: &CharPosition) -> Option<usize> {
+    const MAX_RULING_GAP_POINTS: f64 = 3.0;
+
+    if cols.len() < 2 {
+        return None;
+    }
+
+    let x_mid = ch.x_mid();
+    for (left_idx, window) in cols.windows(2).enumerate() {
+        let left_edge = window[0].1;
+        let right_edge = window[1].0;
+        let gap_width = right_edge - left_edge;
+        if gap_width <= 0.0 || gap_width > MAX_RULING_GAP_POINTS {
+            continue;
+        }
+        if x_mid > left_edge && x_mid < right_edge {
+            let right_idx = left_idx + 1;
+            let left_distance = x_mid - left_edge;
+            let right_distance = right_edge - x_mid;
+            return Some(if left_distance <= right_distance {
+                left_idx
+            } else {
+                right_idx
+            });
+        }
+    }
+
+    None
 }
 
 /// Assign whole element to column with maximum overlap (fallback mode).
@@ -659,6 +676,57 @@ mod tests {
 
         assert_eq!(table.cells[0][0].text, "AB");
         assert!(table.cells[0][1].text.is_empty());
+    }
+
+    #[test]
+    fn gap_glyph_in_wide_gutter_is_not_forced_into_nearest_column() {
+        let mut table =
+            Table::new(vec![(0.0, 50.0), (150.0, 200.0)], vec![(0.0, 50.0)], Flavor::Stream);
+        let elements = vec![TextElement {
+            text: "X".into(),
+            x0: 96.0,
+            y0: 10.0,
+            x1: 104.0,
+            y1: 30.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: Some(vec![CharPosition {
+                char: 'X',
+                x0: 96.0,
+                x1: 104.0,
+            }]),
+        }];
+
+        let errors = assign_text_to_cells(&mut table, &elements);
+
+        assert!(errors.is_empty());
+        assert!(table.cells[0][0].text.is_empty());
+        assert!(table.cells[0][1].text.is_empty());
+    }
+
+    #[test]
+    fn gap_glyph_inside_narrow_ruling_gap_is_retained() {
+        let mut table =
+            Table::new(vec![(0.0, 50.0), (52.0, 100.0)], vec![(0.0, 50.0)], Flavor::Stream);
+        let elements = vec![TextElement {
+            text: "p".into(),
+            x0: 49.2,
+            y0: 10.0,
+            x1: 52.0,
+            y1: 30.0,
+            font_size: 12.0,
+            is_bold: false,
+            chars: Some(vec![CharPosition {
+                char: 'p',
+                x0: 49.2,
+                x1: 52.0,
+            }]),
+        }];
+
+        let errors = assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(table.cells[0][0].text, "p");
+        assert_eq!(errors.len(), 1);
     }
 
     #[test]

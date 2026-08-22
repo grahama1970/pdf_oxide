@@ -13437,14 +13437,14 @@ fn sort_mcid_spans_reading_order<'a>(spans: &mut Vec<&'a crate::layout::TextSpan
         }
         line_of[i] = current_line;
     }
-    let keyed: std::collections::HashMap<usize, usize> = spans
+    let keyed: std::collections::HashMap<*const crate::layout::TextSpan, usize> = spans
         .iter()
         .enumerate()
-        .map(|(i, s)| (s.sequence as usize, line_of[i]))
+        .map(|(i, s)| (*s as *const crate::layout::TextSpan, line_of[i]))
         .collect();
     spans.sort_by(|a, b| {
-        let la = keyed[&(a.sequence as usize)];
-        let lb = keyed[&(b.sequence as usize)];
+        let la = keyed[&(*a as *const crate::layout::TextSpan)];
+        let lb = keyed[&(*b as *const crate::layout::TextSpan)];
         la.cmp(&lb)
             .then(
                 a.bbox
@@ -13454,4 +13454,49 @@ fn sort_mcid_spans_reading_order<'a>(spans: &mut Vec<&'a crate::layout::TextSpan
             )
             .then(a.sequence.cmp(&b.sequence))
     });
+}
+
+#[cfg(test)]
+mod mcid_reading_order_tests {
+    use super::sort_mcid_spans_reading_order;
+    use crate::geometry::Rect;
+    use crate::layout::{Color, FontWeight, TextSpan};
+
+    fn span(text: &str, x: f32, y: f32, sequence: usize) -> TextSpan {
+        TextSpan {
+            text: text.to_string(),
+            bbox: Rect {
+                x,
+                y,
+                width: text.len() as f32 * 6.0,
+                height: 10.0,
+            },
+            font_name: "F1".to_string(),
+            font_size: 10.0,
+            font_weight: FontWeight::Normal,
+            is_italic: false,
+            color: Color::new(0.0, 0.0, 0.0),
+            mcid: Some(1),
+            sequence,
+            split_boundary_before: false,
+            offset_semantic: false,
+            char_spacing: 0.0,
+            word_spacing: 0.0,
+            horizontal_scaling: 100.0,
+            primary_detected: false,
+        }
+    }
+
+    #[test]
+    fn duplicate_sequence_values_do_not_alias_line_assignments() {
+        let lower = span("lower", 0.0, 50.0, 7);
+        let upper = span("upper", 20.0, 100.0, 7);
+        let upper_left = span("start", 10.0, 100.0, 8);
+
+        let mut spans = vec![&lower, &upper, &upper_left];
+        sort_mcid_spans_reading_order(&mut spans);
+
+        let ordered: Vec<&str> = spans.iter().map(|span| span.text.as_str()).collect();
+        assert_eq!(ordered, vec!["start", "upper", "lower"]);
+    }
 }
