@@ -24,7 +24,7 @@ pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<
 
     for elem in elements {
         let text = elem.text.trim();
-        if text.is_empty() {
+        if text.is_empty() || is_watermark_text(text) {
             continue;
         }
 
@@ -198,10 +198,53 @@ fn append_to_cell(table: &mut Table, row: usize, col: usize, text: &str) {
     let cell = &mut table.cells[row][col];
     if cell.text.is_empty() {
         cell.text = text.to_string();
+    } else if should_skip_cell_append(&cell.text, text) {
+        return;
+    } else if should_replace_cell_text(&cell.text, text) {
+        cell.text = text.to_string();
     } else {
         cell.text.push('\n');
         cell.text.push_str(text);
     }
+}
+
+fn is_watermark_text(text: &str) -> bool {
+    WATERMARK_PHRASES.iter().any(|phrase| text.contains(phrase))
+}
+
+fn compact_cell_text(text: &str) -> String {
+    text.split_whitespace().collect::<String>().to_lowercase()
+}
+
+fn should_skip_cell_append(existing: &str, incoming: &str) -> bool {
+    let incoming_compact = compact_cell_text(incoming);
+    if incoming_compact.is_empty() {
+        return true;
+    }
+
+    existing.lines().any(|line| {
+        let line_compact = compact_cell_text(line);
+        !line_compact.is_empty() && line_compact.contains(&incoming_compact)
+    }) || compact_cell_text(existing).contains(&incoming_compact)
+}
+
+fn should_replace_cell_text(existing: &str, incoming: &str) -> bool {
+    let mut lines = existing
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty());
+    let Some(existing_line) = lines.next() else {
+        return false;
+    };
+    if lines.next().is_some() {
+        return false;
+    }
+
+    let existing_compact = compact_cell_text(existing_line);
+    let incoming_compact = compact_cell_text(incoming);
+    existing_compact.len() >= 4
+        && incoming_compact.len() > existing_compact.len()
+        && incoming_compact.starts_with(&existing_compact)
 }
 
 /// Calculate how much a text element spills outside its assigned cell.
@@ -727,6 +770,88 @@ mod tests {
 
         assert_eq!(table.cells[0][0].text, "p");
         assert_eq!(errors.len(), 1);
+    }
+
+    #[test]
+    fn duplicate_overlapping_cell_text_is_not_appended_twice() {
+        let mut table = make_table();
+        let elements = vec![
+            TextElement {
+                text: "AC-4(32)".into(),
+                x0: 10.0,
+                y0: 10.0,
+                x1: 45.0,
+                y1: 20.0,
+                font_size: 9.0,
+                is_bold: false,
+                chars: None,
+            },
+            TextElement {
+                text: "AC-4(32)".into(),
+                x0: 10.0,
+                y0: 10.0,
+                x1: 45.0,
+                y1: 20.0,
+                font_size: 9.0,
+                is_bold: false,
+                chars: None,
+            },
+        ];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(table.cells[0][0].text, "AC-4(32)");
+    }
+
+    #[test]
+    fn overlapping_prefix_fragment_is_replaced_by_complete_run() {
+        let mut table = make_table();
+        let elements = vec![
+            TextElement {
+                text: "PROCE".into(),
+                x0: 10.0,
+                y0: 10.0,
+                x1: 35.0,
+                y1: 20.0,
+                font_size: 7.0,
+                is_bold: false,
+                chars: None,
+            },
+            TextElement {
+                text: "PROCESS REQUIREMENTS FOR INFORMATION TRANSFER".into(),
+                x0: 10.0,
+                y0: 10.0,
+                x1: 95.0,
+                y1: 20.0,
+                font_size: 7.0,
+                is_bold: false,
+                chars: None,
+            },
+        ];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert_eq!(table.cells[0][0].text, "PROCESS REQUIREMENTS FOR INFORMATION TRANSFER");
+    }
+
+    #[test]
+    fn nist_watermark_text_is_not_assigned_to_table_cells() {
+        let mut table = make_table();
+        let elements = vec![TextElement {
+            text: "This publication is available free of charge from:".into(),
+            x0: 10.0,
+            y0: 10.0,
+            x1: 95.0,
+            y1: 20.0,
+            font_size: 9.0,
+            is_bold: false,
+            chars: None,
+        }];
+
+        assign_text_to_cells(&mut table, &elements);
+
+        assert!(table.cells[0][0].text.is_empty());
+        assert!(table.cells[0][1].text.is_empty());
     }
 
     #[test]

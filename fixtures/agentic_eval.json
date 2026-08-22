@@ -224,6 +224,27 @@
       }
     },
     {
+      "name": "issue-36-nist-appendix-grid-small-caps-cells",
+      "type": "positive",
+      "real_world": true,
+      "description": "Issue #36 guard for NIST SP 800-53r5 appendix-grid cells on printed pages 457, 464, and 486. The live checker extracts the real PDF through the shared table path and asserts that five rows no longer contain duplicate control IDs, truncated small-caps prefixes, or footer/watermark contamination. It also writes a p457 AC-4(17) char/span dump so the first failure mode remains inspectable.",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python scripts/pdf_lab/check_appendix_grid_small_caps_issue36.py"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"passed\": true",
+          "\"problems\": []",
+          "\"AC-4(17)\": [",
+          "\"SC-12(3)\": [",
+          "p457_ac4_17_char_dump.json"
+        ]
+      }
+    },
+    {
       "name": "full-lib-suite-no-regression",
       "type": "positive",
       "description": "Font decoding sits on the hot path for every extraction, so any change there must leave the whole library suite green. Baseline when this case was written: 4623 passed, 0 failed.",
