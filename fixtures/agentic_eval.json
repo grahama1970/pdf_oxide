@@ -174,15 +174,18 @@
     {
       "name": "mcid-sequence-and-table-gap-assignment-guards",
       "type": "adversarial",
-      "description": "Deterministic guards for two reviewer-identified assumptions: sort_mcid_spans_reading_order must not alias line assignments when different spans share a sequence value, and character-level table assignment may retain glyphs centered in narrow ruling gaps but must not force glyphs from wide gutters into the nearest cell.",
+      "real_world": true,
+      "description": "Issue #39 guard for two reviewer-identified assumptions: the NIST census page set must not contain duplicate TextSpan.sequence values inside the same MCID group, sort_mcid_spans_reading_order must not alias line assignments when synthetic duplicate sequence values are present, and character-level table assignment may retain glyphs centered in narrow ruling gaps but must not force glyphs from wide gutters into the nearest cell.",
       "command": [
         "bash",
         "-c",
-        "cd .. && cargo test --lib duplicate_sequence_values_do_not_alias_line_assignments 2>&1 | grep 'test result: ok. 1 passed' && cargo test --lib gap_glyph 2>&1 | grep 'test result: ok. 2 passed'"
+        "cd .. && PYTHONPATH=python:scripts/pdf_lab .venv/bin/python scripts/pdf_lab/check_mcid_sequence_uniqueness_issue39.py && cargo test --lib duplicate_sequence_values_do_not_alias_line_assignments 2>&1 | grep 'test result: ok. 1 passed' && cargo test --lib gap_glyph 2>&1 | grep 'test result: ok. 2 passed'"
       ],
       "expected": {
         "exit_code": 0,
         "stdout_contains": [
+          "\"pages_scanned\": 55",
+          "\"duplicate_groups\": 0",
           "test result: ok. 1 passed",
           "test result: ok. 2 passed"
         ]
