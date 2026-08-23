@@ -5704,8 +5704,9 @@ mod tests {
         let font = make_font(|f| f.base_font = "ArialMT".to_string());
         assert_eq!(font.normalize_symbol_pua("\u{F0B7}"), None);
 
-        // Wingdings has no encoding table in this crate, so it must fall through
-        // rather than be mapped through the Symbol table and produce a wrong glyph.
+        // Wingdings is explicitly unsupported until this crate has a
+        // fixture-backed Wingdings encoding table. It must fall through rather
+        // than be mapped through the Symbol table and produce a wrong glyph.
         let wingdings = make_font(|f| f.base_font = "ADKAIK+Wingdings-Regular".to_string());
         assert_eq!(wingdings.normalize_symbol_pua("\u{F0D8}"), None);
     }
