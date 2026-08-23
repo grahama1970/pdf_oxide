@@ -21,7 +21,7 @@ EXPECTED_ROWS: dict[int, dict[str, list[str]]] = {
         "AC-4(32)": ["AC-4(32)", "PROCESS REQUIREMENTS FOR INFORMATION TRANSFER", "S", ""],
     },
     464: {
-        "CM-2(4)": ["CM-2(4)", "UNAUTHORIZED SOFTWARE", "W: Incorporated into", "CM-7."],
+        "CM-2(4)": ["CM-2(4)", "UNAUTHORIZED SOFTWARE", "W: Incorporated into CM-7.", ""],
         "CM-4(1)": ["CM-4(1)", "SEPARATE TEST ENVIRONMENTS", "O", "√"],
     },
     486: {
@@ -66,25 +66,10 @@ def _dump_p457_ac4_17_evidence(pdf: Path, output_dir: Path) -> Path:
 
     doc = pdf_oxide.PdfDocument(str(pdf))
     page_index = 456
-    chars = []
-    for index, ch in enumerate(doc.extract_chars(page_index)):
-        x, y, width, height = ch.bbox
-        if 85.0 <= x <= 240.0 and 210.0 <= y <= 230.0:
-            chars.append(
-                {
-                    "index": index,
-                    "char": ch.char,
-                    "bbox": [x, y, width, height],
-                    "font_name": ch.font_name,
-                    "font_size": ch.font_size,
-                    "origin": [ch.origin_x, ch.origin_y],
-                }
-            )
-
     spans = []
     for index, span in enumerate(doc.extract_spans(page_index)):
         x, y, width, height = span.bbox
-        if 20.0 <= x <= 240.0 and 210.0 <= y <= 230.0:
+        if "AC-4(17)" in span.text or "DOMAIN AUTHENTICATION" in span.text:
             spans.append(
                 {
                     "index": index,
@@ -92,6 +77,29 @@ def _dump_p457_ac4_17_evidence(pdf: Path, output_dir: Path) -> Path:
                     "bbox": [x, y, width, height],
                     "font_name": span.font_name,
                     "font_size": span.font_size,
+                }
+            )
+
+    if spans:
+        x0 = min(span["bbox"][0] for span in spans) - 2.0
+        y0 = min(span["bbox"][1] for span in spans) - 2.0
+        x1 = max(span["bbox"][0] + span["bbox"][2] for span in spans) + 2.0
+        y1 = max(span["bbox"][1] + span["bbox"][3] for span in spans) + 2.0
+    else:
+        x0, y0, x1, y1 = 85.0, 560.0, 240.0, 585.0
+
+    chars = []
+    for index, ch in enumerate(doc.extract_chars(page_index)):
+        x, y, width, height = ch.bbox
+        if x0 <= x <= x1 and y0 <= y <= y1:
+            chars.append(
+                {
+                    "sequence": index,
+                    "char": ch.char,
+                    "bbox": [x, y, width, height],
+                    "font_name": ch.font_name,
+                    "font_size": ch.font_size,
+                    "origin": [ch.origin_x, ch.origin_y],
                 }
             )
 
@@ -148,11 +156,23 @@ def main() -> int:
         observed[str(page_number)] = page_observed
 
     char_dump = _dump_p457_ac4_17_evidence(args.pdf, args.output_dir)
+    dump_payload = json.loads(char_dump.read_text(encoding="utf-8"))
+    dump_text = _normalize_cell(dump_payload.get("chars_text"))
+    if dump_text != "AC-4(17) DOMAIN AUTHENTICATION":
+        problems.append(
+            {
+                "page": 457,
+                "control_id": "AC-4(17)",
+                "expected_dump_text": "AC-4(17) DOMAIN AUTHENTICATION",
+                "actual_dump_text": dump_text,
+            }
+        )
     report = {
         "passed": not problems,
         "pdf": str(args.pdf),
         "ledger": str(args.ledger),
         "char_dump": str(char_dump),
+        "char_dump_verified": dump_text == "AC-4(17) DOMAIN AUTHENTICATION",
         "observed": observed,
         "problems": problems,
     }
