@@ -1,4 +1,4 @@
-//! Text rasterizer - renders PDF text using tiny-skia + fontdb + ttf-parser.
+//! Text rasterizer - renders PDF text using tiny-skia + fontdb + skrifa.
 //!
 //! Uses system fonts via fontdb as fallback when embedded fonts aren't available.
 //! Renders actual glyph outlines from TrueType/OpenType fonts.
@@ -12,6 +12,11 @@ use crate::fonts::text_decode::decode_pdf_text;
 use crate::fonts::FontInfo;
 use crate::object::Object;
 
+use skrifa::{
+    instance::{LocationRef, Size},
+    outline::{DrawSettings, OutlinePen},
+    FontRef, MetadataProvider,
+};
 use tiny_skia::{Paint, PathBuilder, Pixmap, Transform};
 
 /// Rasterizer for PDF text operations.
@@ -212,13 +217,22 @@ impl TextRasterizer {
 
         self.font_db
             .with_face_data(font_id, |font_data, face_index| {
-                let face = match ttf_parser::Face::parse(font_data, face_index) {
+                let face = match FontRef::from_index(font_data, face_index) {
                     Ok(f) => f,
                     Err(_) => return,
                 };
 
-                let units_per_em = face.units_per_em() as f32;
+                let location = LocationRef::default();
+                let size = Size::unscaled();
+                let metrics = face.metrics(size, location);
+                let units_per_em = metrics.units_per_em as f32;
+                if units_per_em == 0.0 {
+                    return;
+                }
                 let scale = font_size / units_per_em;
+                let charmap = face.charmap();
+                let glyph_metrics = face.glyph_metrics(size, location);
+                let outlines = face.outline_glyphs();
                 let mut current_x = x;
                 let mut glyphs_found = 0u32;
                 let mut glyphs_missing = 0u32;
@@ -230,7 +244,7 @@ impl TextRasterizer {
                             continue;
                         }
 
-                        let glyph_id = match face.glyph_index(ch) {
+                        let glyph_id = match charmap.map(ch) {
                             Some(id) => {
                                 glyphs_found += 1;
                                 id
@@ -243,23 +257,27 @@ impl TextRasterizer {
                         };
 
                         // Get advance width from system font
-                        let advance = face
-                            .glyph_hor_advance(glyph_id)
-                            .unwrap_or((units_per_em * 0.5) as u16)
-                            as f32
+                        let advance = glyph_metrics
+                            .advance_width(glyph_id)
+                            .unwrap_or(units_per_em * 0.5)
                             * scale;
 
                         // Build glyph path
-                        let mut builder = GlyphPathBuilder::new(current_x, y, scale);
-                        if face.outline_glyph(glyph_id, &mut builder).is_some() {
-                            if let Some(path) = builder.finish() {
-                                pixmap.fill_path(
-                                    &path,
-                                    paint,
-                                    tiny_skia::FillRule::EvenOdd,
-                                    transform,
-                                    clip_mask,
-                                );
+                        if let Some(outline) = outlines.get(glyph_id) {
+                            let mut builder = GlyphPathBuilder::new(current_x, y, scale);
+                            if outline
+                                .draw(DrawSettings::unhinted(size, location), &mut builder)
+                                .is_ok()
+                            {
+                                if let Some(path) = builder.finish() {
+                                    pixmap.fill_path(
+                                        &path,
+                                        paint,
+                                        tiny_skia::FillRule::EvenOdd,
+                                        transform,
+                                        clip_mask,
+                                    );
+                                }
                             }
                         }
 
@@ -284,7 +302,7 @@ impl TextRasterizer {
     }
 }
 
-/// Converts ttf-parser glyph outline callbacks into a tiny-skia path.
+/// Converts glyph outline callbacks into a tiny-skia path.
 struct GlyphPathBuilder {
     builder: PathBuilder,
     x_offset: f32,
@@ -317,7 +335,7 @@ impl GlyphPathBuilder {
     }
 }
 
-impl ttf_parser::OutlineBuilder for GlyphPathBuilder {
+impl OutlinePen for GlyphPathBuilder {
     fn move_to(&mut self, x: f32, y: f32) {
         self.builder.move_to(self.tx(x), self.ty(y));
     }

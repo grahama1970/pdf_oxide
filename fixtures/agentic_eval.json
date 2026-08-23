@@ -2,10 +2,10 @@
   "version": 2,
   "skill": "pdf_oxide",
   "trials": 2,
-  "proof_scope": "Live extraction regression guards for resolved pdf_oxide issues. Each corpus case drives the real extractor over the real source PDF named in its issue and asserts that the specific defect stays fixed. Commands run with this fixtures/ directory as the working directory. Deterministic unit-level cases guard recently fixed ordering and table-assignment assumptions that protect the live extraction paths. Dependency-audit cases run the real cargo-audit scanner against the real lockfile.",
+  "proof_scope": "Live extraction regression guards for resolved pdf_oxide issues. Each corpus case drives the real extractor over the real source PDF named in its issue and asserts that the specific defect stays fixed. Commands run with this fixtures/ directory as the working directory. Deterministic unit-level cases guard recently fixed ordering and table-assignment assumptions that protect the live extraction paths. Dependency-audit cases regenerate the ignored library lockfile, then run the real cargo-audit scanner against that lockfile.",
   "claims": {
     "proves": "the named defect in each referenced issue does not reproduce on the current build, and the library suite stays green; each case was observed failing on the pre-fix code before being accepted",
-    "does_not_prove": "full-document extraction accuracy, semantic correctness beyond the asserted predicate, or that unrelated PUA-emitting fonts such as Wingdings are handled. Wingdings is an explicit unsupported policy until a fixture-backed Wingdings encoding table exists; this crate currently has Symbol and ZapfDingbats encoding tables but no Wingdings table. Dependency-audit guards prove scanner output for the current lockfile only; they do not prove replacement of the intentionally open ttf-parser dependency."
+    "does_not_prove": "full-document extraction accuracy, semantic correctness beyond the asserted predicate, or that unrelated PUA-emitting fonts such as Wingdings are handled. Wingdings is an explicit unsupported policy until a fixture-backed Wingdings encoding table exists; this crate currently has Symbol and ZapfDingbats encoding tables but no Wingdings table. Dependency-audit guards prove scanner output for the regenerated lockfile only; they do not prove future dependency advisories will stay absent."
   },
   "cases": [
     {
@@ -444,11 +444,11 @@
       "name": "issue-15-paste-absent-from-cargo-audit",
       "type": "positive",
       "real_world": true,
-      "description": "Issue #15 guard for RUSTSEC-2024-0436. Run the real cargo-audit scanner against the current Cargo.lock and assert that paste is not reported while the intentionally open ttf-parser advisory remains visible for issue #17. This catches regressions where optional dependencies or default image features reintroduce paste.",
+      "description": "Issue #15 guard for RUSTSEC-2024-0436. Regenerate the ignored library lockfile, run the real cargo-audit scanner, and assert that paste is not reported. This catches regressions where optional dependencies or default image features reintroduce paste.",
       "command": [
         "bash",
         "-c",
-        "cd .. && cargo audit --json > /tmp/pdf_oxide_issue15_agentic_eval_audit.json && jq -e '(.vulnerabilities.found == false) and ([.warnings.unmaintained[]?.package.name] == [\"ttf-parser\"]) and (([.warnings.unmaintained[]?.package.name] | index(\"paste\")) == null)' /tmp/pdf_oxide_issue15_agentic_eval_audit.json"
+        "cd .. && cargo generate-lockfile && cargo audit --json > /tmp/pdf_oxide_issue15_agentic_eval_audit.json && jq -e '(.vulnerabilities.found == false) and (([.warnings.unmaintained[]?.package.name] | index(\"paste\")) == null)' /tmp/pdf_oxide_issue15_agentic_eval_audit.json"
       ],
       "expected": {
         "exit_code": 0,
@@ -460,11 +460,34 @@
             "path": "/tmp/pdf_oxide_issue15_agentic_eval_audit.json",
             "json_pointer": "/vulnerabilities/found",
             "equals": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "issue-17-ttf-parser-absent-from-cargo-audit-and-tree",
+      "type": "positive",
+      "real_world": true,
+      "description": "Issue #17 guard for RUSTSEC-2026-0192. Regenerate the ignored library lockfile, run the real cargo-audit scanner, assert that ttf-parser is not reported, then assert the resolved all-features dependency tree no longer contains ttf-parser.",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && cargo generate-lockfile && cargo audit --json > /tmp/pdf_oxide_issue17_agentic_eval_audit.json && if cargo tree -i ttf-parser --all-features --target=all > /tmp/pdf_oxide_issue17_ttf_tree.txt 2>&1; then cat /tmp/pdf_oxide_issue17_ttf_tree.txt; exit 1; fi && jq -e '(.vulnerabilities.found == false) and (([.warnings.unmaintained[]?.package.name] | index(\"ttf-parser\")) == null) and (([.warnings.unmaintained[]?.package.name] | index(\"paste\")) == null)' /tmp/pdf_oxide_issue17_agentic_eval_audit.json"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "true"
+        ],
+        "artifacts": [
+          {
+            "path": "/tmp/pdf_oxide_issue17_agentic_eval_audit.json",
+            "json_pointer": "/vulnerabilities/found",
+            "equals": false
           },
           {
-            "path": "/tmp/pdf_oxide_issue15_agentic_eval_audit.json",
-            "json_pointer": "/warnings/unmaintained/0/package/name",
-            "equals": "ttf-parser"
+            "path": "/tmp/pdf_oxide_issue17_ttf_tree.txt",
+            "min_bytes": 32
           }
         ]
       }

@@ -1,6 +1,6 @@
 //! TrueType/OpenType font parser for PDF embedding.
 //!
-//! This module wraps the `ttf-parser` crate to extract font data needed
+//! This module wraps the `skrifa` crate to extract font data needed
 //! for embedding TrueType fonts in PDF documents with full Unicode support.
 //!
 //! # Font Embedding in PDF
@@ -14,7 +14,13 @@
 use std::collections::{BTreeSet, HashMap};
 use std::io::{self, Write};
 
-use ttf_parser::{Face, GlyphId};
+use skrifa::{
+    attribute::{Style, Weight},
+    instance::{LocationRef, Size},
+    metrics::Metrics,
+    string::StringId,
+    FontRef, GlyphId, MetadataProvider,
+};
 
 /// Error types for TrueType font parsing.
 #[derive(Debug, thiserror::Error)]
@@ -44,10 +50,9 @@ pub enum TrueTypeError {
 pub type TrueTypeResult<T> = Result<T, TrueTypeError>;
 
 /// Parsed TrueType font data for PDF embedding.
-#[derive(Debug)]
 pub struct TrueTypeFont<'a> {
     /// The parsed font face
-    face: Face<'a>,
+    face: FontRef<'a>,
     /// Original font data (needed for embedding)
     data: &'a [u8],
     /// Cached Unicode to glyph ID mapping
@@ -69,7 +74,8 @@ impl<'a> TrueTypeFont<'a> {
             return Err(TrueTypeError::EmptyFont);
         }
 
-        let face = Face::parse(data, 0).map_err(|e| TrueTypeError::ParseError(e.to_string()))?;
+        let face =
+            FontRef::from_index(data, 0).map_err(|e| TrueTypeError::ParseError(e.to_string()))?;
 
         let mut font = Self {
             face,
@@ -89,8 +95,9 @@ impl<'a> TrueTypeFont<'a> {
         // Iterate through BMP (Basic Multilingual Plane)
         for codepoint in 0..=0xFFFF_u32 {
             if let Some(char) = char::from_u32(codepoint) {
-                if let Some(glyph_id) = self.face.glyph_index(char) {
-                    self.unicode_to_glyph.insert(codepoint, glyph_id.0);
+                if let Some(glyph_id) = self.face.charmap().map(char) {
+                    self.unicode_to_glyph
+                        .insert(codepoint, glyph_id.to_u32() as u16);
                 }
             }
         }
@@ -98,79 +105,100 @@ impl<'a> TrueTypeFont<'a> {
 
     /// Build glyph width table from hmtx table.
     fn build_width_table(&mut self) {
-        let units_per_em = self.face.units_per_em();
+        let metrics = self.metrics();
+        let units_per_em = metrics.units_per_em;
+        let glyph_metrics = self
+            .face
+            .glyph_metrics(Size::unscaled(), LocationRef::default());
 
-        for glyph_id in 0..self.face.number_of_glyphs() {
-            let glyph = GlyphId(glyph_id);
-            let advance = self.face.glyph_hor_advance(glyph).unwrap_or(0);
+        for glyph_id in 0..metrics.glyph_count {
+            let glyph = GlyphId::new(glyph_id as u32);
+            let advance = glyph_metrics.advance_width(glyph).unwrap_or(0.0).max(0.0);
             // Store as width in units of 1/1000 of em
-            let width_1000 = (advance as u32 * 1000 / units_per_em as u32) as u16;
+            let width_1000 = if units_per_em == 0 {
+                0
+            } else {
+                (advance * 1000.0 / units_per_em as f32)
+                    .round()
+                    .clamp(0.0, u16::MAX as f32) as u16
+            };
             self.glyph_widths.insert(glyph_id, width_1000);
         }
+    }
+
+    fn metrics(&self) -> Metrics {
+        self.face.metrics(Size::unscaled(), LocationRef::default())
     }
 
     /// Get the font's PostScript name.
     pub fn postscript_name(&self) -> Option<String> {
         self.face
-            .names()
-            .into_iter()
-            .find(|name| name.name_id == ttf_parser::name_id::POST_SCRIPT_NAME)
-            .and_then(|name| name.to_string())
+            .localized_strings(StringId::POSTSCRIPT_NAME)
+            .english_or_first()
+            .map(|name| name.to_string())
     }
 
     /// Get the font family name.
     pub fn family_name(&self) -> Option<String> {
         self.face
-            .names()
-            .into_iter()
-            .find(|name| name.name_id == ttf_parser::name_id::FAMILY)
-            .and_then(|name| name.to_string())
+            .localized_strings(StringId::FAMILY_NAME)
+            .english_or_first()
+            .map(|name| name.to_string())
     }
 
     /// Get units per em for this font.
     pub fn units_per_em(&self) -> u16 {
-        self.face.units_per_em()
+        self.metrics().units_per_em
     }
 
     /// Get the ascender in font units.
     pub fn ascender(&self) -> i16 {
-        self.face.ascender()
+        self.metrics().ascent.round() as i16
     }
 
     /// Get the descender in font units (negative value).
     pub fn descender(&self) -> i16 {
-        self.face.descender()
+        self.metrics().descent.round() as i16
     }
 
     /// Get the cap height in font units.
     pub fn cap_height(&self) -> Option<i16> {
-        self.face.capital_height()
+        self.metrics().cap_height.map(|v| v.round() as i16)
     }
 
     /// Get the x-height in font units.
     pub fn x_height(&self) -> Option<i16> {
-        self.face.x_height()
+        self.metrics().x_height.map(|v| v.round() as i16)
     }
 
     /// Get the italic angle.
     pub fn italic_angle(&self) -> f32 {
-        self.face.italic_angle()
+        self.metrics().italic_angle
     }
 
     /// Check if the font is bold.
     pub fn is_bold(&self) -> bool {
-        self.face.is_bold()
+        self.face.attributes().weight >= Weight::BOLD
     }
 
     /// Check if the font is italic.
     pub fn is_italic(&self) -> bool {
-        self.face.is_italic()
+        matches!(self.face.attributes().style, Style::Italic | Style::Oblique(_))
     }
 
     /// Get the font bounding box.
     pub fn bbox(&self) -> (i16, i16, i16, i16) {
-        let bbox = self.face.global_bounding_box();
-        (bbox.x_min, bbox.y_min, bbox.x_max, bbox.y_max)
+        self.metrics()
+            .bounds
+            .map(|bbox| {
+                (
+                    bbox.x_min.round() as i16,
+                    bbox.y_min.round() as i16,
+                    bbox.x_max.round() as i16,
+                    bbox.y_max.round() as i16,
+                )
+            })
+            .unwrap_or((0, 0, 0, 0))
     }
 
     /// Get glyph ID for a Unicode codepoint.
@@ -192,7 +220,7 @@ impl<'a> TrueTypeFont<'a> {
 
     /// Get the number of glyphs in the font.
     pub fn num_glyphs(&self) -> u16 {
-        self.face.number_of_glyphs()
+        self.metrics().glyph_count
     }
 
     /// Get the raw font data for embedding.
@@ -234,7 +262,7 @@ impl<'a> TrueTypeFont<'a> {
         let mut flags = 0u32;
 
         // Bit 1: FixedPitch (monospace)
-        if self.face.is_monospaced() {
+        if self.metrics().is_monospace {
             flags |= 1 << 0;
         }
 
@@ -521,7 +549,7 @@ mod tests {
         let font = TrueTypeFont::parse(&data).unwrap();
         let ps_name = font.postscript_name();
         // postscript_name() may return None if the name table encoding
-        // is not supported by ttf-parser's to_string(). Just verify
+        // is not supported by the font string decoder. Just verify
         // the method doesn't panic and returns a valid Option.
         if let Some(ref name) = ps_name {
             assert!(!name.is_empty(), "PostScript name should not be empty if present");
@@ -537,7 +565,7 @@ mod tests {
         let font = TrueTypeFont::parse(&data).unwrap();
         let family = font.family_name();
         // family_name() may return None if the name table encoding
-        // is not supported by ttf-parser's to_string(). Just verify
+        // is not supported by the font string decoder. Just verify
         // the method doesn't panic and returns a valid Option.
         if let Some(ref name) = family {
             assert!(!name.is_empty(), "Family name should not be empty if present");
