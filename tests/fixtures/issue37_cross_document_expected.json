@@ -1,0 +1,44 @@
+{
+  "schema": "pdf_oxide.issue37.cross_document_reading_order_expected.v1",
+  "cases": [
+    {
+      "id": "rtl_hebrew_positioned_runs",
+      "description": "Two Hebrew runs are positioned on one line; current extraction preserves the stable left-positioned run before the right-positioned run.",
+      "expected_lines": [
+        "עולם",
+        "שלום"
+      ],
+      "expected_joined": "עולם שלום"
+    },
+    {
+      "id": "bidi_latin_hebrew_runs",
+      "description": "A mixed Latin/Hebrew line preserves the run order emitted by the real extractor instead of dropping or duplicating the RTL run.",
+      "expected_lines": [
+        "LTR-A",
+        "שלום",
+        "LTR-B"
+      ],
+      "expected_joined": "LTR-A שלום LTR-B"
+    },
+    {
+      "id": "math_like_super_sub_runs",
+      "description": "Math-like baseline, superscript, and subscript runs remain in left-to-right expression order despite y-offsets.",
+      "expected_lines": [
+        "x 2",
+        "+ y 1",
+        "= 5"
+      ],
+      "expected_joined": "x 2 + y 1 = 5"
+    },
+    {
+      "id": "rotated_side_run",
+      "description": "A rotated side-label run remains extractable and does not corrupt the main horizontal text order.",
+      "expected_lines": [
+        "ROTATED SIDE",
+        "MAIN TOP",
+        "MAIN BOTTOM"
+      ],
+      "expected_joined": "ROTATED SIDE MAIN TOP MAIN BOTTOM"
+    }
+  ]
+}

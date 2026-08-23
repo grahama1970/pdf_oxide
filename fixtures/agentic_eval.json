@@ -379,6 +379,47 @@
       }
     },
     {
+      "name": "issue-37-cross-document-reading-order",
+      "type": "positive",
+      "real_world": true,
+      "description": "Issue #37 cross-document guard for the reading-order repair surface. The integration test builds four non-NIST minimal PDFs with Type0/Identity-H text and explicit ToUnicode CMaps, then runs the real PdfDocument::extract_text path and compares extracted order against tests/fixtures/issue37_cross_document_expected.json for RTL Hebrew, bidirectional Latin/Hebrew, math-like super/subscript runs, and rotated text.",
+      "command": [
+        "bash",
+        "-c",
+        "cd .. && python3 scripts/pdf_lab/check_issue37_cross_document_reading_order.py --output artifacts/pdf_lab/issue37_cross_document_reading_order_report.json"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "stdout_contains": [
+          "\"passed\": true",
+          "\"case_count\": 4",
+          "\"passed_case_count\": 4"
+        ],
+        "artifacts": [
+          {
+            "path": "../artifacts/pdf_lab/issue37_cross_document_reading_order_report.json",
+            "json_pointer": "/passed",
+            "equals": true
+          },
+          {
+            "path": "../artifacts/pdf_lab/issue37_cross_document_reading_order_report.json",
+            "json_pointer": "/case_count",
+            "equals": 4
+          },
+          {
+            "path": "../artifacts/pdf_lab/issue37_cross_document_reading_order_report.json",
+            "json_pointer": "/passed_case_count",
+            "equals": 4
+          },
+          {
+            "path": "../artifacts/pdf_lab/issue37_cross_document_reading_order_report.json",
+            "json_pointer": "/extractor",
+            "equals": "PdfDocument::extract_text"
+          }
+        ]
+      }
+    },
+    {
       "name": "issue-34-census-adjudication-events-derived-status",
       "type": "positive",
       "real_world": true,
