@@ -237,7 +237,6 @@ impl BarcodeGenerator {
         data: &str,
         options: &BarcodeOptions,
     ) -> Result<Vec<u8>> {
-        use barcoders::generators::image::*;
         use barcoders::sym::codabar::Codabar;
         use barcoders::sym::code128::Code128;
         use barcoders::sym::code39::Code39;
@@ -311,34 +310,41 @@ impl BarcodeGenerator {
             },
         };
 
-        // Render to image
-        let image_gen = Image::PNG {
-            height: options.height,
-            xdim: 1, // Base module width
-            rotation: Rotation::Zero,
-            foreground: Color::new(options.foreground),
-            background: Color::new(options.background),
-        };
+        let source_width = encoded.len().max(1);
+        let module_width = (options.width as usize / source_width).max(1);
+        let actual_width = source_width * module_width;
+        let mut img = image::RgbaImage::from_pixel(
+            actual_width as u32,
+            options.height,
+            image::Rgba(options.background),
+        );
 
-        let png_bytes = image_gen
-            .generate(&encoded)
-            .map_err(|e| Error::Barcode(format!("Image generation error: {}", e)))?;
+        for (x, &bar) in encoded.iter().enumerate() {
+            if bar != 0 {
+                let start_x = x * module_width;
+                for dx in 0..module_width {
+                    for y in 0..options.height {
+                        img.put_pixel((start_x + dx) as u32, y, image::Rgba(options.foreground));
+                    }
+                }
+            }
+        }
 
-        // Scale to desired width if needed
-        if let Ok(img) = image::load_from_memory(&png_bytes) {
-            let scaled = img.resize_exact(
+        let final_img = if actual_width != options.width as usize {
+            image::DynamicImage::ImageRgba8(img).resize_exact(
                 options.width,
                 options.height,
                 image::imageops::FilterType::Nearest,
-            );
-            let mut buf = Vec::new();
-            scaled
-                .write_to(&mut std::io::Cursor::new(&mut buf), image::ImageFormat::Png)
-                .map_err(|e| Error::Barcode(format!("PNG encoding error: {}", e)))?;
-            Ok(buf)
+            )
         } else {
-            Ok(png_bytes)
-        }
+            image::DynamicImage::ImageRgba8(img)
+        };
+
+        let mut buf = Vec::new();
+        final_img
+            .write_to(&mut std::io::Cursor::new(&mut buf), image::ImageFormat::Png)
+            .map_err(|e| Error::Barcode(format!("PNG encoding error: {}", e)))?;
+        Ok(buf)
     }
 
     /// Generate a QR code as PNG bytes.

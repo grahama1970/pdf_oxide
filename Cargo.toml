@@ -86,11 +86,9 @@ linfa-clustering = { version = "0.8", optional = true }
 
 # ML (CPU-only)
 tract-onnx = { version = "0.22", optional = true }
-tokenizers = { version = "0.15", optional = true, default-features = false, features = ["onig"] }
 
 # OCR - PaddleOCR via ONNX Runtime (optional)
 ort = { version = "2.0.0-rc.11", optional = true, default-features = false, features = ["ndarray"] }
-imageproc = { version = "0.26", optional = true }
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
@@ -123,8 +121,8 @@ fontdb = { version = "0.23", optional = true }
 uuid = { version = "1.0", features = ["v4", "js"] }
 
 # Barcode/QR code generation (optional)
-qrcode = { version = "0.14", optional = true }
-barcoders = { version = "2.0", optional = true, features = ["image"] }
+qrcode = { version = "0.14", optional = true, default-features = false }
+barcoders = { version = "2.0", optional = true, default-features = false, features = ["std"] }
 
 # Office document conversion (optional)
 # >=0.36 pulls quick-xml >=0.41, clearing the transitive RUSTSEC-2026-0194 /
@@ -154,9 +152,9 @@ python = ["pyo3"]
 
 # The following features are planned for v1.0 and are not yet production-ready.
 # We define them here to avoid check-cfg warnings, but their dependencies are commented out.
-ml = ["dep:tract-onnx", "dep:ndarray", "dep:linfa", "dep:linfa-clustering", "dep:tokenizers"]
+ml = ["dep:tract-onnx", "dep:ndarray", "dep:linfa", "dep:linfa-clustering"]
 table-ml = ["ml", "dep:pdfium-render"]
-ocr = ["dep:ort", "dep:imageproc", "dep:ndarray"]
+ocr = ["dep:ort", "dep:ndarray"]
 gpu = ["dep:ort", "ml"]
 wasm = ["dep:wasm-bindgen", "dep:web-sys", "dep:js-sys", "dep:console_error_panic_hook", "dep:getrandom", "dep:serde-wasm-bindgen"]
 wasm-ml = ["wasm", "ml"]
