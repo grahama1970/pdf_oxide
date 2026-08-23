@@ -1,0 +1,75 @@
+{
+ "schema": "pdf_oxide.census_adjudication_packet.v1",
+ "created_at": "2026-08-23T16:26:01.180541+00:00",
+ "commit": "f93cebef8f91b01f88f336eac5a61abdf52c66e6",
+ "page": 30,
+ "finding_id": "p30-footnotes-as-body",
+ "finding": {
+  "severity": "medium",
+  "owner": "nist_preset_ledger",
+  "current_status": "resolved_by_current_extraction",
+  "extraction_defect": "The footnote region is extracted as type paragraph_block, which mixes footnotes with body content.",
+  "expected_type_or_action": "Classify this region as footnote content, preferably preserving the two numbered footnotes as footnote blocks or a footnote group rather than body paragraph text.",
+  "visible_evidence": "At the bottom of the page, below a horizontal footnote separator rule and above the footer, there are two numbered footnotes labeled 13 and 14 in smaller text.",
+  "historical_block_ids": [
+   "actual:p30:block:13"
+  ]
+ },
+ "source_page_evidence": {
+  "page_image": {
+   "source": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030/page.png",
+   "packet_path": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/page.png",
+   "present": true,
+   "sha256": "11f26449b7a9ba5f78fdad816da1084a5332376c737b99854d44086938837250",
+   "bytes": 317999
+  },
+  "bbox_overlay": {
+   "source": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030/bbox_overlay_current.png",
+   "packet_path": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/bbox_overlay_current.png",
+   "present": true,
+   "sha256": "0fe596bab1ae0236b6f4667dedeaa6b99062115c0182af46a91ea75327cb1e09",
+   "bytes": 385125
+  },
+  "pdf_oxide_json": {
+   "source": "artifacts/pdf_lab/census_regen_20260820/current_evidence/pages/page_0030/release_extraction_blocks.json",
+   "packet_path": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/pdf_oxide_release_extraction.json",
+   "present": true,
+   "sha256": "b2e6dfde05bf822616647d8a7dcb210a30b2d39838b94570a64961ad3cbe80a0",
+   "bytes": 24373
+  }
+ },
+ "pdf_oxide": {
+  "block_count": 14,
+  "type_counts": {
+   "header_footer_noise": 4,
+   "paragraph_block": 4,
+   "section_heading": 2,
+   "list": 2,
+   "footnote": 2
+  },
+  "matching_or_page_blocks": [
+   {
+    "id": "actual:p30:block:13",
+    "type": "footnote",
+    "semantic_role": "footnote_group",
+    "bbox": [
+     0.14705882352941177,
+     0.8287954619436553,
+     0.8489206351485907,
+     0.8439999975339331
+    ],
+    "text": "13 Risk management is an integral part of systems engineering, systems security engineering, and privacy engineering."
+   }
+  ]
+ },
+ "decision_input": {
+  "path": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/decision_input.jsonl",
+  "template": {
+   "page": 30,
+   "finding_id": "p30-footnotes-as-body",
+   "status": null,
+   "evidence": null,
+   "packet_readback": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/readback.json"
+  }
+ }
+}

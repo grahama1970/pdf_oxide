@@ -4625,7 +4625,9 @@
      "commit": "9c97a3bc98430351914fa9dcd0c0464ec8ee818e",
      "evidence": "Malformed finding: extraction_defect, expected_type_or_action, visible_evidence are all empty strings and historical_block_ids is empty — there is nothing to adjudicate against. Fresh page 157 extracts cleanly (6 blocks: 4 header_footer_noise, 1 reference, 1 table). Flagged for human disposition per HANDOFF §5.7; current_status left unverified.",
      "migration_source": "legacy_human_flag",
-     "migrated_at": "2026-08-22T19:44:18.865059+00:00"
+     "migrated_at": "2026-08-22T19:44:18.865059+00:00",
+     "evidence_packet_readback": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0157/p157_unnamed/readback.json",
+     "evidence_packet_zip": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0157/p157_unnamed/packet.zip"
     }
    ]
   },

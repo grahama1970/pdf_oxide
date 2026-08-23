@@ -1,0 +1,29 @@
+{
+ "schema": "pdf_oxide.census_adjudication_packet_readback.v1",
+ "created_at": "2026-08-23T16:26:01.184577+00:00",
+ "packet": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/packet.json",
+ "page": 30,
+ "finding_id": "p30-footnotes-as-body",
+ "source_page_evidence_present": true,
+ "missing_source_page_evidence": [],
+ "pdf_oxide_json_readback": {
+  "path": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/pdf_oxide_release_extraction.json",
+  "present": true,
+  "sha256": "b2e6dfde05bf822616647d8a7dcb210a30b2d39838b94570a64961ad3cbe80a0",
+  "block_count": 14,
+  "type_counts": {
+   "header_footer_noise": 4,
+   "paragraph_block": 4,
+   "section_heading": 2,
+   "list": 2,
+   "footnote": 2
+  }
+ },
+ "decision_input_readback": {
+  "path": "artifacts/pdf_lab/census_regen_20260820/current_evidence/adjudication_packets/page_0030/p30-footnotes-as-body/decision_input.jsonl",
+  "page": 30,
+  "finding_id": "p30-footnotes-as-body",
+  "has_packet_readback": true
+ },
+ "packet_ready": true
+}

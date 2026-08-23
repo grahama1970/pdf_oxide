@@ -1,0 +1,984 @@
+{
+  "schema": "agentic_evals.report.v2",
+  "source": "fixtures/agentic_eval.json",
+  "run_id": "f149f7517eaa",
+  "fixture_sha256": "sha256:f5d453863912b5871c5ca3449b95f02ba8023cd5cd23f3c82584573bcceff20b",
+  "repo": {
+    "sha": "f93cebef8f91b01f88f336eac5a61abdf52c66e6",
+    "ref": "watchdog/issue-32"
+  },
+  "mocked": false,
+  "fixture_backed": true,
+  "live": true,
+  "proof_scope": "Live extraction regression guards for resolved pdf_oxide issues. Each corpus case drives the real extractor over the real source PDF named in its issue and asserts that the specific defect stays fixed. Commands run with this fixtures/ directory as the working directory. Deterministic unit-level cases guard recently fixed ordering and table-assignment assumptions that protect the live extraction paths.",
+  "claims": {
+    "proves": "the named defect in each referenced issue does not reproduce on the current build, and the library suite stays green; each case was observed failing on the pre-fix code before being accepted",
+    "does_not_prove": "full-document extraction accuracy, semantic correctness beyond the asserted predicate, or that unrelated PUA-emitting fonts such as Wingdings are handled -- this crate has Symbol and ZapfDingbats encoding tables but no Wingdings table"
+  },
+  "what_was_exercised": "local commands declared in the fixture manifest",
+  "what_remains_unverified": "semantic correctness, live services, LLM judge behavior, and release readiness",
+  "readiness": "USABLE_WITH_GAPS",
+  "case_readiness": "USABLE_WITH_GAPS",
+  "capability_readiness": null,
+  "claims_coverage": "manifest-spanning",
+  "focused_cases": [],
+  "generated_at": "2026-08-23T16:39:58.361595+00:00",
+  "case_count": 17,
+  "required_case_count": 17,
+  "outcome_counts": {
+    "PASS": 11,
+    "FAIL": 6,
+    "BLOCKED": 0,
+    "NOT_TESTED": 0
+  },
+  "trial_count": 34,
+  "cases": [
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-21-symbol-pua-bullet-decodes",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c000",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_pua_issue21.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "live_e2e",
+      "live_qualified": true,
+      "evidence_disqualifiers": [],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 115.345,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf\",\n  \"pages_checked\": [\n    19\n  ],\n  \"pua_total\": 0,\n  \"pua_by_page\": {},\n  \"anchor_blocks\": [\n    {\n      \"page\": 19,\n      \"block_type\": \"List\",\n      \"pua_count\": 0,\n      \"leading_40\": \"\u2022 Technical Management Processes: The te\",\n      \"run_in_lead\": \"Technical Management Processes:\"\n    }\n  ],\n  \"anchor_found\": true,\n  \"anchor_clean\": true,\n  \"anchor_lead_marked\": true,\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 117.925,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c000-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf\",\n  \"pages_checked\": [\n    19\n  ],\n  \"pua_total\": 0,\n  \"pua_by_page\": {},\n  \"anchor_blocks\": [\n    {\n      \"page\": 19,\n      \"block_type\": \"List\",\n      \"pua_count\": 0,\n      \"leading_40\": \"\u2022 Technical Management Processes: The te\",\n      \"run_in_lead\": \"Technical Management Processes:\"\n    }\n  ],\n  \"anchor_found\": true,\n  \"anchor_clean\": true,\n  \"anchor_lead_marked\": true,\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 112.765,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c000-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-21-checker-still-detects-pua-negative-control",
+      "type": "negative",
+      "case_id": "f149f7517eaa-c001",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_pua_issue21.py",
+        "38"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 112.343,
+      "trials": [
+        {
+          "exit_code": 1,
+          "stdout": "{\n  \"source_pdf\": \"/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf\",\n  \"pages_checked\": [\n    38\n  ],\n  \"pua_total\": 16,\n  \"pua_by_page\": {\n    \"38\": {\n      \"U+F0D8\": 16\n    }\n  },\n  \"anchor_blocks\": [],\n  \"anchor_found\": false,\n  \"anchor_clean\": true,\n  \"anchor_lead_marked\": true,\n  \"passed\": false\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 112.405,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c001-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 1,
+          "stdout": "{\n  \"source_pdf\": \"/mnt/storage12tb/extractor_corpus/engineering/12 NASA_SP-2016-6105 Rev 2.pdf\",\n  \"pages_checked\": [\n    38\n  ],\n  \"pua_total\": 16,\n  \"pua_by_page\": {\n    \"38\": {\n      \"U+F0D8\": 16\n    }\n  },\n  \"anchor_blocks\": [],\n  \"anchor_found\": false,\n  \"anchor_clean\": true,\n  \"anchor_lead_marked\": true,\n  \"passed\": false\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 112.281,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c001-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-3-nested-list-item-segmentation",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c002",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python -m pytest -q tests/test_nist_page46_nested_list_segmentation.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 1301.197,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": ".                                                                        [100%]\n1 passed in 0.90s\n",
+          "stderr": "",
+          "duration_ms": 1338.521,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c002-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": ".                                                                        [100%]\n1 passed in 0.86s\n",
+          "stderr": "",
+          "duration_ms": 1263.874,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c002-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-6-flowchart-text-survives",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c003",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_content_loss_issue6.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 203.519,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/mnt/storage12tb/extractor_corpus/inbox/government/NIST.SP.800-53Ar5.pdf\",\n  \"page_index\": 46,\n  \"required\": 5,\n  \"present\": 5,\n  \"missing\": [],\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 209.59,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c003-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/mnt/storage12tb/extractor_corpus/inbox/government/NIST.SP.800-53Ar5.pdf\",\n  \"page_index\": 46,\n  \"required\": 5,\n  \"present\": 5,\n  \"missing\": [],\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 197.447,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c003-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-2-page45-annotation-requirements",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c004",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python scripts/pdf_lab/check_page45_issue2.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 1717.421,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"zero_based_page_index\": 44,\n  \"block_count\": 21,\n  \"problems\": [],\n  \"passed\": true\n}\n",
+          "stderr": "[text_raster] 'N' found=1 missing=0 font_size=1.0 x=90 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=91 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=91 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=91 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=106 y=748\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=107 y=748\n[text_raster] '80' found=2 missing=0 font_size=1.0 x=116 y=748\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=117 y=748\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=128 y=748\n[text_raster] '53' found=2 missing=0 font_size=1.0 x=117 y=748\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=118 y=748\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=142 y=748\n[text_raster] 'EV' found=2 missing=0 font_size=1.0 x=146 y=748\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=153 y=748\n[text_raster] '5' found=1 missing=0 font_size=1.0 x=156 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=285 y=748\n[text_raster] 'EC' found=2 missing=0 font_size=1.0 x=289 y=748\n[text_raster] 'U' found=1 missing=0 font_size=1.0 x=290 y=748\n[text_raster] 'RI' found=2 missing=0 font_size=1.0 x=291 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=291 y=748\n[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=292 y=748\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=292 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=293 y=748\n[text_raster] 'D' found=1 missing=0 font_size=1.0 x=294 y=748\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=326 y=748\n[text_raster] 'RI' found=2 missing=0 font_size=1.0 x=330 y=748\n[text_raster] 'V' found=1 missing=0 font_size=1.0 x=331 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=332 y=748\n[text_raster] 'C' found=1 missing=0 font_size=1.0 x=332 y=748\n[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=333 y=748\n[text_raster] 'C' found=1 missing=0 font_size=1.0 x=351 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=355 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=356 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=357 y=748\n[text_raster] 'RO' found=2 missing=0 font_size=1.0 x=357 y=748\n[text_raster] 'L' found=1 missing=0 font_size=1.0 x=358 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=359 y=748\n[text_raster] ' F' found=1 missing=0 font_size=1.0 x=359 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=360 y=748\n[text_raster] 'R ' found=1 missing=0 font_size=1.0 x=361 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=394 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=396 y=748\n[text_raster] 'F' found=1 missing=0 font_size=1.0 x=397 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=397 y=748\n[text_raster] 'RM' found=2 missing=0 font_size=1.0 x=398 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=400 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=400 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=401 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=401 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=402 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=435 y=748\n[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=439 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=440 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=440 y=748\n[text_raster] 'EM' found=2 missing=0 font_size=1.0 x=441 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=442 y=748\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=442 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=443 y=748\n[text_raster] 'D' found=1 missing=0 font_size=1.0 x=444 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=475 y=748\n[text_raster] 'RG' found=2 missing=0 font_size=1.0 x=480 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=481 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=482 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=483 y=748\n[text_raster] 'Z' found=1 missing=0 font_size=1.0 x=483 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=483 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=484 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=485 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=485 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=485 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=486 y=748\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=90 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=95 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=97 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=102 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=104 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=109 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=112 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=117 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=119 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=124 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=126 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=131 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=133 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=138 y=739\n[text_raster] '______' found=6 missing=0 font_size=1.0 x=141 y=739\n[text_raster] 'CHA' found=3 missing=0 font_size=1.0 x=90 y=38\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=92 y=38\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=92 y=38\n[text_raster] 'ER' found=2 missing=0 font_size=1.0 x=93 y=38\n[text_raster] ' T' found=1 missing=0 font_size=1.0 x=94 y=38\n[text_raster] 'HR' found=2 missing=0 font_size=1.0 x=94 y=38\n[text_raster] 'EE' found=2 missing=0 font_size=1.0 x=96 y=38\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=141 y=38\n[text_raster] 'AG' found=2 missing=0 font_size=1.0 x=142 y=38\n[text_raster] 'E' found=1 missing=0 font_size=1.0 x=143 y=38\n[text_raster] '18' found=2 missing=0 font_size=1.0 x=161 y=38\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=21 y=564\n[text_raster] 'hi' found=2 missing=0 font_size=1.0 x=22 y=564\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=22 y=564\n[text_raster] ' pub' found=3 missing=0 font_size=1.0 x=23 y=564\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=25 y=564\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=25 y=564\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=25 y=564\n[text_raster] 'at' found=2 missing=0 font_size=1.0 x=26 y=564\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=27 y=564\n[text_raster] 'o' found=1 missing=0 font_size=1.0 x=27 y=564\n[text_raster] 'n i' found=2 missing=0 font_size=1.0 x=27 y=564\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=29 y=564\n[text_raster] ' av' found=2 missing=0 font_size=1.0 x=29 y=564\n[text_raster] 'ai' found=2 missing=0 font_size=1.0 x=30 y=564\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=31 y=564\n[text_raster] 'ab' found=2 missing=0 font_size=1.0 x=31 y=564\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=32 y=564\n[text_raster] 'e f' found=2 missing=0 font_size=1.0 x=33 y=564\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=34 y=564\n[text_raster] 'ee of' found=4 missing=0 font_size=1.0 x=34 y=564\n[text_raster] ' c' found=1 missing=0 font_size=1.0 x=36 y=564\n[text_raster] 'har' found=3 missing=0 font_size=1.0 x=37 y=564\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=39 y=564\n[text_raster] 'e f' found=2 missing=0 font_size=1.0 x=39 y=564\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=40 y=564\n[text_raster] 'om' found=2 missing=0 font_size=1.0 x=41 y=564\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=42 y=564\n[text_raster] 'ht' found=2 missing=0 font_size=1.0 x=21 y=371\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=22 y=371\n[text_raster] 'ps' found=2 missing=0 font_size=1.0 x=22 y=371\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=23 y=371\n[text_raster] '/' found=1 missing=0 font_size=1.0 x=24 y=371\n[text_raster] '/' found=1 missing=0 font_size=1.0 x=24 y=371\n[text_raster] 'doi' found=3 missing=0 font_size=1.0 x=24 y=371\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=25 y=371\n[text_raster] 'or' found=2 missing=0 font_size=1.0 x=26 y=371\n[text_raster] 'g/' found=2 missing=0 font_size=1.0 x=27 y=371\n[text_raster] '10.' found=3 missing=0 font_size=1.0 x=27 y=371\n[text_raster] '6' found=1 missing=0 font_size=1.0 x=29 y=371\n[text_raster] '02' found=2 missing=0 font_size=1.0 x=29 y=371\n[text_raster] '8/' found=2 missing=0 font_size=1.0 x=30 y=371\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=31 y=371\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=32 y=371\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=32 y=371\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=33 y=371\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=34 y=371\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=34 y=371\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=35 y=371\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=35 y=371\n[text_raster] '800' found=3 missing=0 font_size=1.0 x=35 y=371\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=21 y=226\n[text_raster] '53r' found=3 missing=0 font_size=1.0 x=21 y=223\n[text_raster] '5' found=1 missing=0 font_size=1.0 x=23 y=223\n[text_raster] '3.1' found=3 missing=0 font_size=1.0 x=90 y=707\n[text_raster] 'AC' found=2 missing=0 font_size=1.0 x=115 y=707\n[text_raster] 'CE' found=2 missing=0 font_size=1.0 x=117 y=707\n[text_raster] 'SS' found=2 missing=0 font_size=1.0 x=118 y=707\n[text_raster] 'C' found=1 missing=0 font_size=1.0 x=161 y=707\n[text_raster] 'ONT' found=3 missing=0 font_size=1.0 x=162 y=707\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=164 y=707\n[text_raster] 'OL' found=2 missing=0 font_size=1.0 x=164 y=707\n[text_raster] 'Q' found=1 missing=0 font_size=1.0 x=90 y=680\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=91 y=680\n[text_raster\n...[100587 chars omitted]...\nx=162 y=323\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'im' found=2 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=127 y=322\n[text_raster] 'ly' found=2 missing=0 font_size=1.0 x=128 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=129 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 'tati' found=4 missing=0 font_size=1.0 x=160 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=161 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] ' c' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=163 y=322\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=165 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 'oe' found=2 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=167 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'ot ' found=2 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 'ti' found=2 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=174 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=175 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=177 y=322\n[text_raster] 'z' found=1 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'ati' found=3 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=179 y=322\n[text_raster] 'al' found=2 missing=0 font_size=1.0 x=180 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=181 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'y' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'oc' found=2 missing=0 font_size=1.0 x=186 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=149\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'ate' found=3 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=131 y=149\n[text_raster] 'o' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=133 y=149\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=149\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=136 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] '9' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=140 y=149\n[text_raster] '24' found=2 missing=0 font_size=1.0 x=140 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=141 y=149\n[text_raster] 'PS' found=2 missing=0 font_size=1.0 x=141 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=142 y=149\n[text_raster] '8' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] 'SI' found=2 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=145 y=149\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=323 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=126 y=131\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'E' found=1 missing=0 font_size=1.0 x=129 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'h' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=131 y=131\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'm' found=1 missing=0 font_size=1.0 x=133 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'ts' found=2 missing=0 font_size=1.0 x=135 y=131\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=135 y=131\n[text_raster] 'No' found=2 missing=0 font_size=1.0 x=142 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=145 y=131\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=113\n[text_raster] 'ef' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'er' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'en' found=2 missing=0 font_size=1.0 x=128 y=113\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=129 y=113\n[text_raster] 'es' found=2 missing=0 font_size=1.0 x=130 y=113\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=132 y=113\n[text_raster] 'MB' found=2 missing=0 font_size=1.0 x=132 y=113\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=135 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=136 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=137 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=138 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=139 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=165 y=113\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=140 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '80' found=2 missing=0 font_size=1.0 x=144 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=145 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=170 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=145 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=146 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=148 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=175 y=113\n[text_raster] '39' found=2 missing=0 font_size=1.0 x=151 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=153 y=113\n[text_raster] ' 80' found=2 missing=0 font_size=1.0 x=154 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=155 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=180 y=113\n[text_raster] '10' found=2 missing=0 font_size=1.0 x=156 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '78' found=2 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '74' found=2 missing=0 font_size=1.0 x=160 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=480 y=113\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=480 y=113\n",
+          "duration_ms": 1716.262,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c004-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"zero_based_page_index\": 44,\n  \"block_count\": 21,\n  \"problems\": [],\n  \"passed\": true\n}\n",
+          "stderr": "[text_raster] 'N' found=1 missing=0 font_size=1.0 x=90 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=91 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=91 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=91 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=106 y=748\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=107 y=748\n[text_raster] '80' found=2 missing=0 font_size=1.0 x=116 y=748\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=117 y=748\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=128 y=748\n[text_raster] '53' found=2 missing=0 font_size=1.0 x=117 y=748\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=118 y=748\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=142 y=748\n[text_raster] 'EV' found=2 missing=0 font_size=1.0 x=146 y=748\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=153 y=748\n[text_raster] '5' found=1 missing=0 font_size=1.0 x=156 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=285 y=748\n[text_raster] 'EC' found=2 missing=0 font_size=1.0 x=289 y=748\n[text_raster] 'U' found=1 missing=0 font_size=1.0 x=290 y=748\n[text_raster] 'RI' found=2 missing=0 font_size=1.0 x=291 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=291 y=748\n[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=292 y=748\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=292 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=293 y=748\n[text_raster] 'D' found=1 missing=0 font_size=1.0 x=294 y=748\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=326 y=748\n[text_raster] 'RI' found=2 missing=0 font_size=1.0 x=330 y=748\n[text_raster] 'V' found=1 missing=0 font_size=1.0 x=331 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=332 y=748\n[text_raster] 'C' found=1 missing=0 font_size=1.0 x=332 y=748\n[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=333 y=748\n[text_raster] 'C' found=1 missing=0 font_size=1.0 x=351 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=355 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=356 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=357 y=748\n[text_raster] 'RO' found=2 missing=0 font_size=1.0 x=357 y=748\n[text_raster] 'L' found=1 missing=0 font_size=1.0 x=358 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=359 y=748\n[text_raster] ' F' found=1 missing=0 font_size=1.0 x=359 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=360 y=748\n[text_raster] 'R ' found=1 missing=0 font_size=1.0 x=361 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=394 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=396 y=748\n[text_raster] 'F' found=1 missing=0 font_size=1.0 x=397 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=397 y=748\n[text_raster] 'RM' found=2 missing=0 font_size=1.0 x=398 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=400 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=400 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=401 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=401 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=402 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=435 y=748\n[text_raster] 'Y' found=1 missing=0 font_size=1.0 x=439 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=440 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=440 y=748\n[text_raster] 'EM' found=2 missing=0 font_size=1.0 x=441 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=442 y=748\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=442 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=443 y=748\n[text_raster] 'D' found=1 missing=0 font_size=1.0 x=444 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=475 y=748\n[text_raster] 'RG' found=2 missing=0 font_size=1.0 x=480 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=481 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=482 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=483 y=748\n[text_raster] 'Z' found=1 missing=0 font_size=1.0 x=483 y=748\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=483 y=748\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=484 y=748\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=485 y=748\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=485 y=748\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=485 y=748\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=486 y=748\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=90 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=95 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=97 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=102 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=104 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=109 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=112 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=117 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=119 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=124 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=126 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=131 y=739\n[text_raster] '_________' found=9 missing=0 font_size=1.0 x=133 y=739\n[text_raster] '____' found=4 missing=0 font_size=1.0 x=138 y=739\n[text_raster] '______' found=6 missing=0 font_size=1.0 x=141 y=739\n[text_raster] 'CHA' found=3 missing=0 font_size=1.0 x=90 y=38\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=92 y=38\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=92 y=38\n[text_raster] 'ER' found=2 missing=0 font_size=1.0 x=93 y=38\n[text_raster] ' T' found=1 missing=0 font_size=1.0 x=94 y=38\n[text_raster] 'HR' found=2 missing=0 font_size=1.0 x=94 y=38\n[text_raster] 'EE' found=2 missing=0 font_size=1.0 x=96 y=38\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=141 y=38\n[text_raster] 'AG' found=2 missing=0 font_size=1.0 x=142 y=38\n[text_raster] 'E' found=1 missing=0 font_size=1.0 x=143 y=38\n[text_raster] '18' found=2 missing=0 font_size=1.0 x=161 y=38\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=21 y=564\n[text_raster] 'hi' found=2 missing=0 font_size=1.0 x=22 y=564\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=22 y=564\n[text_raster] ' pub' found=3 missing=0 font_size=1.0 x=23 y=564\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=25 y=564\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=25 y=564\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=25 y=564\n[text_raster] 'at' found=2 missing=0 font_size=1.0 x=26 y=564\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=27 y=564\n[text_raster] 'o' found=1 missing=0 font_size=1.0 x=27 y=564\n[text_raster] 'n i' found=2 missing=0 font_size=1.0 x=27 y=564\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=29 y=564\n[text_raster] ' av' found=2 missing=0 font_size=1.0 x=29 y=564\n[text_raster] 'ai' found=2 missing=0 font_size=1.0 x=30 y=564\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=31 y=564\n[text_raster] 'ab' found=2 missing=0 font_size=1.0 x=31 y=564\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=32 y=564\n[text_raster] 'e f' found=2 missing=0 font_size=1.0 x=33 y=564\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=34 y=564\n[text_raster] 'ee of' found=4 missing=0 font_size=1.0 x=34 y=564\n[text_raster] ' c' found=1 missing=0 font_size=1.0 x=36 y=564\n[text_raster] 'har' found=3 missing=0 font_size=1.0 x=37 y=564\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=39 y=564\n[text_raster] 'e f' found=2 missing=0 font_size=1.0 x=39 y=564\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=40 y=564\n[text_raster] 'om' found=2 missing=0 font_size=1.0 x=41 y=564\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=42 y=564\n[text_raster] 'ht' found=2 missing=0 font_size=1.0 x=21 y=371\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=22 y=371\n[text_raster] 'ps' found=2 missing=0 font_size=1.0 x=22 y=371\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=23 y=371\n[text_raster] '/' found=1 missing=0 font_size=1.0 x=24 y=371\n[text_raster] '/' found=1 missing=0 font_size=1.0 x=24 y=371\n[text_raster] 'doi' found=3 missing=0 font_size=1.0 x=24 y=371\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=25 y=371\n[text_raster] 'or' found=2 missing=0 font_size=1.0 x=26 y=371\n[text_raster] 'g/' found=2 missing=0 font_size=1.0 x=27 y=371\n[text_raster] '10.' found=3 missing=0 font_size=1.0 x=27 y=371\n[text_raster] '6' found=1 missing=0 font_size=1.0 x=29 y=371\n[text_raster] '02' found=2 missing=0 font_size=1.0 x=29 y=371\n[text_raster] '8/' found=2 missing=0 font_size=1.0 x=30 y=371\n[text_raster] 'N' found=1 missing=0 font_size=1.0 x=31 y=371\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=32 y=371\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=32 y=371\n[text_raster] 'T' found=1 missing=0 font_size=1.0 x=33 y=371\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=34 y=371\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=34 y=371\n[text_raster] 'P' found=1 missing=0 font_size=1.0 x=35 y=371\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=35 y=371\n[text_raster] '800' found=3 missing=0 font_size=1.0 x=35 y=371\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=21 y=226\n[text_raster] '53r' found=3 missing=0 font_size=1.0 x=21 y=223\n[text_raster] '5' found=1 missing=0 font_size=1.0 x=23 y=223\n[text_raster] '3.1' found=3 missing=0 font_size=1.0 x=90 y=707\n[text_raster] 'AC' found=2 missing=0 font_size=1.0 x=115 y=707\n[text_raster] 'CE' found=2 missing=0 font_size=1.0 x=117 y=707\n[text_raster] 'SS' found=2 missing=0 font_size=1.0 x=118 y=707\n[text_raster] 'C' found=1 missing=0 font_size=1.0 x=161 y=707\n[text_raster] 'ONT' found=3 missing=0 font_size=1.0 x=162 y=707\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=164 y=707\n[text_raster] 'OL' found=2 missing=0 font_size=1.0 x=164 y=707\n[text_raster] 'Q' found=1 missing=0 font_size=1.0 x=90 y=680\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=91 y=680\n[text_raster\n...[100587 chars omitted]...\nx=162 y=323\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'im' found=2 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=127 y=322\n[text_raster] 'ly' found=2 missing=0 font_size=1.0 x=128 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=129 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 'tati' found=4 missing=0 font_size=1.0 x=160 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=161 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] ' c' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=163 y=322\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=165 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 'oe' found=2 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=167 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'ot ' found=2 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 'ti' found=2 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=174 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=175 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=177 y=322\n[text_raster] 'z' found=1 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'ati' found=3 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=179 y=322\n[text_raster] 'al' found=2 missing=0 font_size=1.0 x=180 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=181 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'y' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'oc' found=2 missing=0 font_size=1.0 x=186 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=149\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'ate' found=3 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=131 y=149\n[text_raster] 'o' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=133 y=149\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=149\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=136 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] '9' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=140 y=149\n[text_raster] '24' found=2 missing=0 font_size=1.0 x=140 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=141 y=149\n[text_raster] 'PS' found=2 missing=0 font_size=1.0 x=141 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=142 y=149\n[text_raster] '8' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] 'SI' found=2 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=145 y=149\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=323 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=126 y=131\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'E' found=1 missing=0 font_size=1.0 x=129 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'h' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=131 y=131\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'm' found=1 missing=0 font_size=1.0 x=133 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'ts' found=2 missing=0 font_size=1.0 x=135 y=131\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=135 y=131\n[text_raster] 'No' found=2 missing=0 font_size=1.0 x=142 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=145 y=131\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=113\n[text_raster] 'ef' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'er' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'en' found=2 missing=0 font_size=1.0 x=128 y=113\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=129 y=113\n[text_raster] 'es' found=2 missing=0 font_size=1.0 x=130 y=113\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=132 y=113\n[text_raster] 'MB' found=2 missing=0 font_size=1.0 x=132 y=113\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=135 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=136 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=137 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=138 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=139 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=165 y=113\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=140 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '80' found=2 missing=0 font_size=1.0 x=144 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=145 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=170 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=145 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=146 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=148 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=175 y=113\n[text_raster] '39' found=2 missing=0 font_size=1.0 x=151 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=153 y=113\n[text_raster] ' 80' found=2 missing=0 font_size=1.0 x=154 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=155 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=180 y=113\n[text_raster] '10' found=2 missing=0 font_size=1.0 x=156 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '78' found=2 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '74' found=2 missing=0 font_size=1.0 x=160 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=480 y=113\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=480 y=113\n",
+          "duration_ms": 1718.581,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c004-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-20-bbox-space-stamped-and-convention-proven",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c005",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python scripts/pdf_lab/check_bbox_space_issue20.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 4436.892,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"arxiv_pdf\": \"/mnt/storage12tb/extractor_corpus/inbox/arxiv/1512.03385v1.pdf\",\n  \"nist_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"problems\": [],\n  \"passed\": true\n}\n",
+          "stderr": "2026-08-23 12:34:56.504 | INFO     | pdf_oxide.pipeline_util:log:88 - Extracting: 1512.03385v1.pdf\n[text_raster] 'w' found=1 missing=0 font_size=10.0 x=50 y=710\n[text_raster] 'ay' found=2 missing=0 font_size=10.0 x=57 y=710\n[text_raster] 'netw' found=4 missing=0 font_size=10.0 x=70 y=710\n[text_raster] 'orks' found=4 missing=0 font_size=10.0 x=89 y=710\n[text_raster] 'ha' found=2 missing=0 font_size=10.0 x=110 y=710\n[text_raster] 'v' found=1 missing=0 font_size=10.0 x=119 y=710\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=124 y=710\n[text_raster] 'not' found=3 missing=0 font_size=10.0 x=132 y=710\n[text_raster] 'demonstrated' found=12 missing=0 font_size=10.0 x=148 y=710\n[text_raster] 'accurac' found=7 missing=0 font_size=10.0 x=205 y=710\n[text_raster] 'y' found=1 missing=0 font_size=10.0 x=236 y=710\n[text_raster] 'g' found=1 missing=0 font_size=10.0 x=244 y=710\n[text_raster] 'ains' found=4 missing=0 font_size=10.0 x=249 y=710\n[text_raster] 'with' found=4 missing=0 font_size=10.0 x=269 y=710\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=50 y=698\n[text_raster] 'xtremely' found=8 missing=0 font_size=10.0 x=54 y=698\n[text_raster] 'increased' found=9 missing=0 font_size=10.0 x=92 y=698\n[text_raster] 'depth' found=5 missing=0 font_size=10.0 x=132 y=698\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=157 y=698\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=160 y=698\n[text_raster] '.g' found=2 missing=0 font_size=10.0 x=165 y=698\n[text_raster] '.,' found=2 missing=0 font_size=10.0 x=172 y=698\n[text_raster] 'o' found=1 missing=0 font_size=10.0 x=180 y=698\n[text_raster] 'v' found=1 missing=0 font_size=10.0 x=184 y=698\n[text_raster] 'er' found=2 missing=0 font_size=10.0 x=189 y=698\n[text_raster] '100' found=3 missing=0 font_size=10.0 x=199 y=698\n[text_raster] 'layers).' found=8 missing=0 font_size=10.0 x=217 y=698\n[text_raster] '3.' found=2 missing=0 font_size=12.0 x=50 y=674\n[text_raster] 'Deep' found=4 missing=0 font_size=12.0 x=62 y=674\n[text_raster] 'Residual' found=8 missing=0 font_size=12.0 x=91 y=674\n[text_raster] 'Lear' found=4 missing=0 font_size=12.0 x=138 y=674\n[text_raster] 'ning' found=4 missing=0 font_size=12.0 x=163 y=674\n[text_raster] '3.1.' found=4 missing=0 font_size=11.0 x=50 y=655\n[text_raster] 'Residual' found=8 missing=0 font_size=11.0 x=69 y=655\n[text_raster] 'Lear' found=4 missing=0 font_size=11.0 x=113 y=655\n[text_raster] 'ning' found=4 missing=0 font_size=11.0 x=135 y=655\n[text_raster] 'Let' found=3 missing=0 font_size=10.0 x=62 y=637\n[text_raster] 'us' found=2 missing=0 font_size=10.0 x=79 y=637\n[text_raster] 'consider' found=8 missing=0 font_size=10.0 x=92 y=637\n[text_raster] 'H' found=1 missing=0 font_size=10.0 x=129 y=637\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=138 y=637\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=141 y=637\n[text_raster] ')' found=1 missing=0 font_size=10.0 x=147 y=637\n[text_raster] 'as' found=2 missing=0 font_size=10.0 x=155 y=637\n[text_raster] 'an' found=2 missing=0 font_size=10.0 x=167 y=637\n[text_raster] 'underlying' found=10 missing=0 font_size=10.0 x=180 y=637\n[text_raster] 'mapping' found=7 missing=0 font_size=10.0 x=227 y=637\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=266 y=637\n[text_raster] 'be' found=2 missing=0 font_size=10.0 x=277 y=637\n[text_raster] 'fit' found=3 missing=0 font_size=10.0 x=50 y=625\n[text_raster] 'by' found=2 missing=0 font_size=10.0 x=62 y=625\n[text_raster] 'a' found=1 missing=0 font_size=10.0 x=75 y=625\n[text_raster] 'fe' found=2 missing=0 font_size=10.0 x=82 y=625\n[text_raster] 'w' found=1 missing=0 font_size=10.0 x=90 y=625\n[text_raster] 'stack' found=5 missing=0 font_size=10.0 x=100 y=625\n[text_raster] 'ed' found=2 missing=0 font_size=10.0 x=121 y=625\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=133 y=625\n[text_raster] '(not' found=4 missing=0 font_size=10.0 x=160 y=625\n[text_raster] 'necessarily' found=11 missing=0 font_size=10.0 x=180 y=625\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=227 y=625\n[text_raster] 'entire' found=6 missing=0 font_size=10.0 x=242 y=625\n[text_raster] 'net),' found=5 missing=0 font_size=10.0 x=268 y=625\n[text_raster] 'with' found=4 missing=0 font_size=10.0 x=50 y=613\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=70 y=613\n[text_raster] 'denoting' found=8 missing=0 font_size=10.0 x=79 y=613\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=116 y=613\n[text_raster] 'inputs' found=6 missing=0 font_size=10.0 x=131 y=613\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=157 y=613\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=167 y=613\n[text_raster] 'first' found=5 missing=0 font_size=10.0 x=182 y=613\n[text_raster] 'of' found=2 missing=0 font_size=10.0 x=200 y=613\n[text_raster] 'these' found=5 missing=0 font_size=10.0 x=211 y=613\n[text_raster] 'layers.' found=7 missing=0 font_size=10.0 x=234 y=613\n[text_raster] 'If' found=2 missing=0 font_size=10.0 x=263 y=613\n[text_raster] 'one' found=3 missing=0 font_size=10.0 x=272 y=613\n[text_raster] 'h' found=1 missing=0 font_size=10.0 x=50 y=601\n[text_raster] 'ypothesizes' found=11 missing=0 font_size=10.0 x=55 y=601\n[text_raster] 'that' found=4 missing=0 font_size=10.0 x=105 y=601\n[text_raster] 'multiple' found=8 missing=0 font_size=10.0 x=123 y=601\n[text_raster] 'nonlinear' found=9 missing=0 font_size=10.0 x=159 y=601\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=200 y=601\n[text_raster] 'can' found=3 missing=0 font_size=10.0 x=227 y=601\n[text_raster] 'asymptoti-' found=10 missing=0 font_size=10.0 x=244 y=601\n[text_raster] 'cally' found=5 missing=0 font_size=10.0 x=50 y=589\n[text_raster] 'approximate' found=11 missing=0 font_size=10.0 x=72 y=589\n[text_raster] 'complicated' found=11 missing=0 font_size=10.0 x=125 y=589\n[text_raster] 'functions' found=9 missing=0 font_size=10.0 x=177 y=589\n[text_raster] '2' found=1 missing=0 font_size=7.0 x=214 y=593\n[text_raster] ',' found=1 missing=0 font_size=10.0 x=218 y=589\n[text_raster] 'then' found=4 missing=0 font_size=10.0 x=223 y=589\n[text_raster] 'it' found=2 missing=0 font_size=10.0 x=243 y=589\n[text_raster] 'is' found=2 missing=0 font_size=10.0 x=252 y=589\n[text_raster] 'equi' found=4 missing=0 font_size=10.0 x=261 y=589\n[text_raster] 'v-' found=2 missing=0 font_size=10.0 x=278 y=589\n[text_raster] 'alent' found=5 missing=0 font_size=10.0 x=50 y=577\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=73 y=577\n[text_raster] 'h' found=1 missing=0 font_size=10.0 x=84 y=577\n[text_raster] 'ypothesize' found=10 missing=0 font_size=10.0 x=89 y=577\n[text_raster] 'that' found=4 missing=0 font_size=10.0 x=135 y=577\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=153 y=577\n[text_raster] 'y' found=1 missing=0 font_size=10.0 x=165 y=577\n[text_raster] 'can' found=3 missing=0 font_size=10.0 x=173 y=577\n[text_raster] 'asymptotically' found=14 missing=0 font_size=10.0 x=191 y=577\n[text_raster] 'approxi-' found=8 missing=0 font_size=10.0 x=253 y=577\n[text_raster] 'mate' found=4 missing=0 font_size=10.0 x=50 y=565\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=73 y=565\n[text_raster] 'residual' found=8 missing=0 font_size=10.0 x=88 y=565\n[text_raster] 'functions,' found=10 missing=0 font_size=10.0 x=122 y=565\n[text_raster] 'i.e' found=3 missing=0 font_size=10.0 x=165 y=565\n[text_raster] '.,' found=2 missing=0 font_size=10.0 x=175 y=565\n[text_raster] 'H' found=1 missing=0 font_size=10.0 x=183 y=565\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=191 y=565\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=195 y=565\n[text_raster] ')' found=1 missing=0 font_size=10.0 x=201 y=565\n[text_raster] '\u2212' found=1 missing=0 font_size=10.0 x=208 y=565\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=218 y=565\n[text_raster] '(assuming' found=9 missing=0 font_size=10.0 x=227 y=565\n[text_raster] 'that' found=4 missing=0 font_size=10.0 x=271 y=565\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=50 y=553\n[text_raster] 'input' found=5 missing=0 font_size=10.0 x=67 y=553\n[text_raster] 'and' found=3 missing=0 font_size=10.0 x=92 y=553\n[text_raster] 'output' found=6 missing=0 font_size=10.0 x=112 y=553\n[text_raster] 'are' found=3 missing=0 font_size=10.0 x=142 y=553\n[text_raster] 'of' found=2 missing=0 font_size=10.0 x=159 y=553\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=172 y=553\n[text_raster] 'same' found=4 missing=0 font_size=10.0 x=189 y=553\n[text_raster] 'dimensions).' found=12 missing=0 font_size=10.0 x=214 y=553\n[text_raster] 'So' found=2 missing=0 font_size=10.0 x=276 y=553\n[text_raster] 'rather' found=6 missing=0 font_size=10.0 x=50 y=541\n[text_raster] 'than' found=4 missing=0 font_size=10.0 x=76 y=541\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=96 y=541\n[text_raster] 'xpect' found=5 missing=0 font_size=10.0 x=100 y=541\n[text_raster] 'stack' found=5 missing=0 font_size=10.0 x=125 y=541\n[text_raster] 'ed' found=2 missing=0 font_size=10.0 x=145 y=541\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=157 y=541\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=184 y=541\n[text_raster] 'approximate' found=11 missing=0 font_size=10.0 x=194 y=541\n[text_raster] 'H' found=1 missing=0 font_size=10.0 x=247 y=541\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=256 y=541\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=259 y=541\n[text_raster] ')' found=1 missing=0 font_size=10.0 x=266 y=541\n[text_raster] ',' found=1 missing=0 font_size=10.0 x=269 y=541\n[text_raster] 'we' found=2 missing=0 font_size=10.0 x=275 y=541\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=50 y=529\n[text_raster] 'xplicitly' found=9 missing=0 font_size=10.0 x=54 y=529\n[text_raster] 'let' found=3 missing=0 font_size=10.0 x=91 y=529\n[text_raster] 'these' found=5 missing=0 font_size=10.0 x=105 y=529\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=129 y=529\n[text_raster] 'approximate' found=11 missing=0 font_size=10.0 x=156 y=529\n[text_raster] 'a' found=1 missing=0 font_size=10.0 x=210 y=529\n[text_raster] 'residual\n...[342372 chars omitted]...\nx=162 y=323\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'im' found=2 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=127 y=322\n[text_raster] 'ly' found=2 missing=0 font_size=1.0 x=128 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=129 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 'tati' found=4 missing=0 font_size=1.0 x=160 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=161 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] ' c' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=163 y=322\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=165 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 'oe' found=2 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=167 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'ot ' found=2 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 'ti' found=2 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=174 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=175 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=177 y=322\n[text_raster] 'z' found=1 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'ati' found=3 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=179 y=322\n[text_raster] 'al' found=2 missing=0 font_size=1.0 x=180 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=181 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'y' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'oc' found=2 missing=0 font_size=1.0 x=186 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=149\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'ate' found=3 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=131 y=149\n[text_raster] 'o' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=133 y=149\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=149\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=136 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] '9' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=140 y=149\n[text_raster] '24' found=2 missing=0 font_size=1.0 x=140 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=141 y=149\n[text_raster] 'PS' found=2 missing=0 font_size=1.0 x=141 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=142 y=149\n[text_raster] '8' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] 'SI' found=2 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=145 y=149\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=323 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=126 y=131\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'E' found=1 missing=0 font_size=1.0 x=129 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'h' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=131 y=131\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'm' found=1 missing=0 font_size=1.0 x=133 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'ts' found=2 missing=0 font_size=1.0 x=135 y=131\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=135 y=131\n[text_raster] 'No' found=2 missing=0 font_size=1.0 x=142 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=145 y=131\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=113\n[text_raster] 'ef' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'er' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'en' found=2 missing=0 font_size=1.0 x=128 y=113\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=129 y=113\n[text_raster] 'es' found=2 missing=0 font_size=1.0 x=130 y=113\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=132 y=113\n[text_raster] 'MB' found=2 missing=0 font_size=1.0 x=132 y=113\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=135 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=136 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=137 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=138 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=139 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=165 y=113\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=140 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '80' found=2 missing=0 font_size=1.0 x=144 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=145 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=170 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=145 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=146 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=148 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=175 y=113\n[text_raster] '39' found=2 missing=0 font_size=1.0 x=151 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=153 y=113\n[text_raster] ' 80' found=2 missing=0 font_size=1.0 x=154 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=155 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=180 y=113\n[text_raster] '10' found=2 missing=0 font_size=1.0 x=156 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '78' found=2 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '74' found=2 missing=0 font_size=1.0 x=160 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=480 y=113\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=480 y=113\n",
+          "duration_ms": 4167.296,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c005-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"arxiv_pdf\": \"/mnt/storage12tb/extractor_corpus/inbox/arxiv/1512.03385v1.pdf\",\n  \"nist_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"problems\": [],\n  \"passed\": true\n}\n",
+          "stderr": "2026-08-23 12:35:00.711 | INFO     | pdf_oxide.pipeline_util:log:88 - Extracting: 1512.03385v1.pdf\n[text_raster] 'w' found=1 missing=0 font_size=10.0 x=50 y=710\n[text_raster] 'ay' found=2 missing=0 font_size=10.0 x=57 y=710\n[text_raster] 'netw' found=4 missing=0 font_size=10.0 x=70 y=710\n[text_raster] 'orks' found=4 missing=0 font_size=10.0 x=89 y=710\n[text_raster] 'ha' found=2 missing=0 font_size=10.0 x=110 y=710\n[text_raster] 'v' found=1 missing=0 font_size=10.0 x=119 y=710\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=124 y=710\n[text_raster] 'not' found=3 missing=0 font_size=10.0 x=132 y=710\n[text_raster] 'demonstrated' found=12 missing=0 font_size=10.0 x=148 y=710\n[text_raster] 'accurac' found=7 missing=0 font_size=10.0 x=205 y=710\n[text_raster] 'y' found=1 missing=0 font_size=10.0 x=236 y=710\n[text_raster] 'g' found=1 missing=0 font_size=10.0 x=244 y=710\n[text_raster] 'ains' found=4 missing=0 font_size=10.0 x=249 y=710\n[text_raster] 'with' found=4 missing=0 font_size=10.0 x=269 y=710\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=50 y=698\n[text_raster] 'xtremely' found=8 missing=0 font_size=10.0 x=54 y=698\n[text_raster] 'increased' found=9 missing=0 font_size=10.0 x=92 y=698\n[text_raster] 'depth' found=5 missing=0 font_size=10.0 x=132 y=698\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=157 y=698\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=160 y=698\n[text_raster] '.g' found=2 missing=0 font_size=10.0 x=165 y=698\n[text_raster] '.,' found=2 missing=0 font_size=10.0 x=172 y=698\n[text_raster] 'o' found=1 missing=0 font_size=10.0 x=180 y=698\n[text_raster] 'v' found=1 missing=0 font_size=10.0 x=184 y=698\n[text_raster] 'er' found=2 missing=0 font_size=10.0 x=189 y=698\n[text_raster] '100' found=3 missing=0 font_size=10.0 x=199 y=698\n[text_raster] 'layers).' found=8 missing=0 font_size=10.0 x=217 y=698\n[text_raster] '3.' found=2 missing=0 font_size=12.0 x=50 y=674\n[text_raster] 'Deep' found=4 missing=0 font_size=12.0 x=62 y=674\n[text_raster] 'Residual' found=8 missing=0 font_size=12.0 x=91 y=674\n[text_raster] 'Lear' found=4 missing=0 font_size=12.0 x=138 y=674\n[text_raster] 'ning' found=4 missing=0 font_size=12.0 x=163 y=674\n[text_raster] '3.1.' found=4 missing=0 font_size=11.0 x=50 y=655\n[text_raster] 'Residual' found=8 missing=0 font_size=11.0 x=69 y=655\n[text_raster] 'Lear' found=4 missing=0 font_size=11.0 x=113 y=655\n[text_raster] 'ning' found=4 missing=0 font_size=11.0 x=135 y=655\n[text_raster] 'Let' found=3 missing=0 font_size=10.0 x=62 y=637\n[text_raster] 'us' found=2 missing=0 font_size=10.0 x=79 y=637\n[text_raster] 'consider' found=8 missing=0 font_size=10.0 x=92 y=637\n[text_raster] 'H' found=1 missing=0 font_size=10.0 x=129 y=637\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=138 y=637\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=141 y=637\n[text_raster] ')' found=1 missing=0 font_size=10.0 x=147 y=637\n[text_raster] 'as' found=2 missing=0 font_size=10.0 x=155 y=637\n[text_raster] 'an' found=2 missing=0 font_size=10.0 x=167 y=637\n[text_raster] 'underlying' found=10 missing=0 font_size=10.0 x=180 y=637\n[text_raster] 'mapping' found=7 missing=0 font_size=10.0 x=227 y=637\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=266 y=637\n[text_raster] 'be' found=2 missing=0 font_size=10.0 x=277 y=637\n[text_raster] 'fit' found=3 missing=0 font_size=10.0 x=50 y=625\n[text_raster] 'by' found=2 missing=0 font_size=10.0 x=62 y=625\n[text_raster] 'a' found=1 missing=0 font_size=10.0 x=75 y=625\n[text_raster] 'fe' found=2 missing=0 font_size=10.0 x=82 y=625\n[text_raster] 'w' found=1 missing=0 font_size=10.0 x=90 y=625\n[text_raster] 'stack' found=5 missing=0 font_size=10.0 x=100 y=625\n[text_raster] 'ed' found=2 missing=0 font_size=10.0 x=121 y=625\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=133 y=625\n[text_raster] '(not' found=4 missing=0 font_size=10.0 x=160 y=625\n[text_raster] 'necessarily' found=11 missing=0 font_size=10.0 x=180 y=625\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=227 y=625\n[text_raster] 'entire' found=6 missing=0 font_size=10.0 x=242 y=625\n[text_raster] 'net),' found=5 missing=0 font_size=10.0 x=268 y=625\n[text_raster] 'with' found=4 missing=0 font_size=10.0 x=50 y=613\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=70 y=613\n[text_raster] 'denoting' found=8 missing=0 font_size=10.0 x=79 y=613\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=116 y=613\n[text_raster] 'inputs' found=6 missing=0 font_size=10.0 x=131 y=613\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=157 y=613\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=167 y=613\n[text_raster] 'first' found=5 missing=0 font_size=10.0 x=182 y=613\n[text_raster] 'of' found=2 missing=0 font_size=10.0 x=200 y=613\n[text_raster] 'these' found=5 missing=0 font_size=10.0 x=211 y=613\n[text_raster] 'layers.' found=7 missing=0 font_size=10.0 x=234 y=613\n[text_raster] 'If' found=2 missing=0 font_size=10.0 x=263 y=613\n[text_raster] 'one' found=3 missing=0 font_size=10.0 x=272 y=613\n[text_raster] 'h' found=1 missing=0 font_size=10.0 x=50 y=601\n[text_raster] 'ypothesizes' found=11 missing=0 font_size=10.0 x=55 y=601\n[text_raster] 'that' found=4 missing=0 font_size=10.0 x=105 y=601\n[text_raster] 'multiple' found=8 missing=0 font_size=10.0 x=123 y=601\n[text_raster] 'nonlinear' found=9 missing=0 font_size=10.0 x=159 y=601\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=200 y=601\n[text_raster] 'can' found=3 missing=0 font_size=10.0 x=227 y=601\n[text_raster] 'asymptoti-' found=10 missing=0 font_size=10.0 x=244 y=601\n[text_raster] 'cally' found=5 missing=0 font_size=10.0 x=50 y=589\n[text_raster] 'approximate' found=11 missing=0 font_size=10.0 x=72 y=589\n[text_raster] 'complicated' found=11 missing=0 font_size=10.0 x=125 y=589\n[text_raster] 'functions' found=9 missing=0 font_size=10.0 x=177 y=589\n[text_raster] '2' found=1 missing=0 font_size=7.0 x=214 y=593\n[text_raster] ',' found=1 missing=0 font_size=10.0 x=218 y=589\n[text_raster] 'then' found=4 missing=0 font_size=10.0 x=223 y=589\n[text_raster] 'it' found=2 missing=0 font_size=10.0 x=243 y=589\n[text_raster] 'is' found=2 missing=0 font_size=10.0 x=252 y=589\n[text_raster] 'equi' found=4 missing=0 font_size=10.0 x=261 y=589\n[text_raster] 'v-' found=2 missing=0 font_size=10.0 x=278 y=589\n[text_raster] 'alent' found=5 missing=0 font_size=10.0 x=50 y=577\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=73 y=577\n[text_raster] 'h' found=1 missing=0 font_size=10.0 x=84 y=577\n[text_raster] 'ypothesize' found=10 missing=0 font_size=10.0 x=89 y=577\n[text_raster] 'that' found=4 missing=0 font_size=10.0 x=135 y=577\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=153 y=577\n[text_raster] 'y' found=1 missing=0 font_size=10.0 x=165 y=577\n[text_raster] 'can' found=3 missing=0 font_size=10.0 x=173 y=577\n[text_raster] 'asymptotically' found=14 missing=0 font_size=10.0 x=191 y=577\n[text_raster] 'approxi-' found=8 missing=0 font_size=10.0 x=253 y=577\n[text_raster] 'mate' found=4 missing=0 font_size=10.0 x=50 y=565\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=73 y=565\n[text_raster] 'residual' found=8 missing=0 font_size=10.0 x=88 y=565\n[text_raster] 'functions,' found=10 missing=0 font_size=10.0 x=122 y=565\n[text_raster] 'i.e' found=3 missing=0 font_size=10.0 x=165 y=565\n[text_raster] '.,' found=2 missing=0 font_size=10.0 x=175 y=565\n[text_raster] 'H' found=1 missing=0 font_size=10.0 x=183 y=565\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=191 y=565\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=195 y=565\n[text_raster] ')' found=1 missing=0 font_size=10.0 x=201 y=565\n[text_raster] '\u2212' found=1 missing=0 font_size=10.0 x=208 y=565\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=218 y=565\n[text_raster] '(assuming' found=9 missing=0 font_size=10.0 x=227 y=565\n[text_raster] 'that' found=4 missing=0 font_size=10.0 x=271 y=565\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=50 y=553\n[text_raster] 'input' found=5 missing=0 font_size=10.0 x=67 y=553\n[text_raster] 'and' found=3 missing=0 font_size=10.0 x=92 y=553\n[text_raster] 'output' found=6 missing=0 font_size=10.0 x=112 y=553\n[text_raster] 'are' found=3 missing=0 font_size=10.0 x=142 y=553\n[text_raster] 'of' found=2 missing=0 font_size=10.0 x=159 y=553\n[text_raster] 'the' found=3 missing=0 font_size=10.0 x=172 y=553\n[text_raster] 'same' found=4 missing=0 font_size=10.0 x=189 y=553\n[text_raster] 'dimensions).' found=12 missing=0 font_size=10.0 x=214 y=553\n[text_raster] 'So' found=2 missing=0 font_size=10.0 x=276 y=553\n[text_raster] 'rather' found=6 missing=0 font_size=10.0 x=50 y=541\n[text_raster] 'than' found=4 missing=0 font_size=10.0 x=76 y=541\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=96 y=541\n[text_raster] 'xpect' found=5 missing=0 font_size=10.0 x=100 y=541\n[text_raster] 'stack' found=5 missing=0 font_size=10.0 x=125 y=541\n[text_raster] 'ed' found=2 missing=0 font_size=10.0 x=145 y=541\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=157 y=541\n[text_raster] 'to' found=2 missing=0 font_size=10.0 x=184 y=541\n[text_raster] 'approximate' found=11 missing=0 font_size=10.0 x=194 y=541\n[text_raster] 'H' found=1 missing=0 font_size=10.0 x=247 y=541\n[text_raster] '(' found=1 missing=0 font_size=10.0 x=256 y=541\n[text_raster] 'x' found=1 missing=0 font_size=10.0 x=259 y=541\n[text_raster] ')' found=1 missing=0 font_size=10.0 x=266 y=541\n[text_raster] ',' found=1 missing=0 font_size=10.0 x=269 y=541\n[text_raster] 'we' found=2 missing=0 font_size=10.0 x=275 y=541\n[text_raster] 'e' found=1 missing=0 font_size=10.0 x=50 y=529\n[text_raster] 'xplicitly' found=9 missing=0 font_size=10.0 x=54 y=529\n[text_raster] 'let' found=3 missing=0 font_size=10.0 x=91 y=529\n[text_raster] 'these' found=5 missing=0 font_size=10.0 x=105 y=529\n[text_raster] 'layers' found=6 missing=0 font_size=10.0 x=129 y=529\n[text_raster] 'approximate' found=11 missing=0 font_size=10.0 x=156 y=529\n[text_raster] 'a' found=1 missing=0 font_size=10.0 x=210 y=529\n[text_raster] 'residual\n...[342372 chars omitted]...\nx=162 y=323\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=163 y=323\n[text_raster] 'S' found=1 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'im' found=2 missing=0 font_size=1.0 x=126 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=127 y=322\n[text_raster] 'ly' found=2 missing=0 font_size=1.0 x=128 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=129 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=159 y=322\n[text_raster] 'tati' found=4 missing=0 font_size=1.0 x=160 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=161 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] ' c' found=1 missing=0 font_size=1.0 x=162 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=163 y=322\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=164 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=165 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 'oe' found=2 missing=0 font_size=1.0 x=166 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=167 y=322\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'ot ' found=2 missing=0 font_size=1.0 x=168 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=170 y=322\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 'ti' found=2 missing=0 font_size=1.0 x=171 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=172 y=322\n[text_raster] 't' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=173 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=174 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=175 y=322\n[text_raster] 'g' found=1 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=176 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=177 y=322\n[text_raster] 'z' found=1 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'ati' found=3 missing=0 font_size=1.0 x=178 y=322\n[text_raster] 'on' found=2 missing=0 font_size=1.0 x=179 y=322\n[text_raster] 'al' found=2 missing=0 font_size=1.0 x=180 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=181 y=322\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'i' found=1 missing=0 font_size=1.0 x=182 y=322\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'y' found=1 missing=0 font_size=1.0 x=183 y=322\n[text_raster] ' or' found=2 missing=0 font_size=1.0 x=183 y=322\n[text_raster] 'p' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=185 y=322\n[text_raster] 'oc' found=2 missing=0 font_size=1.0 x=186 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=187 y=322\n[text_raster] 'u' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'r' found=1 missing=0 font_size=1.0 x=188 y=322\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=189 y=322\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=149\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'ate' found=3 missing=0 font_size=1.0 x=127 y=149\n[text_raster] 'd' found=1 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=129 y=149\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=131 y=149\n[text_raster] 'o' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 'l' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] 's' found=1 missing=0 font_size=1.0 x=132 y=149\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=133 y=149\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'A' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=149\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=135 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=136 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] '9' found=1 missing=0 font_size=1.0 x=137 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=138 y=149\n[text_raster] 'PM' found=2 missing=0 font_size=1.0 x=138 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=140 y=149\n[text_raster] '24' found=2 missing=0 font_size=1.0 x=140 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=141 y=149\n[text_raster] 'PS' found=2 missing=0 font_size=1.0 x=141 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=142 y=149\n[text_raster] '8' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=143 y=149\n[text_raster] 'SI' found=2 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=144 y=149\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=145 y=149\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=323 y=149\n[text_raster] 'Con' found=3 missing=0 font_size=1.0 x=126 y=131\n[text_raster] 'tr' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'ol' found=2 missing=0 font_size=1.0 x=128 y=131\n[text_raster] 'E' found=1 missing=0 font_size=1.0 x=129 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'h' found=1 missing=0 font_size=1.0 x=130 y=131\n[text_raster] 'an' found=2 missing=0 font_size=1.0 x=131 y=131\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=132 y=131\n[text_raster] 'm' found=1 missing=0 font_size=1.0 x=133 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=134 y=131\n[text_raster] 'ts' found=2 missing=0 font_size=1.0 x=135 y=131\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=135 y=131\n[text_raster] 'No' found=2 missing=0 font_size=1.0 x=142 y=131\n[text_raster] 'n' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] 'e' found=1 missing=0 font_size=1.0 x=144 y=131\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=145 y=131\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=126 y=113\n[text_raster] 'ef' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'er' found=2 missing=0 font_size=1.0 x=127 y=113\n[text_raster] 'en' found=2 missing=0 font_size=1.0 x=128 y=113\n[text_raster] 'c' found=1 missing=0 font_size=1.0 x=129 y=113\n[text_raster] 'es' found=2 missing=0 font_size=1.0 x=130 y=113\n[text_raster] ':' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=131 y=113\n[text_raster] 'O' found=1 missing=0 font_size=1.0 x=132 y=113\n[text_raster] 'MB' found=2 missing=0 font_size=1.0 x=132 y=113\n[text_raster] ' A' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=134 y=113\n[text_raster] '1' found=1 missing=0 font_size=1.0 x=135 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=135 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=136 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=137 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=137 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=138 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=139 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=165 y=113\n[text_raster] '12' found=2 missing=0 font_size=1.0 x=140 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=142 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=142 y=113\n[text_raster] '80' found=2 missing=0 font_size=1.0 x=144 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=145 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=170 y=113\n[text_raster] '30' found=2 missing=0 font_size=1.0 x=145 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=146 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=147 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=148 y=113\n[text_raster] ' 8' found=1 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '00' found=2 missing=0 font_size=1.0 x=149 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=175 y=113\n[text_raster] '39' found=2 missing=0 font_size=1.0 x=151 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=152 y=113\n[text_raster] 'SP' found=2 missing=0 font_size=1.0 x=153 y=113\n[text_raster] ' 80' found=2 missing=0 font_size=1.0 x=154 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=155 y=113\n[text_raster] '-' found=1 missing=0 font_size=1.0 x=180 y=113\n[text_raster] '10' found=2 missing=0 font_size=1.0 x=156 y=113\n[text_raster] '0' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=157 y=113\n[text_raster] ',' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] '[' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'I' found=1 missing=0 font_size=1.0 x=158 y=113\n[text_raster] 'R' found=1 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '78' found=2 missing=0 font_size=1.0 x=159 y=113\n[text_raster] '74' found=2 missing=0 font_size=1.0 x=160 y=113\n[text_raster] ']' found=1 missing=0 font_size=1.0 x=480 y=113\n[text_raster] '.' found=1 missing=0 font_size=1.0 x=480 y=113\n",
+          "duration_ms": 4706.489,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c005-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "p19-char-dedup-glyph-loss",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c006",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_table_cell_truncation_p19.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 139.708,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"page_index\": 18,\n  \"p_glyphs_chars_vs_spans\": [\n    36,\n    36\n  ],\n  \"problems\": [],\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 141.096,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c006-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"page_index\": 18,\n  \"p_glyphs_chars_vs_spans\": [\n    36,\n    36\n  ],\n  \"problems\": [],\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 138.32,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c006-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "census-word-fidelity-sweep",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c007",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/pdf_lab/check_word_fidelity_sweep.py",
+        "--output",
+        "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "live_e2e",
+      "live_qualified": true,
+      "evidence_disqualifiers": [],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 1308.943,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\",\n  \"token_pattern\": \"[A-Za-z0-9]+\",\n  \"normalization\": \"NFKC plus document U+019F-to-ti replacement\",\n  \"pages_swept\": 55,\n  \"bulk_closure_count\": 111,\n  \"expected_bulk_closure_count\": 111,\n  \"bulk_closure_count_passed\": true,\n  \"page_counter_mismatches\": 0,\n  \"page_counter_passed\": true,\n  \"region_bins\": {\n    \"columns\": 4,\n    \"rows\": 4\n  },\n  \"region_counter_mismatches\": 55,\n  \"region_bin_mismatches\": 689,\n  \"region_counter_passed\": false,\n  \"region_neighbor_radius\": 1,\n  \"region_neighbor_radius_is_degenerate\": false,\n  \"region_neighbor_counter_mismatches\": 9,\n  \"region_neighbor_missing_total\": 15,\n  \"region_neighbor_extra_total\": 11,\n  \"region_neighbor_counter_passed\": false,\n  \"region_neighbor_placement_only_total\": 7,\n  \"region_neighbor_segmentation_only_total\": 4,\n  \"region_token_loss_total\": 0,\n  \"region_token_gain_total\": 0,\n  \"region_token_fidelity_pages\": [],\n  \"region_token_fidelity_passed\": true,\n  \"require_region_token_fidelity\": true,\n  \"region_proof_boundary\": \"diagnostic only unless require_region_parity is true; current positioned pdf_oxide APIs do not yet provide full per-region parity on this corpus\",\n  \"require_region_parity\": false,\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 1288.156,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c007-t00",
+          "artifact_hashes": {
+            "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json": "sha256:384f418e39b4df0df99ed8c4e55a5ba943ebddd83c788d6c92d5418f4b9bd629"
+          },
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"source_pdf\": \"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\",\n  \"token_pattern\": \"[A-Za-z0-9]+\",\n  \"normalization\": \"NFKC plus document U+019F-to-ti replacement\",\n  \"pages_swept\": 55,\n  \"bulk_closure_count\": 111,\n  \"expected_bulk_closure_count\": 111,\n  \"bulk_closure_count_passed\": true,\n  \"page_counter_mismatches\": 0,\n  \"page_counter_passed\": true,\n  \"region_bins\": {\n    \"columns\": 4,\n    \"rows\": 4\n  },\n  \"region_counter_mismatches\": 55,\n  \"region_bin_mismatches\": 689,\n  \"region_counter_passed\": false,\n  \"region_neighbor_radius\": 1,\n  \"region_neighbor_radius_is_degenerate\": false,\n  \"region_neighbor_counter_mismatches\": 9,\n  \"region_neighbor_missing_total\": 15,\n  \"region_neighbor_extra_total\": 11,\n  \"region_neighbor_counter_passed\": false,\n  \"region_neighbor_placement_only_total\": 7,\n  \"region_neighbor_segmentation_only_total\": 4,\n  \"region_token_loss_total\": 0,\n  \"region_token_gain_total\": 0,\n  \"region_token_fidelity_pages\": [],\n  \"region_token_fidelity_passed\": true,\n  \"require_region_token_fidelity\": true,\n  \"region_proof_boundary\": \"diagnostic only unless require_region_parity is true; current positioned pdf_oxide APIs do not yet provide full per-region parity on this corpus\",\n  \"require_region_parity\": false,\n  \"passed\": true\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 1329.73,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c007-t01",
+          "artifact_hashes": {
+            "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json": "sha256:384f418e39b4df0df99ed8c4e55a5ba943ebddd83c788d6c92d5418f4b9bd629"
+          },
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "census-text-loss-apply-requires-token-counter-preflight",
+      "type": "negative",
+      "case_id": "f149f7517eaa-c008",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "bash",
+        "-c",
+        "printf '%s\n' '{\"page\":457,\"finding_id\":\"p457-table-cell-text-artifacts\",\"status\":\"resolved_by_current_extraction\",\"evidence\":\"\"}' > /tmp/pdf_oxide_issue31_apply_gate_eval.jsonl && ../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python ../scripts/pdf_lab/adjudicate_findings.py apply --decisions /tmp/pdf_oxide_issue31_apply_gate_eval.jsonl"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "live_e2e",
+      "live_qualified": true,
+      "evidence_disqualifiers": [],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 1420.235,
+      "trials": [
+        {
+          "exit_code": 1,
+          "stdout": "{\n \"applied\": 0,\n \"problems\": [\n  \"(457, 'p457-table-cell-text-artifacts'): decision has no quoted evidence\"\n ],\n \"gated_keys\": [\n  [\n   457,\n   \"p457-table-cell-text-artifacts\"\n  ]\n ],\n \"token_counter_preflight\": {\n  \"command\": [\n   \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python\",\n   \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/scripts/pdf_lab/check_word_fidelity_sweep.py\",\n   \"--output\",\n   \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json\",\n   \"--require-region-token-fidelity\"\n  ],\n  \"exit_code\": 0,\n  \"stdout\": \"{\\n  \\\"source_pdf\\\": \\\"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\\\",\\n  \\\"ledger\\\": \\\"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\\\",\\n  \\\"token_pattern\\\": \\\"[A-Za-z0-9]+\\\",\\n  \\\"normalization\\\": \\\"NFKC plus document U+019F-to-ti replacement\\\",\\n  \\\"pages_swept\\\": 55,\\n  \\\"bulk_closure_count\\\": 111,\\n  \\\"expected_bulk_closure_count\\\": 111,\\n  \\\"bulk_closure_count_passed\\\": true,\\n  \\\"page_counter_mismatches\\\": 0,\\n  \\\"page_counter_passed\\\": true,\\n  \\\"region_bins\\\": {\\n    \\\"columns\\\": 4,\\n    \\\"rows\\\": 4\\n  },\\n  \\\"region_counter_mismatches\\\": 55,\\n  \\\"region_bin_mismatches\\\": 689,\\n  \\\"region_counter_passed\\\": false,\\n  \\\"region_neighbor_radius\\\": 1,\\n  \\\"region_neighbor_radius_is_degenerate\\\": false,\\n  \\\"region_neighbor_counter_mismatches\\\": 9,\\n  \\\"region_neighbor_missing_total\\\": 15,\\n  \\\"region_neighbor_extra_total\\\": 11,\\n  \\\"region_neighbor_counter_passed\\\": false,\\n  \\\"region_neighbor_placement_only_total\\\": 7,\\n  \\\"region_neighbor_segmentation_only_total\\\": 4,\\n  \\\"region_token_loss_total\\\": 0,\\n  \\\"region_token_gain_total\\\": 0,\\n  \\\"region_token_fidelity_pages\\\": [],\\n  \\\"region_token_fidelity_passed\\\": true,\\n  \\\"require_region_token_fidelity\\\": true,\\n  \\\"region_proof_boundary\\\": \\\"diagnostic only unless require_region_parity is true; current positioned pdf_oxide APIs do not yet provide full per-region parity on this corpus\\\",\\n  \\\"require_region_parity\\\": false,\\n  \\\"passed\\\": true\\n}\\n\",\n  \"stderr\": \"\",\n  \"artifact\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json\",\n  \"artifact_readback\": {\n   \"pages_swept\": 55,\n   \"bulk_closure_count\": 111,\n   \"page_counter_mismatches\": 0,\n   \"region_token_loss_total\": 0,\n   \"region_token_gain_total\": 0,\n   \"region_token_fidelity_passed\": true,\n   \"passed\": true\n  }\n }\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 1463.989,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c008-t00",
+          "artifact_hashes": {
+            "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json": "sha256:384f418e39b4df0df99ed8c4e55a5ba943ebddd83c788d6c92d5418f4b9bd629"
+          },
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 1,
+          "stdout": "{\n \"applied\": 0,\n \"problems\": [\n  \"(457, 'p457-table-cell-text-artifacts'): decision has no quoted evidence\"\n ],\n \"gated_keys\": [\n  [\n   457,\n   \"p457-table-cell-text-artifacts\"\n  ]\n ],\n \"token_counter_preflight\": {\n  \"command\": [\n   \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python\",\n   \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/scripts/pdf_lab/check_word_fidelity_sweep.py\",\n   \"--output\",\n   \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json\",\n   \"--require-region-token-fidelity\"\n  ],\n  \"exit_code\": 0,\n  \"stdout\": \"{\\n  \\\"source_pdf\\\": \\\"/home/graham/workspace/experiments/pi-mono/packages/ux-lab/public/NIST_SP_800-53r5.pdf\\\",\\n  \\\"ledger\\\": \\\"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\\\",\\n  \\\"token_pattern\\\": \\\"[A-Za-z0-9]+\\\",\\n  \\\"normalization\\\": \\\"NFKC plus document U+019F-to-ti replacement\\\",\\n  \\\"pages_swept\\\": 55,\\n  \\\"bulk_closure_count\\\": 111,\\n  \\\"expected_bulk_closure_count\\\": 111,\\n  \\\"bulk_closure_count_passed\\\": true,\\n  \\\"page_counter_mismatches\\\": 0,\\n  \\\"page_counter_passed\\\": true,\\n  \\\"region_bins\\\": {\\n    \\\"columns\\\": 4,\\n    \\\"rows\\\": 4\\n  },\\n  \\\"region_counter_mismatches\\\": 55,\\n  \\\"region_bin_mismatches\\\": 689,\\n  \\\"region_counter_passed\\\": false,\\n  \\\"region_neighbor_radius\\\": 1,\\n  \\\"region_neighbor_radius_is_degenerate\\\": false,\\n  \\\"region_neighbor_counter_mismatches\\\": 9,\\n  \\\"region_neighbor_missing_total\\\": 15,\\n  \\\"region_neighbor_extra_total\\\": 11,\\n  \\\"region_neighbor_counter_passed\\\": false,\\n  \\\"region_neighbor_placement_only_total\\\": 7,\\n  \\\"region_neighbor_segmentation_only_total\\\": 4,\\n  \\\"region_token_loss_total\\\": 0,\\n  \\\"region_token_gain_total\\\": 0,\\n  \\\"region_token_fidelity_pages\\\": [],\\n  \\\"region_token_fidelity_passed\\\": true,\\n  \\\"require_region_token_fidelity\\\": true,\\n  \\\"region_proof_boundary\\\": \\\"diagnostic only unless require_region_parity is true; current positioned pdf_oxide APIs do not yet provide full per-region parity on this corpus\\\",\\n  \\\"require_region_parity\\\": false,\\n  \\\"passed\\\": true\\n}\\n\",\n  \"stderr\": \"\",\n  \"artifact\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json\",\n  \"artifact_readback\": {\n   \"pages_swept\": 55,\n   \"bulk_closure_count\": 111,\n   \"page_counter_mismatches\": 0,\n   \"region_token_loss_total\": 0,\n   \"region_token_gain_total\": 0,\n   \"region_token_fidelity_passed\": true,\n   \"passed\": true\n  }\n }\n}\n",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 1376.481,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c008-t01",
+          "artifact_hashes": {
+            "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json": "sha256:384f418e39b4df0df99ed8c4e55a5ba943ebddd83c788d6c92d5418f4b9bd629"
+          },
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-21-symbol-pua-unit-guards",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c009",
+      "required": true,
+      "outcome": "FAIL",
+      "problems": [
+        "process group survived teardown: 548830",
+        "process group survived teardown: 559544, 559747",
+        "timed out after 30s"
+      ],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && cargo test --lib normalize_symbol_pua 2>&1 | grep 'test result:' && cargo test --lib detect_run_in_lead 2>&1 | grep 'test result:'"
+      ],
+      "declared_evidence_class": "deterministic",
+      "effective_evidence_class": "deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 0,
+      "total_trials": 2,
+      "pass_rate": 0.0,
+      "avg_latency_ms": 30041.275,
+      "trials": [
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "",
+          "duration_ms": 30042.445,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            548830
+          ],
+          "trial_id": "f149f7517eaa-c009-t00",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 548830"
+          ]
+        },
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "",
+          "duration_ms": 30040.106,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            559544,
+            559747
+          ],
+          "trial_id": "f149f7517eaa-c009-t01",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 559544, 559747"
+          ]
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "mcid-sequence-and-table-gap-assignment-guards",
+      "type": "adversarial",
+      "case_id": "f149f7517eaa-c010",
+      "required": true,
+      "outcome": "FAIL",
+      "problems": [
+        "process group survived teardown: 572708, 572795",
+        "process group survived teardown: 582739, 582901",
+        "timed out after 30s"
+      ],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python:scripts/pdf_lab .venv/bin/python scripts/pdf_lab/check_mcid_sequence_uniqueness_issue39.py && cargo test --lib duplicate_sequence_values_do_not_alias_line_assignments 2>&1 | grep 'test result: ok. 1 passed' && cargo test --lib gap_glyph 2>&1 | grep 'test result: ok. 2 passed'"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 0,
+      "total_trials": 2,
+      "pass_rate": 0.0,
+      "avg_latency_ms": 30035.501,
+      "trials": [
+        {
+          "exit_code": null,
+          "stdout": "{\n  \"passed\": true,\n  \"problems\": [],\n  \"command\": [\n    \"cargo\",\n    \"run\",\n    \"--quiet\",\n    \"--bin\",\n    \"check_mcid_sequence_uniqueness\",\n    \"--\",\n    \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n    \"--pages\",\n    \"15,19,20,21,22,23,24,30,46,51,100,116,137,157,165,178,186,187,190,194,200,222,232,235,251,253,254,260,264,298,336,338,355,382,399,402,403,404,409,413,417,419,457,458,461,464,466,470,474,481,482,485,486,489,490\",\n    \"--output\",\n    \"/tmp/pdf_oxide_issue39_mcid_sequence_20260823T163611Z.json\"\n  ],\n  \"returncode\": 0,\n  \"stdout_bytes\": 6836,\n  \"stderr_lines\": 1914,\n  \"stderr_tail\": [\n    \"warning: missing documentation for a struct field\",\n    \"   --> src/tables/types.rs:448:5\",\n    \"    |\",\n    \"448 |     pub flavor: Flavor,\",\n    \"    |     ^^^^^^^^^^^^^^^^^^\",\n    \"\",\n    \"warning: missing documentation for a struct field\",\n    \"   --> src/tables/types.rs:449:5\",\n    \"    |\",\n    \"449 |     pub strategy: Strategy,\",\n    \"    |     ^^^^^^^^^^^^^^^^^^^^^^\",\n    \"\"\n  ],\n  \"pdf\": \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\",\n  \"pages_from_ledger\": 55,\n  \"scanner_report\": \"/tmp/pdf_oxide_issue39_mcid_sequence_20260823T163611Z.json\",\n  \"pages_scanned\": 55,\n  \"span_count\": 20692,\n  \"mcid_span_count\": 18241,\n  \"duplicate_groups\": 0\n}\n",
+          "stderr": "",
+          "duration_ms": 30031.703,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            572708,
+            572795
+          ],
+          "trial_id": "f149f7517eaa-c010-t00",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 572708, 572795"
+          ]
+        },
+        {
+          "exit_code": null,
+          "stdout": "{\n  \"passed\": true,\n  \"problems\": [],\n  \"command\": [\n    \"cargo\",\n    \"run\",\n    \"--quiet\",\n    \"--bin\",\n    \"check_mcid_sequence_uniqueness\",\n    \"--\",\n    \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n    \"--pages\",\n    \"15,19,20,21,22,23,24,30,46,51,100,116,137,157,165,178,186,187,190,194,200,222,232,235,251,253,254,260,264,298,336,338,355,382,399,402,403,404,409,413,417,419,457,458,461,464,466,470,474,481,482,485,486,489,490\",\n    \"--output\",\n    \"/tmp/pdf_oxide_issue39_mcid_sequence_20260823T163641Z.json\"\n  ],\n  \"returncode\": 0,\n  \"stdout_bytes\": 6836,\n  \"stderr_lines\": 1914,\n  \"stderr_tail\": [\n    \"warning: missing documentation for a struct field\",\n    \"   --> src/tables/types.rs:448:5\",\n    \"    |\",\n    \"448 |     pub flavor: Flavor,\",\n    \"    |     ^^^^^^^^^^^^^^^^^^\",\n    \"\",\n    \"warning: missing documentation for a struct field\",\n    \"   --> src/tables/types.rs:449:5\",\n    \"    |\",\n    \"449 |     pub strategy: Strategy,\",\n    \"    |     ^^^^^^^^^^^^^^^^^^^^^^\",\n    \"\"\n  ],\n  \"pdf\": \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\",\n  \"pages_from_ledger\": 55,\n  \"scanner_report\": \"/tmp/pdf_oxide_issue39_mcid_sequence_20260823T163641Z.json\",\n  \"pages_scanned\": 55,\n  \"span_count\": 20692,\n  \"mcid_span_count\": 18241,\n  \"duplicate_groups\": 0\n}\n",
+          "stderr": "",
+          "duration_ms": 30039.298,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            582739,
+            582901
+          ],
+          "trial_id": "f149f7517eaa-c010-t01",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 582739, 582901"
+          ]
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "extract_text_branch_parity_debug_vs_release",
+      "type": "adversarial",
+      "case_id": "f149f7517eaa-c011",
+      "required": true,
+      "outcome": "FAIL",
+      "problems": [
+        "process group survived teardown: 603567, 603573",
+        "process group survived teardown: 618574",
+        "timed out after 30s"
+      ],
+      "argv": [
+        "../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python",
+        "../scripts/check_extract_text_branch_parity_issue33.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 0,
+      "total_trials": 2,
+      "pass_rate": 0.0,
+      "avg_latency_ms": 30040.214,
+      "trials": [
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 30044.81,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            603567,
+            603573
+          ],
+          "trial_id": "f149f7517eaa-c011-t00",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 603567, 603573"
+          ]
+        },
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "<frozen site>:101: RuntimeWarning: Unexpected value in sys.prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n<frozen site>:101: RuntimeWarning: Unexpected value in sys.exec_prefix, expected /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/security_advisories_live_e2e/venv, got /home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/fixtures/../artifacts/pdf_lab/security_advisories_live_e2e/venv\n",
+          "duration_ms": 30035.618,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            618574
+          ],
+          "trial_id": "f149f7517eaa-c011-t01",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 618574"
+          ]
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-38-ligature-vs-decomposed-double-draw",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c012",
+      "required": true,
+      "outcome": "FAIL",
+      "problems": [
+        "process group survived teardown: 619535, 619640",
+        "timed out after 30s"
+      ],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && cargo test --lib -- ligature_then_decomposed_double_draw_is_deduplicated decomposed_then_ligature_double_draw_is_deduplicated ligature_dedup_keeps_legitimate_adjacent_letters ligature_dedup_does_not_reopen_narrow_space_glyph_loss 2>&1 | grep 'test result: ok. 4 passed'"
+      ],
+      "declared_evidence_class": "deterministic",
+      "effective_evidence_class": "deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 1,
+      "total_trials": 2,
+      "pass_rate": 0.5,
+      "avg_latency_ms": 19962.255,
+      "trials": [
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "",
+          "duration_ms": 30041.045,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            619535,
+            619640
+          ],
+          "trial_id": "f149f7517eaa-c012-t00",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 619535, 619640"
+          ]
+        },
+        {
+          "exit_code": 0,
+          "stdout": "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 4618 filtered out; finished in 0.00s\n",
+          "stderr": "",
+          "duration_ms": 9883.465,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c012-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-36-nist-appendix-grid-small-caps-cells",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c013",
+      "required": true,
+      "outcome": "FAIL",
+      "problems": [
+        "exit_code 1 != 0",
+        "stdout missing '\"passed\": true'",
+        "stdout missing '\"problems\": []'"
+      ],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python .venv/bin/python scripts/pdf_lab/check_appendix_grid_small_caps_issue36.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 0,
+      "total_trials": 2,
+      "pass_rate": 0.0,
+      "avg_latency_ms": 2099.097,
+      "trials": [
+        {
+          "exit_code": 1,
+          "stdout": "{\n  \"passed\": false,\n  \"pdf\": \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n  \"char_dump\": \"/tmp/pdf_oxide_issue36_small_caps_20260823T163851Z/p457_ac4_17_char_dump.json\",\n  \"observed\": {\n    \"457\": {\n      \"AC-4(17)\": [\n        \"AC-4(17)\",\n        \"DOMAIN AUTHENTICATION\",\n        \"S\",\n        \"\"\n      ],\n      \"AC-4(32)\": [\n        \"AC-4(32)\",\n        \"PROCESS REQUIREMENTS FOR INFORMATION TRANSFER\",\n        \"S\",\n        \"\"\n      ]\n    },\n    \"464\": {\n      \"CM-2(4)\": [\n        \"CM-2(4)\",\n        \"UNAUTHORIZED SOFTWARE\",\n        \"W: Incorporated into CM-7.\",\n        \"\"\n      ],\n      \"CM-4(1)\": [\n        \"CM-4(1)\",\n        \"SEPARATE TEST ENVIRONMENTS\",\n        \"O\",\n        \"\u221a\"\n      ]\n    },\n    \"486\": {\n      \"SC-12(3)\": [\n        \"SC-12(3)\",\n        \"ASYMMETRIC KEYS\",\n        \"O/S\",\n        \"\"\n      ]\n    }\n  },\n  \"problems\": [\n    {\n      \"page\": 464,\n      \"control_id\": \"CM-2(4)\",\n      \"expected\": [\n        \"CM-2(4)\",\n        \"UNAUTHORIZED SOFTWARE\",\n        \"W: Incorporated into\",\n        \"CM-7.\"\n      ],\n      \"actual\": [\n        \"CM-2(4)\",\n        \"UNAUTHORIZED SOFTWARE\",\n        \"W: Incorporated into CM-7.\",\n        \"\"\n      ]\n    }\n  ]\n}\n",
+          "stderr": "",
+          "duration_ms": 2267.695,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c013-t00",
+          "outcome": "FAIL",
+          "problems": [
+            "exit_code 1 != 0",
+            "stdout missing '\"passed\": true'",
+            "stdout missing '\"problems\": []'"
+          ]
+        },
+        {
+          "exit_code": 1,
+          "stdout": "{\n  \"passed\": false,\n  \"pdf\": \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n  \"char_dump\": \"/tmp/pdf_oxide_issue36_small_caps_20260823T163853Z/p457_ac4_17_char_dump.json\",\n  \"observed\": {\n    \"457\": {\n      \"AC-4(17)\": [\n        \"AC-4(17)\",\n        \"DOMAIN AUTHENTICATION\",\n        \"S\",\n        \"\"\n      ],\n      \"AC-4(32)\": [\n        \"AC-4(32)\",\n        \"PROCESS REQUIREMENTS FOR INFORMATION TRANSFER\",\n        \"S\",\n        \"\"\n      ]\n    },\n    \"464\": {\n      \"CM-2(4)\": [\n        \"CM-2(4)\",\n        \"UNAUTHORIZED SOFTWARE\",\n        \"W: Incorporated into CM-7.\",\n        \"\"\n      ],\n      \"CM-4(1)\": [\n        \"CM-4(1)\",\n        \"SEPARATE TEST ENVIRONMENTS\",\n        \"O\",\n        \"\u221a\"\n      ]\n    },\n    \"486\": {\n      \"SC-12(3)\": [\n        \"SC-12(3)\",\n        \"ASYMMETRIC KEYS\",\n        \"O/S\",\n        \"\"\n      ]\n    }\n  },\n  \"problems\": [\n    {\n      \"page\": 464,\n      \"control_id\": \"CM-2(4)\",\n      \"expected\": [\n        \"CM-2(4)\",\n        \"UNAUTHORIZED SOFTWARE\",\n        \"W: Incorporated into\",\n        \"CM-7.\"\n      ],\n      \"actual\": [\n        \"CM-2(4)\",\n        \"UNAUTHORIZED SOFTWARE\",\n        \"W: Incorporated into CM-7.\",\n        \"\"\n      ]\n    }\n  ]\n}\n",
+          "stderr": "",
+          "duration_ms": 1930.5,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c013-t01",
+          "outcome": "FAIL",
+          "problems": [
+            "exit_code 1 != 0",
+            "stdout missing '\"passed\": true'",
+            "stdout missing '\"problems\": []'"
+          ]
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-35-nist-withdrawn-row-note-cells",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c014",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=python:scripts/pdf_lab .venv/bin/python scripts/pdf_lab/check_withdrawn_row_note_cells_issue35.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 1340.721,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"passed\": true,\n  \"pdf\": \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n  \"observed\": {\n    \"474\": {\n      \"PE-3(6)\": [\n        \"PE-3(6)\",\n        \"FACILITY PENETRATION TESTING\",\n        \"W: Incorporated into CA-8.\",\n        \"\"\n      ],\n      \"PE-5(1)\": [\n        \"PE-5(1)\",\n        \"ACCESS TO OUTPUT BY AUTHORIZED INDIVIDUALS\",\n        \"W: Incorporated into PE-5.\",\n        \"\"\n      ],\n      \"PE-7\": [\n        \"PE-7\",\n        \"Visitor Control\",\n        \"W: Incorporated into PE-2 and PE-3.\",\n        \"\"\n      ],\n      \"PE-10(1)\": [\n        \"PE-10(1)\",\n        \"ACCIDENTAL AND UNAUTHORIZED ACTIVATION\",\n        \"W: Incorporated into PE-10.\",\n        \"\"\n      ]\n    },\n    \"481\": {\n      \"SA-6\": [\n        \"SA-6\",\n        \"Software Usage Restrictions\",\n        \"W: Incorporated into CM-10 and SI-7.\",\n        \"\"\n      ],\n      \"SA-7\": [\n        \"SA-7\",\n        \"User-Installed Software\",\n        \"W: Incorporated into CM-11 and SI-7.\",\n        \"\"\n      ]\n    }\n  },\n  \"problems\": []\n}\n",
+          "stderr": "",
+          "duration_ms": 1368.15,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c014-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"passed\": true,\n  \"pdf\": \"/mnt/storage12tb/extractor_corpus/source/standards/NIST_SP_800-53r5.pdf\",\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/python/pdf_oxide/presets/document_families/nist_sp_800_53r5_promotion_ledger.json\",\n  \"observed\": {\n    \"474\": {\n      \"PE-3(6)\": [\n        \"PE-3(6)\",\n        \"FACILITY PENETRATION TESTING\",\n        \"W: Incorporated into CA-8.\",\n        \"\"\n      ],\n      \"PE-5(1)\": [\n        \"PE-5(1)\",\n        \"ACCESS TO OUTPUT BY AUTHORIZED INDIVIDUALS\",\n        \"W: Incorporated into PE-5.\",\n        \"\"\n      ],\n      \"PE-7\": [\n        \"PE-7\",\n        \"Visitor Control\",\n        \"W: Incorporated into PE-2 and PE-3.\",\n        \"\"\n      ],\n      \"PE-10(1)\": [\n        \"PE-10(1)\",\n        \"ACCIDENTAL AND UNAUTHORIZED ACTIVATION\",\n        \"W: Incorporated into PE-10.\",\n        \"\"\n      ]\n    },\n    \"481\": {\n      \"SA-6\": [\n        \"SA-6\",\n        \"Software Usage Restrictions\",\n        \"W: Incorporated into CM-10 and SI-7.\",\n        \"\"\n      ],\n      \"SA-7\": [\n        \"SA-7\",\n        \"User-Installed Software\",\n        \"W: Incorporated into CM-11 and SI-7.\",\n        \"\"\n      ]\n    }\n  },\n  \"problems\": []\n}\n",
+          "stderr": "",
+          "duration_ms": 1313.292,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c014-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "issue-34-census-adjudication-events-derived-status",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c015",
+      "required": true,
+      "outcome": "PASS",
+      "problems": [],
+      "argv": [
+        "bash",
+        "-c",
+        "cd .. && PYTHONPATH=scripts/pdf_lab .venv/bin/python scripts/pdf_lab/check_census_adjudication_events_issue34.py"
+      ],
+      "declared_evidence_class": "live_e2e",
+      "effective_evidence_class": "fault_injected_deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [
+        "no independent readback oracle (exit code / self-reported success only)"
+      ],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 2,
+      "total_trials": 2,
+      "pass_rate": 1.0,
+      "avg_latency_ms": 110.52,
+      "trials": [
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"after_status_counts\": {\n    \"resolved_by_current_extraction\": 337,\n    \"still_broken\": 8,\n    \"unverified\": 1\n  },\n  \"before_status_counts\": {\n    \"resolved_by_current_extraction\": 337,\n    \"still_broken\": 8,\n    \"unverified\": 1\n  },\n  \"counts_match\": true,\n  \"entries\": 346,\n  \"event_count_after\": 299,\n  \"event_count_before\": 299,\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\",\n  \"legacy_adjudications\": 0,\n  \"legacy_human_flags\": 0,\n  \"lingering_legacy_adjudications\": 0,\n  \"migration\": {\n    \"converted_adjudications\": 0,\n    \"converted_human_flags\": 0,\n    \"deterministic_backfilled\": 0,\n    \"status_counts\": {\n      \"resolved_by_current_extraction\": 337,\n      \"still_broken\": 8,\n      \"unverified\": 1\n    }\n  },\n  \"passed\": true,\n  \"problems\": [],\n  \"reconciler_probe\": {\n    \"command\": [\n      \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/.venv/bin/python\",\n      \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/scripts/pdf_lab/reconcile_historical_findings_deterministic.py\",\n      \"--reconciliation\",\n      \"/tmp/pdf_oxide_issue34_adjudication_events/probe_ledger.json\",\n      \"--evidence-root\",\n      \"/tmp/pdf_oxide_issue34_adjudication_events/empty_evidence\",\n      \"--report\",\n      \"/tmp/pdf_oxide_issue34_adjudication_events/probe_report.json\"\n    ],\n    \"current_status\": \"resolved_by_current_extraction\",\n    \"current_status_preserved\": true,\n    \"deterministic_overwrote_current\": false,\n    \"deterministic_status\": \"blocked\",\n    \"event_count\": 1,\n    \"event_status\": \"resolved_by_current_extraction\",\n    \"report\": \"/tmp/pdf_oxide_issue34_adjudication_events/probe_report.json\",\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"{\\\"deterministic_status_counts\\\": {\\\"blocked\\\": 1}, \\\"report\\\": \\\"/tmp/pdf_oxide_issue34_adjudication_events/probe_report.json\\\", \\\"status_counts\\\": {\\\"resolved_by_current_extraction\\\": 1}, \\\"updated_count\\\": 1}\"\n  }\n}\n",
+          "stderr": "",
+          "duration_ms": 112.482,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c015-t00",
+          "outcome": "PASS",
+          "problems": []
+        },
+        {
+          "exit_code": 0,
+          "stdout": "{\n  \"after_status_counts\": {\n    \"resolved_by_current_extraction\": 337,\n    \"still_broken\": 8,\n    \"unverified\": 1\n  },\n  \"before_status_counts\": {\n    \"resolved_by_current_extraction\": 337,\n    \"still_broken\": 8,\n    \"unverified\": 1\n  },\n  \"counts_match\": true,\n  \"entries\": 346,\n  \"event_count_after\": 299,\n  \"event_count_before\": 299,\n  \"ledger\": \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/artifacts/pdf_lab/census_regen_20260820/seed.json\",\n  \"legacy_adjudications\": 0,\n  \"legacy_human_flags\": 0,\n  \"lingering_legacy_adjudications\": 0,\n  \"migration\": {\n    \"converted_adjudications\": 0,\n    \"converted_human_flags\": 0,\n    \"deterministic_backfilled\": 0,\n    \"status_counts\": {\n      \"resolved_by_current_extraction\": 337,\n      \"still_broken\": 8,\n      \"unverified\": 1\n    }\n  },\n  \"passed\": true,\n  \"problems\": [],\n  \"reconciler_probe\": {\n    \"command\": [\n      \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/.venv/bin/python\",\n      \"/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32/scripts/pdf_lab/reconcile_historical_findings_deterministic.py\",\n      \"--reconciliation\",\n      \"/tmp/pdf_oxide_issue34_adjudication_events/probe_ledger.json\",\n      \"--evidence-root\",\n      \"/tmp/pdf_oxide_issue34_adjudication_events/empty_evidence\",\n      \"--report\",\n      \"/tmp/pdf_oxide_issue34_adjudication_events/probe_report.json\"\n    ],\n    \"current_status\": \"resolved_by_current_extraction\",\n    \"current_status_preserved\": true,\n    \"deterministic_overwrote_current\": false,\n    \"deterministic_status\": \"blocked\",\n    \"event_count\": 1,\n    \"event_status\": \"resolved_by_current_extraction\",\n    \"report\": \"/tmp/pdf_oxide_issue34_adjudication_events/probe_report.json\",\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"{\\\"deterministic_status_counts\\\": {\\\"blocked\\\": 1}, \\\"report\\\": \\\"/tmp/pdf_oxide_issue34_adjudication_events/probe_report.json\\\", \\\"status_counts\\\": {\\\"resolved_by_current_extraction\\\": 1}, \\\"updated_count\\\": 1}\"\n  }\n}\n",
+          "stderr": "",
+          "duration_ms": 108.559,
+          "timed_out": false,
+          "orphan_pids_after_teardown": [],
+          "trial_id": "f149f7517eaa-c015-t01",
+          "outcome": "PASS",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "infra_blocked_trials": 0,
+      "flaky": false,
+      "name": "full-lib-suite-no-regression",
+      "type": "positive",
+      "case_id": "f149f7517eaa-c016",
+      "required": true,
+      "outcome": "FAIL",
+      "problems": [
+        "process group survived teardown: 635830",
+        "process group survived teardown: 645241",
+        "timed out after 30s"
+      ],
+      "argv": [
+        "cargo",
+        "test",
+        "--lib",
+        "--features",
+        "python,rendering,office"
+      ],
+      "declared_evidence_class": "deterministic",
+      "effective_evidence_class": "deterministic",
+      "live_qualified": false,
+      "evidence_disqualifiers": [],
+      "supports_claims": [],
+      "seams": [],
+      "passed_trials": 0,
+      "total_trials": 2,
+      "pass_rate": 0.0,
+      "avg_latency_ms": 30032.931,
+      "trials": [
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "warning: `/home/graham/.cargo/config` is deprecated in favor of `config.toml`\n  |\n  = help: if you need to support cargo 1.38 or earlier, you can symlink `config` to `config.toml`\n   Compiling pyo3-ffi v0.29.2\n   Compiling pyo3 v0.29.2\n   Compiling pdf_oxide v0.3.14 (/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32)\nwarning: unused import: `EngineeringProfile`\n  --> src/extractors/document_extractor.rs:19:78\n   |\n19 | use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};\n   |                                                                              ^^^^^^^^^^^^^^^^^^\n   |\n   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default\n\nwarning: unused import: `SectionTree`\n  --> src/extractors/document_extractor.rs:23:85\n   |\n23 | use crate::extractors::section_hierarchy::{build_section_hierarchy_from_classified, SectionTree};\n   |                                                                                     ^^^^^^^^^^^\n\nwarning: unused import: `crate::extractors::block_classifier::NumberingAnalysis`\n   --> src/extractors/section_hierarchy.rs:970:13\n    |\n970 |         use crate::extractors::block_classifier::NumberingAnalysis;\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: unused import: `crate::extractors::block_classifier::NumberingType`\n   --> src/extractors/section_hierarchy.rs:971:13\n    |\n971 |         use crate::extractors::block_classifier::NumberingType;\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: duplicated attribute\n   --> src/fonts/text_decode.rs:513:5\n    |\n513 |     #[test]\n    |     ^^^^^^^\n    |\n    = note: `#[warn(duplicate_macro_attributes)]` on by default\n\nwarning: cannot test inner items\n   --> src/fonts/text_decode.rs:515:9\n    |\n515 |         #[test]\n    |         ^^^^^^^\n    |\n    = note: `#[warn(unnameable_test_items)]` on by default\n\nwarning: unused import: `Error`\n --> src/outline.rs:7:20\n  |\n7 | use crate::error::{Error, Result};\n  |                    ^^^^^\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6601:1\n     |\n6601 | #[pyclass(name = \"PdfTextId\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: `#[warn(deprecated)]` on by default\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6622:1\n     |\n6622 | #[pyclass(name = \"PdfText\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6748:1\n     |\n6748 | #[pyclass(name = \"PdfImage\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6788:1\n     |\n6788 | #[pyclass(name = \"PdfAnnotation\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6841:1\n     |\n6841 | #[pyclass(name = \"PdfElement\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6938:1\n     |\n6938 | #[pyclass(name = \"TextChar\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7073:1\n     |\n7073 | #[pyclass(name = \"TextSpan\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7166:1\n     |\n7166 | #[pyclass(name = \"TextWord\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7225:1\n     |\n7225 | #[pyclass(name = \"TextLine\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7892:1\n     |\n7892 | #[pyclass(name = \"OcrConfig\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7975:1\n     |\n7975 | #[pyclass(name = \"Color\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:8087:1\n     |\n8087 | #[pyclass(name = \"BlendMode\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[py\n...[43173 chars omitted]...\n field\n  --> src/extractors/section_hierarchy.rs:22:5\n   |\n22 |     pub page: usize,\n   |     ^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:23:5\n   |\n23 |     pub bbox: (f32, f32, f32, f32),\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:24:5\n   |\n24 |     pub children: Vec<Section>,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:25:5\n   |\n25 |     pub numbering: Option<String>,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct\n  --> src/extractors/section_hierarchy.rs:29:1\n   |\n29 | pub struct SectionTree {\n   | ^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:30:5\n   |\n30 |     pub sections: Vec<Section>,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:31:5\n   |\n31 |     pub total_sections: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:32:5\n   |\n32 |     pub max_depth: u8,\n   |     ^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a function\n   --> src/extractors/section_hierarchy.rs:457:1\n    |\n457 | pub fn build_section_hierarchy(doc: &mut PdfDocument) -> Result<SectionTree> {\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/extractors/section_hierarchy.rs:820:5\n    |\n820 |     pub fn to_flat_list(&self) -> Vec<(u8, String, usize)> {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/extractors/section_hierarchy.rs:830:5\n    |\n830 |     pub fn to_flat_list(&self) -> Vec<(u8, String, usize)> {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:13:5\n   |\n13 |     pub index: usize,\n   |     ^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:14:5\n   |\n14 |     pub page: usize,\n   |     ^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:17:5\n   |\n17 |     pub column_count: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:18:5\n   |\n18 |     pub row_count: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:19:5\n   |\n19 |     pub title: String,\n   |     ^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct\n  --> src/extractors/table_merger.rs:38:1\n   |\n38 | pub struct MergeDetail {\n   | ^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:39:5\n   |\n39 |     pub target_index: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:40:5\n   |\n40 |     pub absorbed_index: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:41:5\n   |\n41 |     pub reason: String,\n   |     ^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:42:5\n   |\n42 |     pub horizontal_iou: f32,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:43:5\n   |\n43 |     pub width_ratio: f32,\n   |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct\n   --> src/extractors/table_merger.rs:255:1\n    |\n255 | pub struct MergeFeatures {\n    | ^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:256:5\n    |\n256 |     pub col_count_match: bool,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:257:5\n    |\n257 |     pub width_ratio: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:258:5\n    |\n258 |     pub horizontal_iou: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:259:5\n    |\n259 |     pub title_has_continued: bool,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:260:5\n    |\n260 |     pub title_word_overlap: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:261:5\n    |\n261 |     pub row_count_ratio: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:262:5\n    |\n262 |     pub consecutive_pages: bool,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n    --> src/fonts/font_dict.rs:2702:5\n     |\n2702 |     pub fn is_symbolic(&self) -> bool {\n     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n   --> src/fonts/text_decode.rs:332:5\n    |\n332 |     pub fn new(bytes: &'a [u8], _font: Option<&FontInfo>, byte_mode: ByteMode) -> Self {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n  --> src/pipeline/converters/toc_detector.rs:80:5\n   |\n80 |     pub fn new() -> Self {\n   |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:34:5\n   |\n34 |     pub text: String,\n   |     ^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:35:5\n   |\n35 |     pub x0: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:36:5\n   |\n36 |     pub y0: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:37:5\n   |\n37 |     pub x1: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:38:5\n   |\n38 |     pub y1: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:39:5\n   |\n39 |     pub font_size: f64,\n   |     ^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n  --> src/tables/types.rs:96:5\n   |\n96 |     pub fn new(x0: f64, y0: f64, x1: f64, y1: f64) -> Self {\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:120:5\n    |\n120 |     pub fn width(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:124:5\n    |\n124 |     pub fn height(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:135:5\n    |\n135 |     pub x0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:136:5\n    |\n136 |     pub y0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:137:5\n    |\n137 |     pub x1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:138:5\n    |\n138 |     pub y1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:142:5\n    |\n142 |     pub fn is_horizontal(&self, tol: f64) -> bool {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:146:5\n    |\n146 |     pub fn is_vertical(&self, tol: f64) -> bool {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:150:5\n    |\n150 |     pub fn length(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:158:5\n    |\n158 |     pub x0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:159:5\n    |\n159 |     pub y0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:160:5\n    |\n160 |     pub x1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:161:5\n    |\n161 |     pub y1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n   --> src/tables/types.rs:165:5\n    |\n165 |     pub fn new(x0: f64, y0: f64, x1: f64, y1: f64) -> Self {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:169:5\n    |\n169 |     pub fn width(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:173:5\n    |\n173 |     pub fn height(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:245:5\n    |\n245 |     pub fn num_rows(&self) -> usize {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:249:5\n    |\n249 |     pub fn num_cols(&self) -> usize {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:448:5\n    |\n448 |     pub flavor: Flavor,\n    |     ^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:449:5\n    |\n449 |     pub strategy: Strategy,\n    |     ^^^^^^^^^^^^^^^^^^^^^^\n\n",
+          "duration_ms": 30031.089,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            635830
+          ],
+          "trial_id": "f149f7517eaa-c016-t00",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 635830"
+          ]
+        },
+        {
+          "exit_code": null,
+          "stdout": "",
+          "stderr": "warning: `/home/graham/.cargo/config` is deprecated in favor of `config.toml`\n  |\n  = help: if you need to support cargo 1.38 or earlier, you can symlink `config` to `config.toml`\n   Compiling pdf_oxide v0.3.14 (/home/graham/.local/state/project-watchdog/repair-worktrees/pdf_oxide-32)\nwarning: unused import: `EngineeringProfile`\n  --> src/extractors/document_extractor.rs:19:78\n   |\n19 | use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};\n   |                                                                              ^^^^^^^^^^^^^^^^^^\n   |\n   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default\n\nwarning: unused import: `SectionTree`\n  --> src/extractors/document_extractor.rs:23:85\n   |\n23 | use crate::extractors::section_hierarchy::{build_section_hierarchy_from_classified, SectionTree};\n   |                                                                                     ^^^^^^^^^^^\n\nwarning: unused import: `crate::extractors::block_classifier::NumberingAnalysis`\n   --> src/extractors/section_hierarchy.rs:970:13\n    |\n970 |         use crate::extractors::block_classifier::NumberingAnalysis;\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: unused import: `crate::extractors::block_classifier::NumberingType`\n   --> src/extractors/section_hierarchy.rs:971:13\n    |\n971 |         use crate::extractors::block_classifier::NumberingType;\n    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: duplicated attribute\n   --> src/fonts/text_decode.rs:513:5\n    |\n513 |     #[test]\n    |     ^^^^^^^\n    |\n    = note: `#[warn(duplicate_macro_attributes)]` on by default\n\nwarning: cannot test inner items\n   --> src/fonts/text_decode.rs:515:9\n    |\n515 |         #[test]\n    |         ^^^^^^^\n    |\n    = note: `#[warn(unnameable_test_items)]` on by default\n\nwarning: unused import: `Error`\n --> src/outline.rs:7:20\n  |\n7 | use crate::error::{Error, Result};\n  |                    ^^^^^\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6601:1\n     |\n6601 | #[pyclass(name = \"PdfTextId\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: `#[warn(deprecated)]` on by default\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6622:1\n     |\n6622 | #[pyclass(name = \"PdfText\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6748:1\n     |\n6748 | #[pyclass(name = \"PdfImage\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6788:1\n     |\n6788 | #[pyclass(name = \"PdfAnnotation\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6841:1\n     |\n6841 | #[pyclass(name = \"PdfElement\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:6938:1\n     |\n6938 | #[pyclass(name = \"TextChar\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7073:1\n     |\n7073 | #[pyclass(name = \"TextSpan\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7166:1\n     |\n7166 | #[pyclass(name = \"TextWord\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7225:1\n     |\n7225 | #[pyclass(name = \"TextLine\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7892:1\n     |\n7892 | #[pyclass(name = \"OcrConfig\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:7975:1\n     |\n7975 | #[pyclass(name = \"Color\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` derive now, or `#[pyclass(skip_from_py_object)]` to skip the `FromPyObject` implementation.\n    --> src/python.rs:8087:1\n     |\n8087 | #[pyclass(name = \"BlendMode\")]\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n     |\n     = note: this warning originates in the attribute macro `pyclass` (in Nightly builds, run with -Z macro-backtrace for more info)\n\nwarning: use of deprecated associated constant `pyo3::impl_::deprecated::HasAutomaticFromPyObject::<true>::MSG`: The `FromPyObject` implementation for `#[pyclass]` types which implement `Clone` is changing to an opt-in option. Use `#[pyclass(from_py_object)]` to opt-in to the `FromPyObject` \n...[43117 chars omitted]...\n field\n  --> src/extractors/section_hierarchy.rs:22:5\n   |\n22 |     pub page: usize,\n   |     ^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:23:5\n   |\n23 |     pub bbox: (f32, f32, f32, f32),\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:24:5\n   |\n24 |     pub children: Vec<Section>,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:25:5\n   |\n25 |     pub numbering: Option<String>,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct\n  --> src/extractors/section_hierarchy.rs:29:1\n   |\n29 | pub struct SectionTree {\n   | ^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:30:5\n   |\n30 |     pub sections: Vec<Section>,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:31:5\n   |\n31 |     pub total_sections: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/section_hierarchy.rs:32:5\n   |\n32 |     pub max_depth: u8,\n   |     ^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a function\n   --> src/extractors/section_hierarchy.rs:457:1\n    |\n457 | pub fn build_section_hierarchy(doc: &mut PdfDocument) -> Result<SectionTree> {\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/extractors/section_hierarchy.rs:820:5\n    |\n820 |     pub fn to_flat_list(&self) -> Vec<(u8, String, usize)> {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/extractors/section_hierarchy.rs:830:5\n    |\n830 |     pub fn to_flat_list(&self) -> Vec<(u8, String, usize)> {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:13:5\n   |\n13 |     pub index: usize,\n   |     ^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:14:5\n   |\n14 |     pub page: usize,\n   |     ^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:17:5\n   |\n17 |     pub column_count: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:18:5\n   |\n18 |     pub row_count: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:19:5\n   |\n19 |     pub title: String,\n   |     ^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct\n  --> src/extractors/table_merger.rs:38:1\n   |\n38 | pub struct MergeDetail {\n   | ^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:39:5\n   |\n39 |     pub target_index: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:40:5\n   |\n40 |     pub absorbed_index: usize,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:41:5\n   |\n41 |     pub reason: String,\n   |     ^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:42:5\n   |\n42 |     pub horizontal_iou: f32,\n   |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/extractors/table_merger.rs:43:5\n   |\n43 |     pub width_ratio: f32,\n   |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct\n   --> src/extractors/table_merger.rs:255:1\n    |\n255 | pub struct MergeFeatures {\n    | ^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:256:5\n    |\n256 |     pub col_count_match: bool,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:257:5\n    |\n257 |     pub width_ratio: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:258:5\n    |\n258 |     pub horizontal_iou: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:259:5\n    |\n259 |     pub title_has_continued: bool,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:260:5\n    |\n260 |     pub title_word_overlap: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:261:5\n    |\n261 |     pub row_count_ratio: f32,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/extractors/table_merger.rs:262:5\n    |\n262 |     pub consecutive_pages: bool,\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n    --> src/fonts/font_dict.rs:2702:5\n     |\n2702 |     pub fn is_symbolic(&self) -> bool {\n     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n   --> src/fonts/text_decode.rs:332:5\n    |\n332 |     pub fn new(bytes: &'a [u8], _font: Option<&FontInfo>, byte_mode: ByteMode) -> Self {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n  --> src/pipeline/converters/toc_detector.rs:80:5\n   |\n80 |     pub fn new() -> Self {\n   |     ^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:34:5\n   |\n34 |     pub text: String,\n   |     ^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:35:5\n   |\n35 |     pub x0: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:36:5\n   |\n36 |     pub y0: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:37:5\n   |\n37 |     pub x1: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:38:5\n   |\n38 |     pub y1: f64,\n   |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n  --> src/tables/types.rs:39:5\n   |\n39 |     pub font_size: f64,\n   |     ^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n  --> src/tables/types.rs:96:5\n   |\n96 |     pub fn new(x0: f64, y0: f64, x1: f64, y1: f64) -> Self {\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:120:5\n    |\n120 |     pub fn width(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:124:5\n    |\n124 |     pub fn height(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:135:5\n    |\n135 |     pub x0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:136:5\n    |\n136 |     pub y0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:137:5\n    |\n137 |     pub x1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:138:5\n    |\n138 |     pub y1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:142:5\n    |\n142 |     pub fn is_horizontal(&self, tol: f64) -> bool {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:146:5\n    |\n146 |     pub fn is_vertical(&self, tol: f64) -> bool {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:150:5\n    |\n150 |     pub fn length(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:158:5\n    |\n158 |     pub x0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:159:5\n    |\n159 |     pub y0: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:160:5\n    |\n160 |     pub x1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:161:5\n    |\n161 |     pub y1: f64,\n    |     ^^^^^^^^^^^\n\nwarning: missing documentation for an associated function\n   --> src/tables/types.rs:165:5\n    |\n165 |     pub fn new(x0: f64, y0: f64, x1: f64, y1: f64) -> Self {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:169:5\n    |\n169 |     pub fn width(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:173:5\n    |\n173 |     pub fn height(&self) -> f64 {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:245:5\n    |\n245 |     pub fn num_rows(&self) -> usize {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a method\n   --> src/tables/types.rs:249:5\n    |\n249 |     pub fn num_cols(&self) -> usize {\n    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:448:5\n    |\n448 |     pub flavor: Flavor,\n    |     ^^^^^^^^^^^^^^^^^^\n\nwarning: missing documentation for a struct field\n   --> src/tables/types.rs:449:5\n    |\n449 |     pub strategy: Strategy,\n    |     ^^^^^^^^^^^^^^^^^^^^^^\n\n",
+          "duration_ms": 30034.773,
+          "timed_out": true,
+          "orphan_pids_after_teardown": [
+            645241
+          ],
+          "trial_id": "f149f7517eaa-c016-t01",
+          "outcome": "FAIL",
+          "problems": [
+            "timed out after 30s",
+            "process group survived teardown: 645241"
+          ]
+        }
+      ]
+    }
+  ]
+}
