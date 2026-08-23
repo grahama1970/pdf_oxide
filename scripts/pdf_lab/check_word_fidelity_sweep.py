@@ -33,7 +33,11 @@ LEDGER = REPO / "artifacts/pdf_lab/census_regen_20260820/seed.json"
 TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+")
 DEFAULT_COLUMNS = 4
 DEFAULT_ROWS = 4
-DEFAULT_NEIGHBOR_RADIUS = 3
+# Chebyshev bin radius tolerated by the placement check. It must stay strictly
+# below max(rows, columns): at radius >= max(rows, columns) every bin is a
+# neighbour of every other bin, so the check degenerates into a whole-page
+# multiset comparison and carries no placement information at all.
+DEFAULT_NEIGHBOR_RADIUS = 1
 EXPECTED_BULK_CLOSURES = 111
 
 
@@ -116,16 +120,31 @@ def pdf_oxide_region_counters(
     counters: dict[str, Counter[str]] = defaultdict(Counter)
     page_width = float(page.rect.width)
     page_height = float(page.rect.height)
+    line_spans: dict[float, list[Any]] = defaultdict(list)
 
     # extract_spans uses PDF bottom-left coordinates; PyMuPDF bins use top-left.
     for span in doc.extract_spans(page_number - 1):
-        x, y, width, height = span.bbox
+        x, y, _width, height = span.bbox
         center_y = page_height - (float(y) + float(height) / 2.0)
-        normalized = normalize_text(span.text).lower()
-        text_len = max(1, len(normalized))
-        for match in TOKEN_PATTERN.finditer(normalized):
-            token_center = (match.start() + match.end()) / (2.0 * text_len)
-            center_x = float(x) + float(width) * token_center
+        line_spans[round(center_y, 1)].append(span)
+
+    for center_y, spans in line_spans.items():
+        ordered = sorted(spans, key=lambda item: float(item.bbox[0]))
+        chars: list[str] = []
+        centers_x: list[float] = []
+        for span in ordered:
+            x, _y, width, _height = span.bbox
+            normalized_span = normalize_text(span.text).lower()
+            span_len = max(1, len(normalized_span))
+            for index, char in enumerate(normalized_span):
+                chars.append(char)
+                centers_x.append(float(x) + float(width) * ((index + 0.5) / span_len))
+        line_text = "".join(chars)
+        if not line_text.strip():
+            continue
+        for match in TOKEN_PATTERN.finditer(line_text):
+            token_centers = centers_x[match.start():match.end()]
+            center_x = sum(token_centers) / max(1, len(token_centers))
             region = bin_id(center_x, center_y, page_width, page_height, columns, rows)
             counters[region][match.group(0)] += 1
     return dict(counters)
@@ -148,6 +167,67 @@ def parse_bin(value: str) -> tuple[int, int]:
     if not match:
         raise ValueError(f"invalid bin id: {value}")
     return int(match.group(1)), int(match.group(2))
+
+
+def remove_segmentation_artifacts(
+    missing: Counter[str],
+    extra: Counter[str],
+) -> tuple[Counter[str], Counter[str], list[dict[str, Any]]]:
+    missing_remaining = Counter(missing)
+    extra_remaining = Counter(extra)
+    artifacts: list[dict[str, Any]] = []
+
+    def consume_joined_extra() -> bool:
+        for joined in sorted(+extra_remaining):
+            if extra_remaining[joined] <= 0:
+                continue
+            tokens = sorted(+missing_remaining)
+            for left in tokens:
+                for right in tokens:
+                    if left == right and missing_remaining[left] < 2:
+                        continue
+                    if joined not in {left + right, right + left}:
+                        continue
+                    missing_remaining[left] -= 1
+                    missing_remaining[right] -= 1
+                    extra_remaining[joined] -= 1
+                    artifacts.append(
+                        {
+                            "kind": "actual_joined_expected_tokens",
+                            "joined": joined,
+                            "split": [left, right],
+                        }
+                    )
+                    return True
+        return False
+
+    def consume_split_extra() -> bool:
+        for joined in sorted(+missing_remaining):
+            if missing_remaining[joined] <= 0:
+                continue
+            tokens = sorted(+extra_remaining)
+            for left in tokens:
+                for right in tokens:
+                    if left == right and extra_remaining[left] < 2:
+                        continue
+                    if joined not in {left + right, right + left}:
+                        continue
+                    missing_remaining[joined] -= 1
+                    extra_remaining[left] -= 1
+                    extra_remaining[right] -= 1
+                    artifacts.append(
+                        {
+                            "kind": "actual_split_expected_token",
+                            "joined": joined,
+                            "split": [left, right],
+                        }
+                    )
+                    return True
+        return False
+
+    while consume_joined_extra() or consume_split_extra():
+        pass
+    return +missing_remaining, +extra_remaining, artifacts
 
 
 def neighbor_counter_delta(
@@ -187,15 +267,40 @@ def neighbor_counter_delta(
     for counter in actual_remaining.values():
         unresolved_actual.update(+counter)
 
+    # A token left unresolved on BOTH sides exists in both extractions but sits
+    # further apart than the radius allows: a placement disagreement, not text
+    # loss. A token left unresolved on only one side is a real Counter delta.
+    placement_only = unresolved_expected & unresolved_actual
+    segmentation_loss_input = unresolved_expected - placement_only
+    segmentation_gain_input = unresolved_actual - placement_only
+    token_loss, token_gain, segmentation_only = remove_segmentation_artifacts(
+        segmentation_loss_input,
+        segmentation_gain_input,
+    )
+
     return {
         "missing_total": sum(unresolved_expected.values()),
         "extra_total": sum(unresolved_actual.values()),
         "missing": unresolved_expected.most_common(20),
         "extra": unresolved_actual.most_common(20),
+        "placement_only_total": sum(placement_only.values()),
+        "placement_only": placement_only.most_common(20),
+        "segmentation_only_total": len(segmentation_only),
+        "segmentation_only": segmentation_only[:20],
+        "token_loss_total": sum(token_loss.values()),
+        "token_loss": token_loss.most_common(20),
+        "token_gain_total": sum(token_gain.values()),
+        "token_gain": token_gain.most_common(20),
     }
 
 
-def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[str, Any]:
+def build_report(
+    columns: int,
+    rows: int,
+    require_region_parity: bool,
+    require_region_token_fidelity: bool,
+    neighbor_radius: int,
+) -> dict[str, Any]:
     ledger = json.loads(LEDGER.read_text())
     entries = ledger["entries"]
     pages = sorted({entry["page"] for entry in entries})
@@ -232,7 +337,7 @@ def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[s
         neighbor_delta = neighbor_counter_delta(
             expected_regions,
             actual_regions,
-            DEFAULT_NEIGHBOR_RADIUS,
+            neighbor_radius,
         )
         if neighbor_delta["missing_total"] or neighbor_delta["extra_total"]:
             neighbor_detail[str(page_number)] = neighbor_delta
@@ -241,10 +346,24 @@ def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[s
     region_counter_passed = not region_detail
     region_neighbor_counter_passed = not neighbor_detail
     bulk_closure_count_passed = len(bulk_entries) == EXPECTED_BULK_CLOSURES
+
+    token_loss_total = sum(item["token_loss_total"] for item in neighbor_detail.values())
+    token_gain_total = sum(item["token_gain_total"] for item in neighbor_detail.values())
+    placement_only_total = sum(item["placement_only_total"] for item in neighbor_detail.values())
+    segmentation_only_total = sum(item["segmentation_only_total"] for item in neighbor_detail.values())
+    token_fidelity_pages = sorted(
+        (page for page, item in neighbor_detail.items() if item["token_loss_total"] or item["token_gain_total"]),
+        key=int,
+    )
+    region_token_fidelity_passed = not token_fidelity_pages
+    radius_is_degenerate = neighbor_radius >= max(rows, columns)
+
     passed = (
         page_counter_passed
         and bulk_closure_count_passed
+        and not radius_is_degenerate
         and (region_counter_passed or not require_region_parity)
+        and (region_token_fidelity_passed or not require_region_token_fidelity)
     )
 
     return {
@@ -272,13 +391,30 @@ def build_report(columns: int, rows: int, require_region_parity: bool) -> dict[s
         "region_counter_mismatches": len(region_detail),
         "region_bin_mismatches": region_bin_mismatches,
         "region_counter_passed": region_counter_passed,
-        "region_neighbor_radius": DEFAULT_NEIGHBOR_RADIUS,
+        "region_neighbor_radius": neighbor_radius,
+        "region_neighbor_radius_is_degenerate": radius_is_degenerate,
+        "region_neighbor_radius_note": (
+            "a radius >= max(rows, columns) makes every bin a neighbour of every other bin, "
+            "collapsing the placement check into a whole-page multiset comparison"
+        ),
         "region_neighbor_counter_mismatches": len(neighbor_detail),
         "region_neighbor_missing_total": sum(
             item["missing_total"] for item in neighbor_detail.values()
         ),
         "region_neighbor_extra_total": sum(item["extra_total"] for item in neighbor_detail.values()),
         "region_neighbor_counter_passed": region_neighbor_counter_passed,
+        "region_neighbor_placement_only_total": placement_only_total,
+        "region_neighbor_segmentation_only_total": segmentation_only_total,
+        "region_token_loss_total": token_loss_total,
+        "region_token_gain_total": token_gain_total,
+        "region_token_fidelity_pages": token_fidelity_pages,
+        "region_token_fidelity_passed": region_token_fidelity_passed,
+        "require_region_token_fidelity": require_region_token_fidelity,
+        "region_token_fidelity_note": (
+            "token_loss/token_gain are per-region Counter deltas that survive the placement "
+            "and token-segmentation tolerances, i.e. real text-fidelity differences rather "
+            "than bin-boundary wobble or split/joined span tokenization"
+        ),
         "region_neighbor_detail": neighbor_detail,
         "region_detail": region_detail,
         "region_proof_boundary": (
@@ -296,9 +432,26 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--columns", type=int, default=DEFAULT_COLUMNS)
     parser.add_argument("--rows", type=int, default=DEFAULT_ROWS)
     parser.add_argument(
+        "--neighbor-radius",
+        type=int,
+        default=DEFAULT_NEIGHBOR_RADIUS,
+        help=(
+            "Chebyshev bin tolerance for the placement check. Must be strictly below "
+            "max(rows, columns); otherwise the check degenerates and the command fails."
+        ),
+    )
+    parser.add_argument(
         "--require-region-parity",
         action="store_true",
-        help="Fail the command unless coarse positioned region Counters also match.",
+        help="Fail the command unless coarse positioned region Counters match exactly per bin.",
+    )
+    parser.add_argument(
+        "--require-region-token-fidelity",
+        action="store_true",
+        help=(
+            "Fail the command unless the per-region Counters have zero token loss/gain "
+            "after the placement tolerance is applied."
+        ),
     )
     return parser.parse_args()
 
@@ -320,10 +473,18 @@ def stdout_summary(report: dict[str, Any]) -> dict[str, Any]:
         "region_bin_mismatches": report["region_bin_mismatches"],
         "region_counter_passed": report["region_counter_passed"],
         "region_neighbor_radius": report["region_neighbor_radius"],
+        "region_neighbor_radius_is_degenerate": report["region_neighbor_radius_is_degenerate"],
         "region_neighbor_counter_mismatches": report["region_neighbor_counter_mismatches"],
         "region_neighbor_missing_total": report["region_neighbor_missing_total"],
         "region_neighbor_extra_total": report["region_neighbor_extra_total"],
         "region_neighbor_counter_passed": report["region_neighbor_counter_passed"],
+        "region_neighbor_placement_only_total": report["region_neighbor_placement_only_total"],
+        "region_neighbor_segmentation_only_total": report["region_neighbor_segmentation_only_total"],
+        "region_token_loss_total": report["region_token_loss_total"],
+        "region_token_gain_total": report["region_token_gain_total"],
+        "region_token_fidelity_pages": report["region_token_fidelity_pages"],
+        "region_token_fidelity_passed": report["region_token_fidelity_passed"],
+        "require_region_token_fidelity": report["require_region_token_fidelity"],
         "region_proof_boundary": report["region_proof_boundary"],
         "require_region_parity": report["require_region_parity"],
         "passed": report["passed"],
@@ -332,7 +493,13 @@ def stdout_summary(report: dict[str, Any]) -> dict[str, Any]:
 
 def main() -> int:
     args = parse_args()
-    report = build_report(args.columns, args.rows, args.require_region_parity)
+    report = build_report(
+        args.columns,
+        args.rows,
+        args.require_region_parity,
+        args.require_region_token_fidelity,
+        args.neighbor_radius,
+    )
     rendered = json.dumps(report, indent=2)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

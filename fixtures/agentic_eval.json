@@ -154,7 +154,10 @@
           "\"page_counter_mismatches\": 0",
           "\"bulk_closure_count\": 111",
           "\"region_counter_passed\": false",
-          "\"region_neighbor_counter_mismatches\": 2",
+          "\"region_neighbor_counter_mismatches\": 9",
+          "\"region_token_loss_total\": 0",
+          "\"region_token_gain_total\": 0",
+          "\"region_token_fidelity_passed\": true",
           "\"passed\": true"
         ],
         "artifacts": [
@@ -181,7 +184,22 @@
           {
             "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
             "json_pointer": "/region_neighbor_counter_mismatches",
-            "equals": 2
+            "equals": 9
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_token_loss_total",
+            "equals": 0
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_token_gain_total",
+            "equals": 0
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_token_fidelity_passed",
+            "equals": true
           }
         ]
       }

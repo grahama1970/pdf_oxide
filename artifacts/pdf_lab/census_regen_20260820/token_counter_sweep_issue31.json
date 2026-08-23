@@ -26,51 +26,326 @@
   "region_counter_mismatches": 55,
   "region_bin_mismatches": 689,
   "region_counter_passed": false,
-  "region_neighbor_radius": 3,
-  "region_neighbor_counter_mismatches": 2,
-  "region_neighbor_missing_total": 2,
-  "region_neighbor_extra_total": 4,
+  "region_neighbor_radius": 1,
+  "region_neighbor_radius_is_degenerate": false,
+  "region_neighbor_radius_note": "a radius >= max(rows, columns) makes every bin a neighbour of every other bin, collapsing the placement check into a whole-page multiset comparison",
+  "region_neighbor_counter_mismatches": 9,
+  "region_neighbor_missing_total": 15,
+  "region_neighbor_extra_total": 11,
   "region_neighbor_counter_passed": false,
+  "region_neighbor_placement_only_total": 7,
+  "region_neighbor_segmentation_only_total": 4,
+  "region_token_loss_total": 0,
+  "region_token_gain_total": 0,
+  "region_token_fidelity_pages": [],
+  "region_token_fidelity_passed": true,
+  "require_region_token_fidelity": false,
+  "region_token_fidelity_note": "token_loss/token_gain are per-region Counter deltas that survive the placement and token-segmentation tolerances, i.e. real text-fidelity differences rather than bin-boundary wobble or split/joined span tokenization",
   "region_neighbor_detail": {
-    "457": {
+    "19": {
       "missing_total": 1,
-      "extra_total": 2,
+      "extra_total": 1,
       "missing": [
         [
-          "privacy",
+          "23",
           1
         ]
       ],
       "extra": [
         [
-          "p",
-          1
-        ],
-        [
-          "rivacy",
+          "23",
           1
         ]
-      ]
+      ],
+      "placement_only_total": 1,
+      "placement_only": [
+        [
+          "23",
+          1
+        ]
+      ],
+      "segmentation_only_total": 0,
+      "segmentation_only": [],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
     },
-    "458": {
+    "21": {
       "missing_total": 1,
-      "extra_total": 2,
+      "extra_total": 1,
       "missing": [
         [
-          "controls",
+          "ir",
           1
         ]
       ],
       "extra": [
         [
-          "c",
+          "ir",
+          1
+        ]
+      ],
+      "placement_only_total": 1,
+      "placement_only": [
+        [
+          "ir",
+          1
+        ]
+      ],
+      "segmentation_only_total": 0,
+      "segmentation_only": [],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "30": {
+      "missing_total": 2,
+      "extra_total": 2,
+      "missing": [
+        [
+          "and",
           1
         ],
         [
-          "ontrols",
+          "security",
           1
         ]
-      ]
+      ],
+      "extra": [
+        [
+          "security",
+          1
+        ],
+        [
+          "and",
+          1
+        ]
+      ],
+      "placement_only_total": 2,
+      "placement_only": [
+        [
+          "and",
+          1
+        ],
+        [
+          "security",
+          1
+        ]
+      ],
+      "segmentation_only_total": 0,
+      "segmentation_only": [],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "116": {
+      "missing_total": 2,
+      "extra_total": 1,
+      "missing": [
+        [
+          "page",
+          1
+        ],
+        [
+          "89",
+          1
+        ]
+      ],
+      "extra": [
+        [
+          "89page",
+          1
+        ]
+      ],
+      "placement_only_total": 0,
+      "placement_only": [],
+      "segmentation_only_total": 1,
+      "segmentation_only": [
+        {
+          "kind": "actual_joined_expected_tokens",
+          "joined": "89page",
+          "split": [
+            "89",
+            "page"
+          ]
+        }
+      ],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "187": {
+      "missing_total": 1,
+      "extra_total": 1,
+      "missing": [
+        [
+          "actions",
+          1
+        ]
+      ],
+      "extra": [
+        [
+          "actions",
+          1
+        ]
+      ],
+      "placement_only_total": 1,
+      "placement_only": [
+        [
+          "actions",
+          1
+        ]
+      ],
+      "segmentation_only_total": 0,
+      "segmentation_only": [],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "355": {
+      "missing_total": 1,
+      "extra_total": 1,
+      "missing": [
+        [
+          "time",
+          1
+        ]
+      ],
+      "extra": [
+        [
+          "time",
+          1
+        ]
+      ],
+      "placement_only_total": 1,
+      "placement_only": [
+        [
+          "time",
+          1
+        ]
+      ],
+      "segmentation_only_total": 0,
+      "segmentation_only": [],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "399": {
+      "missing_total": 2,
+      "extra_total": 1,
+      "missing": [
+        [
+          "53r5",
+          1
+        ],
+        [
+          "component",
+          1
+        ]
+      ],
+      "extra": [
+        [
+          "53r5component",
+          1
+        ]
+      ],
+      "placement_only_total": 0,
+      "placement_only": [],
+      "segmentation_only_total": 1,
+      "segmentation_only": [
+        {
+          "kind": "actual_joined_expected_tokens",
+          "joined": "53r5component",
+          "split": [
+            "53r5",
+            "component"
+          ]
+        }
+      ],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "403": {
+      "missing_total": 1,
+      "extra_total": 1,
+      "missing": [
+        [
+          "2003",
+          1
+        ]
+      ],
+      "extra": [
+        [
+          "2003",
+          1
+        ]
+      ],
+      "placement_only_total": 1,
+      "placement_only": [
+        [
+          "2003",
+          1
+        ]
+      ],
+      "segmentation_only_total": 0,
+      "segmentation_only": [],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
+    },
+    "409": {
+      "missing_total": 4,
+      "extra_total": 2,
+      "missing": [
+        [
+          "establishment",
+          2
+        ],
+        [
+          "key",
+          2
+        ]
+      ],
+      "extra": [
+        [
+          "keyestablishment",
+          2
+        ]
+      ],
+      "placement_only_total": 0,
+      "placement_only": [],
+      "segmentation_only_total": 2,
+      "segmentation_only": [
+        {
+          "kind": "actual_joined_expected_tokens",
+          "joined": "keyestablishment",
+          "split": [
+            "establishment",
+            "key"
+          ]
+        },
+        {
+          "kind": "actual_joined_expected_tokens",
+          "joined": "keyestablishment",
+          "split": [
+            "establishment",
+            "key"
+          ]
+        }
+      ],
+      "token_loss_total": 0,
+      "token_loss": [],
+      "token_gain_total": 0,
+      "token_gain": []
     }
   },
   "region_detail": {
@@ -3060,9 +3335,17 @@
         ]
       },
       "r3c3": {
-        "missing_total": 1,
-        "extra_total": 1,
+        "missing_total": 3,
+        "extra_total": 2,
         "missing": [
+          [
+            "page",
+            1
+          ],
+          [
+            "89",
+            1
+          ],
           [
             "packages",
             1
@@ -3071,6 +3354,10 @@
         "extra": [
           [
             "and",
+            1
+          ],
+          [
+            "89page",
             1
           ]
         ]
@@ -8485,8 +8772,8 @@
         ]
       },
       "r2c0": {
-        "missing_total": 4,
-        "extra_total": 0,
+        "missing_total": 5,
+        "extra_total": 1,
         "missing": [
           [
             "from",
@@ -8494,6 +8781,10 @@
           ],
           [
             "800",
+            1
+          ],
+          [
+            "53r5",
             1
           ],
           [
@@ -8505,10 +8796,15 @@
             1
           ]
         ],
-        "extra": []
+        "extra": [
+          [
+            "53r5component",
+            1
+          ]
+        ]
       },
       "r2c1": {
-        "missing_total": 4,
+        "missing_total": 5,
         "extra_total": 1,
         "missing": [
           [
@@ -8525,6 +8821,10 @@
           ],
           [
             "10",
+            1
+          ],
+          [
+            "component",
             1
           ]
         ],
@@ -10245,8 +10545,8 @@
         ]
       },
       "r0c1": {
-        "missing_total": 4,
-        "extra_total": 2,
+        "missing_total": 6,
+        "extra_total": 3,
         "missing": [
           [
             "5",
@@ -10263,6 +10563,14 @@
           [
             "55r1",
             1
+          ],
+          [
+            "key",
+            1
+          ],
+          [
+            "establishment",
+            1
           ]
         ],
         "extra": [
@@ -10272,6 +10580,10 @@
           ],
           [
             "guide",
+            1
+          ],
+          [
+            "keyestablishment",
             1
           ]
         ]
@@ -10399,11 +10711,19 @@
         ]
       },
       "r1c2": {
-        "missing_total": 3,
-        "extra_total": 10,
+        "missing_total": 5,
+        "extra_total": 11,
         "missing": [
           [
             "a",
+            1
+          ],
+          [
+            "key",
+            1
+          ],
+          [
+            "establishment",
             1
           ],
           [
@@ -10422,6 +10742,10 @@
           ],
           [
             "56ar3",
+            1
+          ],
+          [
+            "keyestablishment",
             1
           ],
           [
@@ -11570,14 +11894,9 @@
         "extra": []
       },
       "r0c2": {
-        "missing_total": 1,
-        "extra_total": 5,
-        "missing": [
-          [
-            "privacy",
-            1
-          ]
-        ],
+        "missing_total": 0,
+        "extra_total": 3,
+        "missing": [],
         "extra": [
           [
             "security",
@@ -11585,14 +11904,6 @@
           ],
           [
             "and",
-            1
-          ],
-          [
-            "p",
-            1
-          ],
-          [
-            "rivacy",
             1
           ],
           [
@@ -11742,14 +12053,9 @@
         "extra": []
       },
       "r0c2": {
-        "missing_total": 1,
-        "extra_total": 4,
-        "missing": [
-          [
-            "controls",
-            1
-          ]
-        ],
+        "missing_total": 0,
+        "extra_total": 2,
+        "missing": [],
         "extra": [
           [
             "security",
@@ -11757,14 +12063,6 @@
           ],
           [
             "and",
-            1
-          ],
-          [
-            "c",
-            1
-          ],
-          [
-            "ontrols",
             1
           ]
         ]
