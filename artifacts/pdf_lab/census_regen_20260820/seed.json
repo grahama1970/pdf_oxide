@@ -1545,7 +1545,7 @@
      "decided_at": "2026-08-20T17:03:06.749576+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1591,7 +1591,7 @@
      "decided_at": "2026-08-20T17:03:06.753062+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1668,7 +1668,7 @@
      "decided_at": "2026-08-20T17:03:06.756333+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1745,7 +1745,7 @@
      "decided_at": "2026-08-20T17:03:06.758914+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1795,7 +1795,7 @@
      "decided_at": "2026-08-20T17:03:06.761122+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1841,7 +1841,7 @@
      "decided_at": "2026-08-20T17:03:06.764366+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1924,7 +1924,7 @@
      "decided_at": "2026-08-20T17:03:06.766506+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -1970,7 +1970,7 @@
      "decided_at": "2026-08-20T17:03:06.769481+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2016,7 +2016,7 @@
      "decided_at": "2026-08-20T17:03:06.771650+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2099,7 +2099,7 @@
      "decided_at": "2026-08-20T17:03:06.774332+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2182,7 +2182,7 @@
      "decided_at": "2026-08-20T17:03:06.776507+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2611,7 +2611,7 @@
      "decided_at": "2026-08-20T17:03:06.778715+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2658,7 +2658,7 @@
      "decided_at": "2026-08-20T17:03:06.780863+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2920,7 +2920,7 @@
      "decided_at": "2026-08-20T17:03:06.782867+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -2977,7 +2977,7 @@
      "decided_at": "2026-08-20T17:03:06.784844+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3024,7 +3024,7 @@
      "decided_at": "2026-08-20T17:03:06.786831+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3074,7 +3074,7 @@
      "decided_at": "2026-08-20T17:03:06.788827+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3376,7 +3376,7 @@
      "decided_at": "2026-08-20T17:03:06.790756+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3427,7 +3427,7 @@
      "decided_at": "2026-08-20T17:03:06.792745+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3474,7 +3474,7 @@
      "decided_at": "2026-08-20T17:03:06.796013+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3521,7 +3521,7 @@
      "decided_at": "2026-08-20T17:03:06.798103+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3568,7 +3568,7 @@
      "decided_at": "2026-08-20T17:03:06.800075+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -3980,7 +3980,7 @@
      "decided_at": "2026-08-20T17:03:06.802361+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -4484,7 +4484,7 @@
      "decided_at": "2026-08-20T17:03:06.804335+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -4531,7 +4531,7 @@
      "decided_at": "2026-08-20T17:03:06.806286+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -4582,7 +4582,7 @@
      "decided_at": "2026-08-20T17:03:06.808366+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -5027,7 +5027,7 @@
      "decided_at": "2026-08-20T17:03:06.810311+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -5130,7 +5130,7 @@
      "decided_at": "2026-08-20T17:03:06.812453+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -5285,7 +5285,7 @@
      "decided_at": "2026-08-20T17:03:06.815519+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -5332,7 +5332,7 @@
      "decided_at": "2026-08-20T17:03:06.817618+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -5378,7 +5378,7 @@
      "decided_at": "2026-08-20T17:03:06.819632+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6195,7 +6195,7 @@
      "decided_at": "2026-08-20T17:03:06.822268+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6503,7 +6503,7 @@
      "decided_at": "2026-08-20T17:03:06.824357+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6555,7 +6555,7 @@
      "decided_at": "2026-08-20T17:03:06.826355+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6607,7 +6607,7 @@
      "decided_at": "2026-08-20T17:03:06.828389+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6762,7 +6762,7 @@
      "decided_at": "2026-08-20T17:03:06.830315+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6809,7 +6809,7 @@
      "decided_at": "2026-08-20T17:03:06.832313+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6856,7 +6856,7 @@
      "decided_at": "2026-08-20T17:03:06.834229+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6907,7 +6907,7 @@
      "decided_at": "2026-08-20T17:03:06.836211+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -6958,7 +6958,7 @@
      "decided_at": "2026-08-20T17:03:06.838259+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -7096,7 +7096,7 @@
      "decided_at": "2026-08-20T17:03:06.840296+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -7561,7 +7561,7 @@
      "decided_at": "2026-08-20T17:03:06.842371+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -7765,7 +7765,7 @@
      "decided_at": "2026-08-20T17:03:06.844452+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -7870,7 +7870,7 @@
      "decided_at": "2026-08-20T17:03:06.846384+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -7973,7 +7973,7 @@
      "decided_at": "2026-08-20T17:03:06.848477+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -8115,7 +8115,7 @@
      "decided_at": "2026-08-20T17:03:06.850486+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -8269,7 +8269,7 @@
      "decided_at": "2026-08-20T17:03:06.853174+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -8676,7 +8676,7 @@
      "decided_at": "2026-08-20T17:03:06.855237+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -8823,7 +8823,7 @@
      "decided_at": "2026-08-20T17:03:06.857346+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -8870,7 +8870,7 @@
      "decided_at": "2026-08-20T17:03:06.859362+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -9021,7 +9021,7 @@
      "decided_at": "2026-08-20T17:03:06.862002+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -9070,7 +9070,7 @@
      "decided_at": "2026-08-20T17:03:06.863971+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -9726,7 +9726,7 @@
      "decided_at": "2026-08-20T17:03:06.866902+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -10526,7 +10526,7 @@
      "decided_at": "2026-08-20T17:03:06.868858+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -10573,7 +10573,7 @@
      "decided_at": "2026-08-20T17:03:06.871868+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -10671,7 +10671,7 @@
      "decided_at": "2026-08-20T17:03:06.874833+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -10768,7 +10768,7 @@
      "decided_at": "2026-08-20T17:03:06.876883+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -10875,7 +10875,7 @@
      "decided_at": "2026-08-20T17:03:06.878852+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -11275,7 +11275,7 @@
      "decided_at": "2026-08-20T17:03:06.880903+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12262,7 +12262,7 @@
      "decided_at": "2026-08-20T17:03:06.883077+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12506,7 +12506,7 @@
      "decided_at": "2026-08-20T17:03:06.885895+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12563,7 +12563,7 @@
      "decided_at": "2026-08-20T17:03:06.887933+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12671,7 +12671,7 @@
      "decided_at": "2026-08-20T17:03:06.891179+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12729,7 +12729,7 @@
      "decided_at": "2026-08-20T17:03:06.893378+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12776,7 +12776,7 @@
      "decided_at": "2026-08-20T17:03:06.895629+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -12868,7 +12868,7 @@
      "decided_at": "2026-08-20T17:03:06.898879+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13064,7 +13064,7 @@
      "decided_at": "2026-08-20T17:03:06.900937+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13118,7 +13118,7 @@
      "decided_at": "2026-08-20T17:03:06.903041+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13165,7 +13165,7 @@
      "decided_at": "2026-08-20T17:03:06.905568+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13223,7 +13223,7 @@
      "decided_at": "2026-08-20T17:03:06.908222+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13274,7 +13274,7 @@
      "decided_at": "2026-08-20T17:03:06.910292+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13420,7 +13420,7 @@
      "decided_at": "2026-08-20T17:03:06.912144+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13467,7 +13467,7 @@
      "decided_at": "2026-08-20T17:03:06.914109+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13525,7 +13525,7 @@
      "decided_at": "2026-08-20T17:03:06.916215+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13585,7 +13585,7 @@
      "decided_at": "2026-08-20T17:03:06.918250+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13645,7 +13645,7 @@
      "decided_at": "2026-08-20T17:03:06.920219+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13695,7 +13695,7 @@
      "decided_at": "2026-08-20T17:03:06.922307+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13742,7 +13742,7 @@
      "decided_at": "2026-08-20T17:03:06.925645+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13844,7 +13844,7 @@
      "decided_at": "2026-08-20T17:03:06.928010+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13890,7 +13890,7 @@
      "decided_at": "2026-08-20T17:03:06.930159+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -13943,7 +13943,7 @@
      "decided_at": "2026-08-20T17:03:06.933360+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14128,7 +14128,7 @@
      "decided_at": "2026-08-20T17:03:06.935717+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14224,7 +14224,7 @@
      "decided_at": "2026-08-20T17:03:06.938005+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14361,7 +14361,7 @@
      "decided_at": "2026-08-20T17:03:06.940205+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14409,7 +14409,7 @@
      "decided_at": "2026-08-20T17:03:06.943153+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14727,7 +14727,7 @@
      "decided_at": "2026-08-20T17:03:06.945275+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14773,7 +14773,7 @@
      "decided_at": "2026-08-20T17:03:06.947734+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -14954,7 +14954,7 @@
      "decided_at": "2026-08-20T17:03:06.950344+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -15000,7 +15000,7 @@
      "decided_at": "2026-08-20T17:03:06.953047+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -15321,7 +15321,7 @@
      "decided_at": "2026-08-20T17:03:06.955419+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -15457,7 +15457,7 @@
      "decided_at": "2026-08-20T17:03:06.957500+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -15552,7 +15552,7 @@
      "decided_at": "2026-08-20T17:03:06.959550+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -15781,7 +15781,7 @@
      "decided_at": "2026-08-20T17:03:06.962187+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -16165,7 +16165,7 @@
      "decided_at": "2026-08-20T17:03:06.964088+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -16258,7 +16258,7 @@
      "decided_at": "2026-08-20T17:03:06.966089+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -16480,7 +16480,7 @@
      "decided_at": "2026-08-20T17:03:06.968026+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -16662,7 +16662,7 @@
      "decided_at": "2026-08-20T17:03:06.970881+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -16911,7 +16911,7 @@
      "decided_at": "2026-08-20T17:03:06.973201+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -17097,7 +17097,7 @@
      "decided_at": "2026-08-20T17:03:06.975609+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -17232,7 +17232,7 @@
      "decided_at": "2026-08-20T17:03:06.977537+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -17462,7 +17462,7 @@
      "decided_at": "2026-08-20T17:03:06.979567+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -17508,7 +17508,7 @@
      "decided_at": "2026-08-20T17:03:06.981593+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -17756,7 +17756,7 @@
      "decided_at": "2026-08-20T17:03:06.983810+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -17824,7 +17824,7 @@
      "decided_at": "2026-08-20T17:03:06.986396+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -18011,7 +18011,7 @@
      "decided_at": "2026-08-20T17:03:06.988504+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -18057,7 +18057,7 @@
      "decided_at": "2026-08-20T17:03:06.991391+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -18154,7 +18154,7 @@
      "decided_at": "2026-08-20T17:03:06.993502+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -18295,7 +18295,7 @@
      "decided_at": "2026-08-20T17:03:06.996216+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -18983,7 +18983,7 @@
      "decided_at": "2026-08-20T17:03:06.999074+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -19031,7 +19031,7 @@
      "decided_at": "2026-08-20T17:03:07.001173+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }
@@ -19077,7 +19077,7 @@
      "decided_at": "2026-08-20T17:03:07.003225+00:00",
      "evidence_root": "/home/graham/workspace/experiments/pdf_oxide/artifacts/pdf_lab/census_regen_20260820/current_evidence/pages",
      "commit": "0b24fb41aa1966ca5a7df34825830efd3a5df582",
-     "evidence": "Word-fidelity sweep at 6e338162 (scripts/pdf_lab/check_word_fidelity_sweep.py): every 4+-letter word PyMuPDF extracts on this page is present in pdf_oxide extract_text + lattice serialization (55/55 census pages, 0 missing). The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: word-level presence proof; words under 4 letters and intra-cell placement are not individually verified by the sweep.",
+     "evidence": "Per-region token Counter sweep at token_counter_sweep_issue31.json (scripts/pdf_lab/check_word_fidelity_sweep.py): PyMuPDF and pdf_oxide extract_text have all-token Counter parity on 55/55 census pages and the 111 bulk text-loss closures have per-region token Counter fidelity after the documented radius-1 placement tolerance. Readback fields: bulk_closure_count=111, page_counter_mismatches=0, region_token_loss_total=0, region_token_gain_total=0, region_token_fidelity_passed=true. The text-loss/truncation this finding describes no longer reproduces; root causes fixed in 7af7632a (identity-blind char dedup) and 6e338162 (intra-line TJ reading order). Boundary: exact region-bin parity is still diagnostic because current positioned extraction has placement-only/bin-boundary differences; token loss/gain is the closure gate.",
      "migration_source": "legacy_adjudication",
      "migrated_at": "2026-08-22T19:44:18.865059+00:00"
     }

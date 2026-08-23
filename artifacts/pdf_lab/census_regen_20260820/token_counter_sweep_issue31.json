@@ -39,7 +39,7 @@
   "region_token_gain_total": 0,
   "region_token_fidelity_pages": [],
   "region_token_fidelity_passed": true,
-  "require_region_token_fidelity": false,
+  "require_region_token_fidelity": true,
   "region_token_fidelity_note": "token_loss/token_gain are per-region Counter deltas that survive the placement and token-segmentation tolerances, i.e. real text-fidelity differences rather than bin-boundary wobble or split/joined span tokenization",
   "region_neighbor_detail": {
     "19": {

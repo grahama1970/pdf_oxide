@@ -39,6 +39,10 @@ DEFAULT_ROWS = 4
 # multiset comparison and carries no placement information at all.
 DEFAULT_NEIGHBOR_RADIUS = 1
 EXPECTED_BULK_CLOSURES = 111
+TOKEN_COUNTER_EVIDENCE_MARKERS = (
+    "token_counter_sweep_issue31.json",
+    "Per-region token Counter sweep",
+)
 
 
 def normalize_text(text: str) -> str:
@@ -68,13 +72,13 @@ def counter_matches(expected: Counter[str], actual: Counter[str]) -> bool:
     return not (expected - actual) and not (actual - expected)
 
 
-def contains_word_fidelity_evidence(value: Any) -> bool:
+def contains_token_counter_evidence(value: Any) -> bool:
     if isinstance(value, str):
-        return "Word-fidelity sweep" in value
+        return any(marker in value for marker in TOKEN_COUNTER_EVIDENCE_MARKERS)
     if isinstance(value, dict):
-        return any(contains_word_fidelity_evidence(item) for item in value.values())
+        return any(contains_token_counter_evidence(item) for item in value.values())
     if isinstance(value, list):
-        return any(contains_word_fidelity_evidence(item) for item in value)
+        return any(contains_token_counter_evidence(item) for item in value)
     return False
 
 
@@ -304,7 +308,7 @@ def build_report(
     ledger = json.loads(LEDGER.read_text())
     entries = ledger["entries"]
     pages = sorted({entry["page"] for entry in entries})
-    bulk_entries = [entry for entry in entries if contains_word_fidelity_evidence(entry)]
+    bulk_entries = [entry for entry in entries if contains_token_counter_evidence(entry)]
 
     doc = pdf_oxide.PdfDocument(PDF)
     oracle = pymupdf.open(PDF)
@@ -447,11 +451,19 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--require-region-token-fidelity",
+        dest="require_region_token_fidelity",
         action="store_true",
+        default=True,
         help=(
             "Fail the command unless the per-region Counters have zero token loss/gain "
             "after the placement tolerance is applied."
         ),
+    )
+    parser.add_argument(
+        "--allow-region-token-fidelity-gaps",
+        dest="require_region_token_fidelity",
+        action="store_false",
+        help="Do not fail on per-region token loss/gain after placement tolerance.",
     )
     return parser.parse_args()
 

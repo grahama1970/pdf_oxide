@@ -205,6 +205,66 @@
       }
     },
     {
+      "name": "census-text-loss-apply-requires-token-counter-preflight",
+      "type": "negative",
+      "real_world": true,
+      "description": "Applying a text-loss resolution must run the live token Counter sweep before the ledger can be updated. This uses an invalid empty-evidence decision so the command exercises the preflight but writes no ledger change.",
+      "command": [
+        "bash",
+        "-c",
+        "printf '%s\n' '{\"page\":457,\"finding_id\":\"p457-table-cell-text-artifacts\",\"status\":\"resolved_by_current_extraction\",\"evidence\":\"\"}' > /tmp/pdf_oxide_issue31_apply_gate_eval.jsonl && ../artifacts/pdf_lab/security_advisories_live_e2e/venv/bin/python ../scripts/pdf_lab/adjudicate_findings.py apply --decisions /tmp/pdf_oxide_issue31_apply_gate_eval.jsonl"
+      ],
+      "expected": {
+        "exit_code": 1,
+        "stdout_contains": [
+          "\"applied\": 0",
+          "decision has no quoted evidence",
+          "\"gated_keys\"",
+          "\"p457-table-cell-text-artifacts\"",
+          "\"token_counter_preflight\"",
+          "\"exit_code\": 0",
+          "\"pages_swept\": 55",
+          "\"bulk_closure_count\": 111",
+          "\"region_token_loss_total\": 0",
+          "\"region_token_gain_total\": 0",
+          "\"region_token_fidelity_passed\": true",
+          "\"passed\": true"
+        ],
+        "artifacts": [
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/pages_swept",
+            "equals": 55
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/bulk_closure_count",
+            "equals": 111
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_token_loss_total",
+            "equals": 0
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_token_gain_total",
+            "equals": 0
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/region_token_fidelity_passed",
+            "equals": true
+          },
+          {
+            "path": "../artifacts/pdf_lab/census_regen_20260820/token_counter_sweep_issue31.json",
+            "json_pointer": "/passed",
+            "equals": true
+          }
+        ]
+      }
+    },
+    {
       "name": "issue-21-symbol-pua-unit-guards",
       "type": "positive",
       "description": "In-tree guards for FontInfo::normalize_symbol_pua. Cover the Symbol bullet mapping (Symbol 0xB7 is bullet U+2022, not middle dot U+00B7, so subtracting 0xF000 is wrong) and the deliberate non-mappings: non-symbol fonts, Wingdings, already-real Unicode, out-of-window codepoints, and multi-character expansions. Also runs detect_run_in_lead guards (bold-colon lead accepted; all-bold lines, colon-less leads, and late-bold emphasis rejected).",
