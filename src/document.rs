@@ -5612,7 +5612,31 @@ impl PdfDocument {
     }
 
     /// Decode a PDF text string that may be UTF-16BE/LE (with BOM) or PDFDocEncoding.
-    fn decode_pdf_text_string(bytes: &[u8]) -> String {
+    pub(crate) fn decode_pdf_text_string_for_object(
+        &self,
+        bytes: &[u8],
+        object_ref: ObjectRef,
+    ) -> String {
+        // Strings inside a compressed object were already decrypted along with
+        // their object stream (ISO 32000-1 §7.6.1); decrypting them again
+        // corrupts them.
+        let in_object_stream = self
+            .xref
+            .get(object_ref.id)
+            .is_some_and(|entry| entry.entry_type == crate::xref::XRefEntryType::Compressed);
+        let decrypted = if in_object_stream {
+            None
+        } else {
+            self.encryption_handler.as_ref().and_then(|handler| {
+                handler
+                    .decrypt_string(bytes, object_ref.id, object_ref.gen as u32)
+                    .ok()
+            })
+        };
+        Self::decode_pdf_text_string(decrypted.as_deref().unwrap_or(bytes))
+    }
+
+    pub(crate) fn decode_pdf_text_string(bytes: &[u8]) -> String {
         if bytes.len() >= 2 && bytes[0] == 0xFE && bytes[1] == 0xFF {
             // UTF-16BE with BOM
             let utf16_bytes = &bytes[2..];

@@ -594,6 +594,30 @@ mod tests {
     }
 
     #[test]
+    fn tied_row_shapes_always_choose_the_denser_shape() {
+        let elements = make_elements(&[
+            &[("title", 10.0, 10.0, 80.0, 22.0)],
+            &[("note", 10.0, 30.0, 80.0, 42.0)],
+            &[
+                ("A", 10.0, 50.0, 50.0, 62.0),
+                ("B", 110.0, 50.0, 150.0, 62.0),
+            ],
+            &[
+                ("C", 10.0, 70.0, 50.0, 82.0),
+                ("D", 110.0, 70.0, 150.0, 82.0),
+            ],
+        ]);
+        let rows = group_rows(&elements, 2.0);
+
+        // Each call constructs a freshly randomized HashMap. Before the explicit
+        // (frequency, row-count) tie-break, repeated calls alternated between the
+        // one- and two-column modes and therefore changed table acceptance.
+        for _ in 0..128 {
+            assert_eq!(detect_columns(&rows, 200.0).len(), 2);
+        }
+    }
+
+    #[test]
     fn detect_columns_2col() {
         let elements = make_elements(&[
             &[

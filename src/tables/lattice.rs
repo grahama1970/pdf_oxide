@@ -1835,10 +1835,16 @@ mod tests {
             ((500.0, 50.0), 3, 2),
             ((600.0, 50.0), 3, 3),
         ];
-        let groups = cluster_joints(&joints);
-        assert_eq!(groups.len(), 2, "expected 2 clusters, got {}", groups.len());
-        for g in &groups {
-            assert_eq!(g.len(), 4, "each cluster should have 4 joints");
+        for _ in 0..128 {
+            // Each call constructs a freshly randomized HashMap. The cluster
+            // order must still be geometric: top-to-bottom, then left-to-right.
+            let groups = cluster_joints(&joints);
+            assert_eq!(groups.len(), 2, "expected 2 clusters, got {}", groups.len());
+            assert_eq!(groups[0][0], (10.0, 10.0));
+            assert_eq!(groups[1][0], (500.0, 10.0));
+            for group in &groups {
+                assert_eq!(group.len(), 4, "each cluster should have 4 joints");
+            }
         }
     }
 
