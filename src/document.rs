@@ -9981,6 +9981,17 @@ pub fn parse_header<R: Read + Seek>(reader: &mut R, lenient: bool) -> Result<(u8
             Ok((major, minor, header_start))
         },
         None => {
+            if lenient && looks_like_markup(&buffer) && !has_pdf_object_syntax(&buffer) {
+                // No header, markup content and no indirect-object syntax (ISO
+                // 32000-1 §7.3.10) in the first 8 KiB: this is an HTML/XML file
+                // (e.g. an HTTP error page) saved under a .pdf name, not a damaged
+                // PDF. Say so instead of letting xref parsing fail misleadingly.
+                return Err(Error::NotAPdf(format!(
+                    "no '%PDF-' header and no PDF objects in the first {} bytes; content is HTML/XML markup starting with {:?}",
+                    buffer.len(),
+                    leading_text_preview(&buffer)
+                )));
+            }
             if lenient {
                 // Some PDFs lack a %PDF- header entirely (e.g., start with a binary
                 // comment like %\xe2\xe3\xcf\xd3). Default to version 1.4.
@@ -9994,6 +10005,37 @@ pub fn parse_header<R: Read + Seek>(reader: &mut R, lenient: bool) -> Result<(u8
             }
         },
     }
+}
+
+/// True when the buffer contains indirect-object syntax (`N G obj` / `endobj`).
+fn has_pdf_object_syntax(buffer: &[u8]) -> bool {
+    find_substring(buffer, b"endobj").is_some()
+        || buffer.windows(4).enumerate().any(|(i, w)| {
+            w == b" obj" && i > 0 && buffer[..i].last().is_some_and(|b| b.is_ascii_digit())
+        })
+}
+
+/// True when the first non-whitespace byte opens an HTML/XML tag.
+fn looks_like_markup(buffer: &[u8]) -> bool {
+    buffer
+        .iter()
+        .find(|b| !b.is_ascii_whitespace())
+        .is_some_and(|b| *b == b'<')
+}
+
+/// First 40 bytes as printable text for error messages.
+fn leading_text_preview(buffer: &[u8]) -> String {
+    buffer
+        .iter()
+        .take(40)
+        .map(|&b| {
+            if (0x20..0x7f).contains(&b) {
+                b as char
+            } else {
+                '.'
+            }
+        })
+        .collect()
 }
 
 /// Parse version information from a header buffer.
@@ -10243,6 +10285,20 @@ mod tests {
         let mut cursor = Cursor::new(data);
         let (major, minor, offset) = parse_header(&mut cursor, true).unwrap();
         assert_eq!((major, minor, offset), (1, 5, 1016));
+    }
+
+    #[test]
+    fn test_parse_header_rejects_markup_saved_as_pdf() {
+        let data =
+            b"<HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>denied</BODY></HTML>\n";
+        let mut cursor = Cursor::new(data.to_vec());
+        let err = parse_header(&mut cursor, true).unwrap_err().to_string();
+        assert!(err.starts_with("not a PDF: "), "{err}");
+        assert!(err.contains("<HTML><HEAD>"), "{err}");
+        // Headerless content that does carry object syntax stays lenient.
+        let data = b"<garbage>\n1 0 obj\n<< /Type /Catalog >>\nendobj\n";
+        let mut cursor = Cursor::new(data.to_vec());
+        assert_eq!(parse_header(&mut cursor, true).unwrap(), (1, 4, 0));
     }
 
     #[test]

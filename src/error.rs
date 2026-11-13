@@ -13,6 +13,12 @@ pub enum Error {
     #[error("Invalid PDF header: expected '%PDF-', found '{0}'")]
     InvalidHeader(String),
 
+    /// The file is not a PDF at all (e.g. an HTML error page saved as `.pdf`).
+    /// The message always starts with `not a PDF:`; callers may map it to an
+    /// unsupported-format / corrupt-source category.
+    #[error("not a PDF: {0}")]
+    NotAPdf(String),
+
     /// Unsupported PDF version
     #[error("Unsupported PDF version: {0}")]
     UnsupportedVersion(String),
