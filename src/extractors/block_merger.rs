@@ -154,6 +154,219 @@ pub fn promote_repeated_bottom_center_notes(
     }
 }
 
+/// Promote top/bottom band text that repeats on two or more pages to
+/// Header/Footer.
+///
+/// The per-page classifier cannot see repetition, so a running title set a
+/// point larger than the body face (or a banner variant) is typed Title/Body
+/// there. Document-wide, a short line whose top edge lies in the top 8% band
+/// (or bottom edge in the bottom 8% band) and whose text, with digits
+/// normalised, recurs in the same band on >= 2 distinct pages is page
+/// furniture. Decimal-numbered text is compared exactly (not digit-normalised),
+/// so a numbered running header repeats but distinct section headings do not.
+///
+/// Returns the promoted `(is_top_band, normalised_text)` keys so callers can
+/// apply the same decision to other per-page block views (see
+/// [`apply_band_furniture_keys`]).
+pub fn promote_repeated_band_furniture(
+    page_blocks: &mut [Vec<MergedBlock>],
+    page_dims: &[(f32, f32)],
+) -> std::collections::HashSet<(bool, String)> {
+    use std::collections::{HashMap, HashSet};
+
+    if page_blocks.len() != page_dims.len() || page_blocks.len() < 2 {
+        return HashSet::new();
+    }
+
+    let body_size = body_font_size(
+        page_blocks
+            .iter()
+            .flatten()
+            .map(|b| (b.block_type, b.font_size, b.text.len())),
+    );
+    let mut page_counts: HashMap<(bool, String), usize> = HashMap::new();
+    for (blocks, &(_, page_height)) in page_blocks.iter().zip(page_dims) {
+        let mut seen_on_page = HashSet::new();
+        for block in blocks {
+            if let Some(key) = band_furniture_key(
+                &BandCandidate::of_merged(block),
+                page_height,
+                body_size,
+            ) {
+                seen_on_page.insert(key);
+            }
+        }
+        for key in seen_on_page {
+            *page_counts.entry(key).or_default() += 1;
+        }
+    }
+
+    let promoted: HashSet<(bool, String)> = page_counts
+        .into_iter()
+        // An exact numbered key must recur on >= 3 pages: a numbered heading
+        // that opens two compiled volumes ("1.1 Scope" atop two pages) is
+        // still a heading, while a numbered running header recurs on most
+        // pages (rev5 N13).
+        .filter(|(key, count)| *count >= if key.1.starts_with('=') { 3 } else { 2 })
+        .map(|(key, _)| key)
+        .collect();
+    for (blocks, &(_, page_height)) in page_blocks.iter_mut().zip(page_dims) {
+        for block in blocks {
+            let Some(key) =
+                band_furniture_key(&BandCandidate::of_merged(block), page_height, body_size)
+            else {
+                continue;
+            };
+            if promoted.contains(&key) {
+                block.block_type = if key.0 {
+                    BlockType::Header
+                } else {
+                    BlockType::Footer
+                };
+                block.header_level = None;
+                block.confidence = block.confidence.max(0.85);
+            }
+        }
+    }
+    promoted
+}
+
+/// Apply promoted band-furniture keys to per-page classified blocks, so the
+/// section hierarchy (built from classified blocks) agrees with the merged
+/// block view.
+pub fn apply_band_furniture_keys(
+    page_blocks: &mut [Vec<ClassifiedBlock>],
+    page_dims: &[(f32, f32)],
+    promoted: &std::collections::HashSet<(bool, String)>,
+) {
+    if promoted.is_empty() {
+        return;
+    }
+    let body_size = body_font_size(
+        page_blocks
+            .iter()
+            .flatten()
+            .map(|b| (b.block_type, b.font_size, b.text.len())),
+    );
+    for (blocks, &(_, page_height)) in page_blocks.iter_mut().zip(page_dims) {
+        for block in blocks {
+            let candidate = BandCandidate {
+                block_type: block.block_type,
+                text: &block.text,
+                bbox: &block.bbox,
+                font_size: block.font_size,
+            };
+            let Some(key) = band_furniture_key(&candidate, page_height, body_size) else {
+                continue;
+            };
+            if promoted.contains(&key) {
+                block.block_type = if key.0 {
+                    BlockType::Header
+                } else {
+                    BlockType::Footer
+                };
+                block.header_level = None;
+                block.confidence = block.confidence.max(0.85);
+            }
+        }
+    }
+}
+
+/// The fields of a merged or classified block that band-furniture keying reads.
+struct BandCandidate<'a> {
+    block_type: BlockType,
+    text: &'a str,
+    bbox: &'a Rect,
+    font_size: f32,
+}
+
+impl<'a> BandCandidate<'a> {
+    fn of_merged(block: &'a MergedBlock) -> Self {
+        Self {
+            block_type: block.block_type,
+            text: &block.text,
+            bbox: &block.bbox,
+            font_size: block.font_size,
+        }
+    }
+}
+
+/// Document body font size: the Body-block font size (rounded to 0.5pt)
+/// carrying the most text. `0.0` when there is no Body text.
+fn body_font_size(blocks: impl Iterator<Item = (BlockType, f32, usize)>) -> f32 {
+    let mut weight: std::collections::BTreeMap<i64, usize> = std::collections::BTreeMap::new();
+    for (block_type, font_size, len) in blocks {
+        if block_type == BlockType::Body && font_size > 0.0 {
+            *weight.entry((font_size * 2.0).round() as i64).or_default() += len;
+        }
+    }
+    weight
+        .into_iter()
+        .max_by(|a, b| a.1.cmp(&b.1).then(b.0.cmp(&a.0)))
+        .map(|(half_pt, _)| half_pt as f32 / 2.0)
+        .unwrap_or(0.0)
+}
+
+/// `(is_top_band, normalised_text)` for a furniture candidate, else `None`.
+fn band_furniture_key(
+    candidate: &BandCandidate<'_>,
+    page_height: f32,
+    body_size: f32,
+) -> Option<(bool, String)> {
+    let BandCandidate {
+        block_type,
+        text,
+        bbox,
+        font_size,
+    } = *candidate;
+    // Text set at twice the body size or more is a document title, not page
+    // furniture, even when it recurs in the band (a title repeated on the
+    // contents page and the first body page; D3/D4 rev5 N14). The header
+    // level is not used: a running header ("Section 4.2 ... 21") can be
+    // typed level 0 per page.
+    if body_size > 0.0 && font_size >= 2.0 * body_size {
+        return None;
+    }
+    if page_height <= 0.0
+        || !matches!(
+            block_type,
+            BlockType::Title | BlockType::Subtitle | BlockType::Body | BlockType::Boilerplate
+        )
+    {
+        return None;
+    }
+    let text = text.trim();
+    if text.is_empty() || text.chars().count() >= 200 || text.contains('\n') {
+        return None;
+    }
+    let numbering = crate::extractors::block_classifier::analyze_section_numbering(text);
+    let decimal_numbered = numbering.has_numbering
+        && numbering.numbering_type == crate::extractors::block_classifier::NumberingType::Decimal;
+    let top_from_top = 1.0 - (bbox.y + bbox.height) / page_height;
+    let bottom_from_top = 1.0 - bbox.y / page_height;
+    let is_top = top_from_top < 0.08;
+    let is_bottom = bottom_from_top > 0.92;
+    if !(is_top || is_bottom) || bbox.height > page_height * 0.04 {
+        return None;
+    }
+    // A decimal-numbered line ("4.1 Simulations") is keyed by its exact text
+    // and its font size (rounded to 0.5pt): only an identical numbered line
+    // recurring in the same band at the same size is a running header (D3/D4
+    // rev4 B4). The size keeps a contents entry ("1. Introduction" at 7.3pt)
+    // from matching the chapter heading it points to (12.3pt; rev5 N13).
+    // Other text is digit-normalised so page counters ("Page 3 of 9") match
+    // across pages.
+    let normalized: String = if decimal_numbered {
+        format!("={}@{}", text.to_lowercase(), (font_size * 2.0).round() as i64)
+    } else {
+        text.to_lowercase()
+            .chars()
+            .map(|c| if c.is_ascii_digit() { '#' } else { c })
+            .collect()
+    };
+    Some((is_top, normalized))
+}
+
 fn is_bottom_centered_small_body(block: &MergedBlock, page_width: f32, page_height: f32) -> bool {
     if block.block_type != BlockType::Body || page_width <= 0.0 || page_height <= 0.0 {
         return false;
@@ -623,5 +836,103 @@ mod tests {
             .iter()
             .flatten()
             .all(|block| block.block_type == BlockType::Body));
+    }
+
+    // --- D3/D4 rev5 N18: band-furniture keys ---
+
+    fn merged(text: &str, y: f32, font_size: f32, level: Option<u8>) -> MergedBlock {
+        MergedBlock {
+            block_type: BlockType::Title,
+            text: text.to_string(),
+            bbox: Rect::new(72.0, y, 200.0, font_size),
+            font_size,
+            font_name: "Arial".to_string(),
+            is_bold: false,
+            confidence: 0.9,
+            header_level: level,
+            paragraph_id: 0,
+            is_running_header: false,
+            is_running_footer: false,
+            span_sequences: Vec::new(),
+        }
+    }
+
+    fn body_block() -> MergedBlock {
+        let mut b = merged(&"body text ".repeat(30), 400.0, 10.0, None);
+        b.block_type = BlockType::Body;
+        b
+    }
+
+    fn key_of(block: &MergedBlock, body: f32) -> Option<(bool, String)> {
+        band_furniture_key(&BandCandidate::of_merged(block), 792.0, body)
+    }
+
+    #[test]
+    fn band_key_numbered_text_is_exact_and_sized() {
+        let toc = merged("1. Introduction", 740.0, 7.3, None);
+        let heading = merged("1. Introduction", 740.0, 12.3, Some(1));
+        let a = key_of(&toc, 10.0).unwrap();
+        let b = key_of(&heading, 10.0).unwrap();
+        assert!(a.0 && b.0, "both in the top band");
+        assert_ne!(a, b, "a 7.3pt contents entry must not match the 12.3pt heading");
+        // Digits in numbered text are kept, not normalised.
+        let other = merged("2. Introduction", 740.0, 7.3, None);
+        assert_ne!(key_of(&other, 10.0), Some(a));
+    }
+
+    #[test]
+    fn band_key_page_counter_is_digit_normalised() {
+        let p3 = merged("Page 3 of 9", 20.0, 9.0, None);
+        let p4 = merged("Page 4 of 9", 20.0, 9.0, None);
+        assert_eq!(key_of(&p3, 10.0), key_of(&p4, 10.0));
+        assert!(!key_of(&p3, 10.0).unwrap().0, "bottom band");
+    }
+
+    #[test]
+    fn band_key_skips_document_titles() {
+        // Text at >= 2x body size (do178c 23.9pt title) is never furniture.
+        assert!(key_of(&merged("for DO-178C Compliance", 740.0, 23.9, Some(0)), 10.0).is_none());
+        // A body-size running header typed level 0 is still a candidate.
+        assert!(key_of(&merged("Section 4.2 Figure-eight patterns 21", 740.0, 13.0, Some(0)), 12.0).is_some());
+        assert!(key_of(&merged("Running Title", 740.0, 11.0, None), 10.0).is_some());
+    }
+
+    #[test]
+    fn band_key_ignores_mid_page_and_tall_text() {
+        assert!(key_of(&merged("4.1 Simulations", 400.0, 10.0, None), 10.0).is_none());
+        let mut tall = merged("4.1 Simulations", 700.0, 10.0, None);
+        tall.bbox.height = 60.0;
+        assert!(key_of(&tall, 10.0).is_none());
+    }
+
+    #[test]
+    fn exact_numbered_key_needs_three_pages() {
+        let dims = vec![(612.0, 792.0); 3];
+        let page = |t: &str| vec![merged(t, 740.0, 10.0, None), body_block()];
+        // Two compiled volumes opening with "1.1 Scope": still headings.
+        let mut two = vec![page("1.1 Scope"), page("1.1 Scope"), page("2 Other")];
+        let promoted = promote_repeated_band_furniture(&mut two, &dims);
+        assert!(promoted.iter().all(|k| !k.1.contains("scope")));
+        assert_eq!(two[0][0].block_type, BlockType::Title);
+        // A numbered running header on three pages is furniture.
+        let mut three = vec![page("4.1 Simulations"), page("4.1 Simulations"), page("4.1 Simulations")];
+        promote_repeated_band_furniture(&mut three, &dims);
+        assert!(three.iter().all(|p| p[0].block_type == BlockType::Header));
+        // Unnumbered text needs only two pages.
+        let mut un = vec![page("Journal of Tests"), page("Journal of Tests"), page("x")];
+        promote_repeated_band_furniture(&mut un, &dims);
+        assert_eq!(un[0][0].block_type, BlockType::Header);
+        assert_eq!(un[1][0].block_type, BlockType::Header);
+    }
+
+    #[test]
+    fn body_font_size_is_text_weighted_body_mode() {
+        let blocks = vec![
+            (BlockType::Body, 10.0, 500),
+            (BlockType::Body, 9.0, 50),
+            (BlockType::Title, 24.0, 5000),
+        ];
+        assert_eq!(body_font_size(blocks.into_iter()), 10.0);
+        assert_eq!(body_font_size(std::iter::empty()), 0.0);
     }
 }

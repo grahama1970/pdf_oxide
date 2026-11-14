@@ -246,6 +246,12 @@ pub struct BlockClassifier {
     header_ratio: f32,
     repeated_margin_origins: Vec<MarginOrigin>,
     underline_rects: Vec<Rect>,
+    /// Set by `classify_line` when the returned block was produced by the
+    /// body-size numbered heading rules (`is_single_level_caps_heading`,
+    /// `body_size_numbered_heading_level`). Read once per line by
+    /// `classify_spans_with_reference_context_until` so the page-context pass
+    /// demotes only headings those rules created (D3 rev4 N6).
+    last_line_body_size_heading: std::cell::Cell<bool>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -321,6 +327,7 @@ impl BlockClassifier {
             header_ratio: header_ratio_override.unwrap_or(1.2),
             repeated_margin_origins,
             underline_rects: Vec::new(),
+            last_line_body_size_heading: std::cell::Cell::new(false),
         }
     }
 
@@ -373,11 +380,13 @@ impl BlockClassifier {
 
         let mut blocks = Vec::new();
         let mut underlined = Vec::new();
+        let mut body_size_heading = Vec::new();
         for line_spans in &lines {
             if line_spans.is_empty() {
                 continue;
             }
             let mut block = self.classify_line(line_spans);
+            body_size_heading.push(self.last_line_body_size_heading.get());
             block.lines = vec![BlockLine::from_spans(line_spans)];
             if matches!(block.block_type, BlockType::Body | BlockType::List) {
                 let mut sorted: Vec<&TextSpan> = line_spans.to_vec();
@@ -394,6 +403,8 @@ impl BlockClassifier {
             blocks.push(block);
         }
 
+        self.demote_ruled_row_cells(&mut blocks, &mut body_size_heading);
+        demote_numbered_headings_without_context(&mut blocks, &body_size_heading, self.page_height);
         refine_caption_flow(&mut blocks, self.page_width, self.page_height, self.median_font_size);
         promote_repeated_reference_entries(&mut blocks, self.page_width, self.page_height);
         merge_reference_continuations(&mut blocks, self.page_width);
@@ -423,6 +434,112 @@ impl BlockClassifier {
         merge_list_runs_and_continuations(&mut blocks);
 
         blocks
+    }
+
+    /// B1' (row-path tables): a body-size numbered heading enclosed by a
+    /// row-sized painted box (at most 35% of the page height) that also
+    /// encloses a top-aligned block to its right is a cell of a ruled table
+    /// row. Tables whose rows are drawn as one
+    /// path per row expose only the row's bounding box, not its interior
+    /// column rules, so the sibling cell inside the same box is the evidence.
+    fn demote_ruled_row_cells(&self, blocks: &mut [ClassifiedBlock], tags: &mut [bool]) {
+        let mut demote = Vec::new();
+        // Path boxes clipped to the page (rev5 N15): an unclipped path that
+        // runs off the page must not count as a row box by its drawn extent.
+        let page_h = self.page_height;
+        let page_w = self.page_width;
+        let rows: Vec<Rect> = self
+            .underline_rects
+            .iter()
+            .filter_map(|r| {
+                if page_h <= 0.0 || page_w <= 0.0 {
+                    return Some(*r);
+                }
+                let x0 = r.x.max(0.0);
+                let y0 = r.y.max(0.0);
+                let x1 = (r.x + r.width).min(page_w);
+                let y1 = (r.y + r.height).min(page_h);
+                (x1 > x0 && y1 > y0).then(|| Rect::new(x0, y0, x1 - x0, y1 - y0))
+            })
+            .collect();
+        for (i, block) in blocks.iter().enumerate() {
+            if !tags.get(i).copied().unwrap_or(false) || block.block_type != BlockType::Title {
+                continue;
+            }
+            let line = block.bbox;
+            let font = block.font_size.max(1.0);
+            let in_row = rows.iter().any(|r| {
+                let encloses = r.x <= line.x + 1.0
+                    && r.x + r.width >= line.x + line.width - 1.0
+                    && r.y <= line.y + 1.0
+                    && r.y + r.height >= line.y + line.height - 1.0;
+                // Rows grow with wrapped requirement text (NASA V1 p72:
+                // 128 pt), so bound the box by page fraction: a row, not a
+                // page frame or a column-wide callout.
+                if !encloses
+                    || r.height > self.page_height * 0.35
+                    || r.height < line.height * 0.8
+                    || r.width < line.width * 1.5
+                {
+                    return false;
+                }
+                blocks.iter().enumerate().any(|(j, other)| {
+                    if j == i {
+                        return false;
+                    }
+                    let cx = other.bbox.x + other.bbox.width / 2.0;
+                    let cy = other.bbox.y + other.bbox.height / 2.0;
+                    // Sibling cell: to the right and top-aligned with the line
+                    // (cells of one row start at the row's top).
+                    let top_gap =
+                        ((other.bbox.y + other.bbox.height) - (line.y + line.height)).abs();
+                    other.bbox.x > line.x + line.width * 0.5
+                        && top_gap <= font * 2.0
+                        && cx >= r.x
+                        && cx <= r.x + r.width
+                        && cy >= r.y
+                        && cy <= r.y + r.height
+                })
+            });
+            if in_row {
+                demote.push(i);
+            }
+        }
+        for i in demote {
+            blocks[i].block_type = BlockType::Body;
+            blocks[i].header_level = None;
+            tags[i] = false;
+        }
+    }
+
+    /// True when a thin vertical rule crosses the line's vertical midpoint
+    /// strictly inside its horizontal extent (at least half an em in from
+    /// either end): the line spans two ruled table cells. Page frames and
+    /// margin rules lie outside the line and never match.
+    fn crosses_vertical_rule(&self, line: &Rect, font_size: f32) -> bool {
+        if line.width <= 0.0 {
+            return false;
+        }
+        let inset = font_size.max(1.0) * 0.5;
+        let mid_y = line.y + line.height / 2.0;
+        self.underline_rects.iter().any(|rule| {
+            if rule.width > 2.0 || rule.height < font_size * 0.8 {
+                return false;
+            }
+            // A path running off the page is unclipped chart geometry (series
+            // lines clipped by the plot's clip path): its visible extent is
+            // unknown, so it is no evidence of a table rule (rev5 N15).
+            if self.page_height > 0.0
+                && (rule.y < -1.0 || rule.y + rule.height > self.page_height + 1.0)
+            {
+                return false;
+            }
+            let x = rule.x + rule.width / 2.0;
+            rule.y <= mid_y
+                && rule.y + rule.height >= mid_y
+                && x > line.x + inset
+                && x < line.x + line.width - inset
+        })
     }
 
     fn has_text_underline(&self, text_bbox: &Rect, font_size: f32) -> bool {
@@ -465,6 +582,7 @@ impl BlockClassifier {
     }
 
     fn classify_line(&self, spans: &[&TextSpan]) -> ClassifiedBlock {
+        self.last_line_body_size_heading.set(false);
         // WebGPT 2026-05-13 R6 — sort spans by (bbox.x, sequence) before
         // joining their text. PDFs can emit "Modern" via TJ kerning shifts
         // that put glyph fragments out of left-to-right content-stream
@@ -532,6 +650,29 @@ impl BlockClassifier {
         if is_boilerplate(trimmed) {
             return self.make_block(
                 BlockType::Boilerplate,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.9,
+                None,
+                None,
+            );
+        }
+
+        // Classification/dissemination banner (ISO 32000-1 has no furniture
+        // marker for untagged files, so the band position decides): a whole-line
+        // marking in the top or bottom 8% band is page furniture even when it is
+        // set larger than the body face.
+        if (y_ratio < 0.08 || y_ratio > 0.92) && size_ratio <= 2.0 && is_marking_banner(trimmed) {
+            let block_type = if y_ratio < 0.08 {
+                BlockType::Header
+            } else {
+                BlockType::Footer
+            };
+            return self.make_block(
+                block_type,
                 text,
                 bbox,
                 avg_font_size,
@@ -706,6 +847,43 @@ impl BlockClassifier {
                 None,
             );
         }
+        // "1. SCOPE": a single-level number followed by a short ALL-CAPS
+        // label is a top-level section heading, not an ordered-list item.
+        // Geometry gates (D3 rev3 B1): a line holding two cells separated by a
+        // column gap, or set clearly below the body face, is a table/form row.
+        // D3 rev4 B4: not in a running-header position -- the outer 5% band,
+        // or the 8% band when the line starts in the right half of the page.
+        // (A left-aligned heading at the top of a tight-margin page stays
+        // eligible; a repeated left-aligned header is caught document-wide
+        // by `promote_repeated_band_furniture`.)
+        // A right-aligned line starting past 60% of the page width in the
+        // top/bottom 12% is a running-header position on any page size
+        // (A4 headers sit ~10% from the top); right-column headings of
+        // two-column layouts start near 52%.
+        let in_running_header_position = y_ratio < 0.05
+            || y_ratio > 0.95
+            || ((y_ratio < 0.08 || y_ratio > 0.92) && bbox.x > self.page_width * 0.5)
+            || ((y_ratio < 0.12 || y_ratio > 0.88) && bbox.x > self.page_width * 0.6);
+        // B1': not cut by a vertical table rule (ruled compliance-matrix
+        // cells joined into one line).
+        let body_size_heading_geometry_ok = size_ratio >= 0.9
+            && !has_column_gap(spans, avg_font_size)
+            && !in_running_header_position
+            && !self.crosses_vertical_rule(&bbox, avg_font_size);
+        if body_size_heading_geometry_ok && is_single_level_caps_heading(trimmed) {
+            self.last_line_body_size_heading.set(true);
+            return self.make_block(
+                BlockType::Title,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                Some(1),
+                None,
+            );
+        }
         if is_list_item(trimmed) && is_bodyish_list {
             return self.make_block(
                 BlockType::List,
@@ -837,6 +1015,26 @@ impl BlockClassifier {
                     Some(validation),
                 );
             }
+        }
+
+        // Numbered section heading set in the body font (common in legacy
+        // specifications): decimal numbering followed by a short ALL-CAPS or
+        // Title Case label with no sentence. Level follows numbering depth.
+        if let Some(level) =
+            body_size_numbered_heading_level(trimmed).filter(|_| body_size_heading_geometry_ok)
+        {
+            self.last_line_body_size_heading.set(true);
+            return self.make_block(
+                BlockType::Title,
+                text,
+                bbox,
+                avg_font_size,
+                font_name,
+                is_bold,
+                0.8,
+                Some(level),
+                None,
+            );
         }
 
         // Default: body text
@@ -1030,6 +1228,190 @@ fn try_labeled(text: &str) -> Option<NumberingAnalysis> {
     None
 }
 
+/// Hierarchy depth of a decimal section number.
+///
+/// Trailing `.0` components name the parent level (MIL-STD/DID convention):
+/// `1.0` is depth 1 and its children `1.1`, `1.2` are depth 2. The printed
+/// number is not rewritten; only the depth changes.
+fn numbering_depth(number: &str) -> u8 {
+    let parts: Vec<&str> = number
+        .trim_end_matches('.')
+        .split('.')
+        .filter(|p| !p.is_empty())
+        .collect();
+    let mut depth = parts.len().max(1);
+    while depth > 1 && parts[depth - 1].bytes().all(|b| b == b'0') {
+        depth -= 1;
+    }
+    depth.min(6) as u8
+}
+
+/// Heading level for a body-size numbered heading line, or `None`.
+///
+/// Accepts `3.4 INTERFACE REQUIREMENTS`, `5.0 NOTES`, `2.1 Scope`.
+/// Rejects requirement clauses (`3.4.1 The CADC shall ...`), sentences,
+/// list-shaped items and numeric/table-cell rows.
+fn body_size_numbered_heading_level(text: &str) -> Option<u8> {
+    let numbering = try_decimal(text)?;
+    let title = numbering.title_text.trim();
+    // Bare single integers ("3 Volts") are too ambiguous with table cells and
+    // list items; require a dotted section number such as 3.4 or 5.0.
+    let number = numbering.number_text.trim_end_matches('.');
+    let dotted = number.contains('.')
+        && number
+            .split('.')
+            .all(|part| !part.is_empty() && part.bytes().all(|b| b.is_ascii_digit()));
+    if !dotted {
+        return None;
+    }
+    let depth = numbering_depth(number);
+    // Dot leaders mark a table-of-contents entry, not the heading itself.
+    if title.contains("...") || title.contains("…") || title.contains(". . .") {
+        return None;
+    }
+    let words: Vec<&str> = title.split_whitespace().collect();
+    if words.is_empty() || words.len() > 10 || title.chars().count() > 80 {
+        return None;
+    }
+    if title.ends_with(['.', ',', ';', ':']) || count_sentence_breaks(title) > 0 {
+        return None;
+    }
+    if has_modal_or_copula(title)
+        || ends_with_page_reference(title)
+        || has_second_field_marker(title)
+    {
+        return None;
+    }
+    let first = title.chars().next()?;
+    if !first.is_uppercase() {
+        return None;
+    }
+    let alpha: Vec<char> = title.chars().filter(|c| c.is_alphabetic()).collect();
+    if alpha.len() < 3 {
+        return None;
+    }
+    let all_caps = alpha.iter().all(|c| c.is_uppercase());
+    let minor = [
+        "a", "an", "and", "as", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with",
+    ];
+    let title_case = words.iter().all(|w| {
+        let c = w.chars().find(|c| c.is_alphanumeric());
+        match c {
+            Some(c) if c.is_alphabetic() => {
+                c.is_uppercase() || minor.contains(&w.to_lowercase().as_str())
+            },
+            _ => true,
+        }
+    });
+    if !(all_caps || title_case) {
+        return None;
+    }
+    // Numeric-heavy text (e.g. "1.2 3.4 5.6") is a table row, not a heading.
+    let digits = title.chars().filter(|c| c.is_ascii_digit()).count();
+    if digits * 2 > alpha.len() {
+        return None;
+    }
+    Some(depth.clamp(1, 6))
+}
+
+/// `1. SCOPE`, `10. NOTES`: an integer with a trailing period followed by a
+/// short ALL-CAPS label with no sentence punctuation or modal verb.
+fn is_single_level_caps_heading(text: &str) -> bool {
+    let Some((number, title)) = text.split_once(char::is_whitespace) else {
+        return false;
+    };
+    let Some(digits) = number.strip_suffix('.') else {
+        return false;
+    };
+    if digits.is_empty() || digits.len() > 2 || !digits.bytes().all(|b| b.is_ascii_digit()) {
+        return false;
+    }
+    let title = title.trim();
+    let words = title.split_whitespace().count();
+    if words == 0 || words > 8 || title.ends_with(['.', ',', ';', ':']) {
+        return false;
+    }
+    let alpha: Vec<char> = title.chars().filter(|c| c.is_alphabetic()).collect();
+    if alpha.len() < 3 || !alpha.iter().all(|c| c.is_uppercase()) {
+        return false;
+    }
+    !(has_modal_or_copula(title)
+        || ends_with_page_reference(title)
+        || has_second_field_marker(title))
+}
+
+/// Modal verb or copula anywhere in the label, compared with surrounding
+/// punctuation trimmed (`SHALL,` counts), as `validate_header_with_ratio` does.
+fn has_modal_or_copula(title: &str) -> bool {
+    title.split_whitespace().any(|w| {
+        let w = w
+            .trim_matches(|c: char| !c.is_alphanumeric())
+            .to_lowercase();
+        matches!(w.as_str(), "shall" | "will" | "must" | "should" | "is" | "are")
+    })
+}
+
+/// Last token is a page reference (`14`, `4-1`, `A-3`, `iv`): a contents entry.
+fn ends_with_page_reference(title: &str) -> bool {
+    let Some(last) = title.split_whitespace().last() else {
+        return false;
+    };
+    if title.split_whitespace().count() < 2 {
+        return false;
+    }
+    is_page_reference_token(last)
+}
+
+/// `14`, `4-1`, `A-3`, `B-12`, `iv`, `xii`.
+fn is_page_reference_token(token: &str) -> bool {
+    let t = token.trim_matches(|c: char| c == '.' || c == ',');
+    if t.is_empty() || t.len() > 8 {
+        return false;
+    }
+    if t.bytes().all(|b| b.is_ascii_digit()) {
+        return true;
+    }
+    if let Some((a, b)) = t.split_once('-') {
+        let a_ok = !a.is_empty()
+            && (a.bytes().all(|c| c.is_ascii_digit())
+                || (a.len() == 1 && a.bytes().all(|c| c.is_ascii_uppercase())));
+        return a_ok && !b.is_empty() && b.bytes().all(|c| c.is_ascii_digit());
+    }
+    t.len() <= 5 && t.chars().all(|c| matches!(c, 'i' | 'v' | 'x' | 'l'))
+}
+
+/// A second `N.` field marker after the first word (`4. TITLE 5. FUNDING`):
+/// form boxes, not a section heading.
+fn has_second_field_marker(title: &str) -> bool {
+    title.split_whitespace().any(|w| {
+        w.len() >= 2 && w.ends_with('.') && w[..w.len() - 1].bytes().all(|b| b.is_ascii_digit())
+    })
+}
+
+/// True when the line's spans contain a horizontal gap wider than 2.5 em:
+/// two table/form cells (or a contents entry and its page number) joined into
+/// one line.
+fn has_column_gap(spans: &[&TextSpan], font_size: f32) -> bool {
+    if spans.len() < 2 {
+        return false;
+    }
+    let mut sorted: Vec<&TextSpan> = spans.to_vec();
+    sorted.sort_by(|a, b| {
+        a.bbox
+            .x
+            .partial_cmp(&b.bbox.x)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    let mut right = sorted[0].bbox.x + sorted[0].bbox.width;
+    for span in &sorted[1..] {
+        if span.bbox.x - right > font_size.max(1.0) * 2.5 {
+            return true;
+        }
+        right = right.max(span.bbox.x + span.bbox.width);
+    }
+    false
+}
+
 fn try_decimal(text: &str) -> Option<NumberingAnalysis> {
     let t = text.trim_start();
     // Match: digits optionally followed by .digits, then separator and title
@@ -1087,8 +1469,7 @@ fn try_decimal(text: &str) -> Option<NumberingAnalysis> {
     }
 
     // Count depth
-    let depth = num_text.matches('.').count() as u8 + 1;
-    let depth = depth.min(6);
+    let depth = numbering_depth(num_text);
 
     Some(NumberingAnalysis {
         has_numbering: true,
@@ -1344,6 +1725,28 @@ pub fn validate_header_with_ratio(
             disposition: HeaderDisposition::Reject,
             level: None,
             reasons: vec!["requirement_id_negative"],
+            numbering,
+            features,
+        };
+    }
+
+    // Numbered requirement clause ("3.4.1 The CADC shall interface ..."):
+    // the numbering identifies a requirement paragraph, not a section
+    // heading — hard reject regardless of weight or size.
+    if numbering.has_numbering
+        && numbering.title_text.split_whitespace().any(|w| {
+            let w = w
+                .trim_matches(|c: char| !c.is_alphabetic())
+                .to_ascii_lowercase();
+            matches!(w.as_str(), "shall" | "must" | "will" | "should")
+        })
+    {
+        return HeaderValidation {
+            is_header: false,
+            confidence: 0.0,
+            disposition: HeaderDisposition::Reject,
+            level: None,
+            reasons: vec!["requirement_clause_negative"],
             numbering,
             features,
         };
@@ -2523,6 +2926,10 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
         if !looks_like_heading(b) {
             continue;
         }
+        // Requirement clauses are never headings, whatever their case.
+        if has_modal_or_copula(&b.text) {
+            continue;
+        }
 
         let prev_ok = if i == 0 {
             // No predecessor (or only chrome filtered out earlier); accept
@@ -2551,8 +2958,218 @@ fn promote_isolated_heading_blocks(blocks: &mut Vec<ClassifiedBlock>) {
         } else {
             None
         };
+        let numbered_level = leading_number_components(&blocks[i].text)
+            .map(|parts| numbering_depth(&parts.join(".")));
         blocks[i].block_type = Title;
-        blocks[i].header_level = Some(inherited_level.unwrap_or(2));
+        blocks[i].header_level = Some(numbered_level.or(inherited_level).unwrap_or(2));
+    }
+}
+
+/// Raw numbering components of a leading section number (`7.1.` -> ["7","1"]).
+fn leading_number_components(text: &str) -> Option<Vec<String>> {
+    let first = text.split_whitespace().next()?;
+    if !first.as_bytes().first()?.is_ascii_digit() {
+        return None;
+    }
+    let core = first.trim_end_matches('.');
+    if core.is_empty()
+        || !core
+            .split('.')
+            .all(|p| !p.is_empty() && p.bytes().all(|b| b.is_ascii_digit()))
+    {
+        return None;
+    }
+    Some(core.split('.').map(str::to_string).collect())
+}
+
+/// A contents-entry line: numbered and ending in a page reference, or
+/// carrying dot leaders.
+fn is_contents_entry_line(text: &str) -> bool {
+    let t = text.trim();
+    // Dot leaders count only when trailing: the leader run is followed by
+    // nothing or by a page reference (N8: a quotation elision "[...]" mid-line
+    // is not a leader).
+    for leader in ["...", "\u{2026}", ". . ."] {
+        if let Some(pos) = t.rfind(leader) {
+            let rest = t[pos + leader.len()..].trim_start_matches(['.', ' ', '\u{2026}']);
+            if rest.is_empty() || (!rest.contains(' ') && is_page_reference_token(rest)) {
+                return true;
+            }
+        }
+    }
+    // A numbered entry ending in a page reference needs a title word before
+    // it (N8: "1280 x 720" is a data row, not a contents entry).
+    let has_title_word = t
+        .split_whitespace()
+        .skip(1)
+        .any(|w| w.chars().filter(|c| c.is_alphabetic()).count() >= 2);
+    leading_number_components(t).is_some()
+        && has_title_word
+        && t.split_whitespace().count() <= 12
+        && !has_modal_or_copula(t)
+        && ends_with_page_reference(t)
+}
+
+/// Page-context check for body-size numbered headings (D3 rev3 B2/B3).
+///
+/// The line-level rules cannot see their neighbours. Demote a body-size
+/// numbered heading back to List/Body when:
+/// - the page is a contents page (a `CONTENTS` / `TABLE OF CONTENTS` line, or
+///   >= 4 numbered lines ending in a page reference or dot leaders);
+/// - the next block is only a page reference (wrapped contents entry);
+/// - it belongs to a run of consecutive sibling numbers (same parent, same
+///   depth) in which any sibling is not itself such a heading, or whose
+///   introducing line ends with `:`;
+/// - it is one of >= 2 consecutive single-level `N.` lines (procedure steps).
+///
+/// `created_by_body_size_rule[i]` is the explicit tag from `classify_line`:
+/// only blocks the body-size rules created are candidates (N6). Headings from
+/// the bold/size rules are never demoted here.
+fn demote_numbered_headings_without_context(
+    blocks: &mut [ClassifiedBlock],
+    created_by_body_size_rule: &[bool],
+    page_height: f32,
+) {
+    let candidates: Vec<bool> = blocks
+        .iter()
+        .enumerate()
+        .map(|(i, b)| {
+            b.block_type == BlockType::Title
+                && created_by_body_size_rule.get(i).copied().unwrap_or(false)
+        })
+        .collect();
+    if !candidates.iter().any(|c| *c) {
+        return;
+    }
+    let mut demote = vec![false; blocks.len()];
+
+    let contents_heading = blocks.iter().any(|b| {
+        let t = b.text.trim().trim_end_matches(':').to_uppercase();
+        t == "CONTENTS" || t == "TABLE OF CONTENTS"
+    });
+    let contents_entries = blocks
+        .iter()
+        .filter(|b| is_contents_entry_line(&b.text))
+        .count();
+    // Outline-only page (contents continuation without leaders or page
+    // numbers): >= 8 numbered lines making up >= 80% of non-chrome blocks.
+    let content_blocks = blocks
+        .iter()
+        .filter(|b| {
+            !matches!(
+                b.block_type,
+                BlockType::Header
+                    | BlockType::Footer
+                    | BlockType::PageNumber
+                    | BlockType::Boilerplate
+            )
+        })
+        .count();
+    let numbered_lines = blocks
+        .iter()
+        .filter(|b| leading_number_components(&b.text).is_some() && !b.text.contains('\n'))
+        .count();
+    // A section page carries prose; a contents continuation page does not.
+    let has_prose = blocks.iter().any(|b| {
+        if matches!(
+            b.block_type,
+            BlockType::Header | BlockType::Footer | BlockType::PageNumber | BlockType::Boilerplate
+        ) {
+            return false;
+        }
+        if leading_number_components(&b.text).is_some() {
+            has_modal_or_copula(&b.text)
+        } else {
+            b.text.split_whitespace().count() >= 8
+        }
+    });
+    let outline_page =
+        !has_prose && numbered_lines >= 8 && numbered_lines * 5 >= content_blocks * 4;
+    if contents_heading || contents_entries >= 4 || outline_page {
+        for (i, c) in candidates.iter().enumerate() {
+            demote[i] |= *c;
+        }
+    }
+
+    for i in 0..blocks.len() {
+        if candidates[i] && i + 1 < blocks.len() {
+            let next = blocks[i + 1].text.trim();
+            if !next.contains(' ') && is_page_reference_token(next) {
+                demote[i] = true;
+            }
+        }
+    }
+
+    // Sibling runs. Lines in the top/bottom 8% band (running headers and
+    // footers) are page furniture, not members of the body numbering.
+    let in_band = |b: &ClassifiedBlock| {
+        page_height > 0.0 && {
+            let y_ratio = (page_height - b.bbox.y - b.bbox.height) / page_height;
+            !(0.08..=0.92).contains(&y_ratio)
+        }
+    };
+    let keys: Vec<Option<(Vec<String>, bool)>> = blocks
+        .iter()
+        .map(|b| {
+            if in_band(b) && !matches!(b.block_type, BlockType::Title) {
+                return None;
+            }
+            leading_number_components(&b.text).map(|mut parts| {
+                // `3.0` is the parent level, not a sibling of `3.1`.
+                while parts.len() > 1 && parts.last().is_some_and(|p| p.bytes().all(|c| c == b'0'))
+                {
+                    parts.pop();
+                }
+                parts.pop();
+                let single_dot = parts.is_empty()
+                    && b.text
+                        .split_whitespace()
+                        .next()
+                        .is_some_and(|w| w.ends_with('.'));
+                (parts, single_dot)
+            })
+        })
+        .collect();
+    let mut start = 0;
+    while start < blocks.len() {
+        let Some(key) = keys[start].clone() else {
+            start += 1;
+            continue;
+        };
+        let mut end = start + 1;
+        while end < blocks.len() && keys[end].as_ref() == Some(&key) {
+            end += 1;
+        }
+        let run = start..end;
+        let any_candidate = run.clone().any(|i| candidates[i]);
+        if any_candidate {
+            let mixed = run.clone().any(|i| !candidates[i]);
+            // N9: only a numbered parent of this run ("7. ... following:"
+            // before "7.1."/"7.2.") introduces it as a list; a prose
+            // sentence ending in ':' does not.
+            let colon_parent = start > 0
+                && blocks[start - 1].text.trim_end().ends_with(':')
+                && !key.0.is_empty()
+                && leading_number_components(&blocks[start - 1].text).as_ref() == Some(&key.0);
+            let stacked_steps = key.1 && key.0.is_empty() && end - start >= 2;
+            if mixed || colon_parent || stacked_steps {
+                for i in run {
+                    demote[i] |= candidates[i];
+                }
+            }
+        }
+        start = end;
+    }
+
+    for (i, block) in blocks.iter_mut().enumerate() {
+        if demote[i] {
+            block.block_type = if is_list_item(block.text.trim()) {
+                BlockType::List
+            } else {
+                BlockType::Body
+            };
+            block.header_level = None;
+        }
     }
 }
 
@@ -2796,6 +3413,36 @@ fn is_boilerplate(text: &str) -> bool {
         return true;
     }
     false
+}
+
+/// True when the whole line is a security classification / dissemination
+/// marking banner (`UNCLASSIFIED`, `CUI`, `SECRET//NOFORN`, ...).
+///
+/// Only an exact marking line matches; `UNCLASSIFIED TECHNICAL DATA` or any
+/// sentence does not. Qualifiers after `//` or `/` are accepted as caveats.
+pub(crate) fn is_marking_banner(text: &str) -> bool {
+    const MARKINGS: &[&str] = &[
+        "UNCLASSIFIED",
+        "CUI",
+        "CONTROLLED UNCLASSIFIED INFORMATION",
+        "CONFIDENTIAL",
+        "SECRET",
+        "TOP SECRET",
+        "RESTRICTED",
+        "FOR OFFICIAL USE ONLY",
+        "FOUO",
+    ];
+    let upper = text
+        .trim()
+        .trim_matches(|c: char| c == '-' || c.is_whitespace())
+        .to_uppercase();
+    if upper.is_empty() || upper.len() > 80 {
+        return false;
+    }
+    let head = upper.split("//").next().unwrap_or("").trim();
+    let head = head.split('/').next().unwrap_or("").trim();
+    let head = head.trim_end_matches(|c: char| c == ')' || c == '(').trim();
+    MARKINGS.contains(&head)
 }
 
 /// Check if text is a section header exception that should NOT be filtered
@@ -3210,6 +3857,171 @@ mod tests {
     }
 
     // --- Header Validation Tests ---
+
+    #[test]
+    fn test_body_size_numbered_heading_levels() {
+        assert_eq!(body_size_numbered_heading_level("3.4 INTERFACE REQUIREMENTS"), Some(2));
+        assert_eq!(body_size_numbered_heading_level("5.0 NOTES"), Some(1));
+        assert_eq!(body_size_numbered_heading_level("1.0 SCOPE"), Some(1));
+        assert_eq!(body_size_numbered_heading_level("1.1 Purpose"), Some(2));
+        assert_eq!(body_size_numbered_heading_level("3.0 REQUIREMENTS"), Some(1));
+        assert_eq!(body_size_numbered_heading_level("3.1 PERFORMANCE"), Some(2));
+        assert_eq!(numbering_depth("1.0"), 1);
+        assert_eq!(numbering_depth("1.0."), 1);
+        assert_eq!(numbering_depth("3.1"), 2);
+        assert_eq!(numbering_depth("3.10"), 2);
+        assert_eq!(numbering_depth("3.1.0"), 2);
+        assert_eq!(analyze_section_numbering("1.0 SCOPE").number_text, "1.0");
+        assert_eq!(body_size_numbered_heading_level("3.4.2 Power Supply Interface"), Some(3));
+        assert_eq!(
+            body_size_numbered_heading_level("3.4.1 The CADC shall interface with the bus"),
+            None
+        );
+        assert_eq!(
+            body_size_numbered_heading_level("3.4.1 The CADC interfaces with the bus."),
+            None
+        );
+        assert_eq!(body_size_numbered_heading_level("1. First item"), None);
+        assert_eq!(body_size_numbered_heading_level("1.2 3.4 5.6"), None);
+        assert_eq!(
+            body_size_numbered_heading_level("2.3 THREAT AGENTS ...................... 2-2"),
+            None
+        );
+        assert!(is_single_level_caps_heading("1. SCOPE"));
+        assert!(!is_single_level_caps_heading("1. First item"));
+        assert!(!is_single_level_caps_heading("1. THE UNIT SHALL OPERATE"));
+    }
+
+    #[test]
+    fn test_body_size_heading_rejects_contents_forms_and_modal_clauses() {
+        // N1: punctuation-trimmed modal check.
+        assert_eq!(
+            body_size_numbered_heading_level("3.2.3 THE CONTRACTOR SHALL, AS A MINIMUM"),
+            None
+        );
+        assert!(!is_single_level_caps_heading("2. THE UNIT SHALL, AT ALL TIMES"));
+        // B3: trailing page reference marks a contents entry.
+        assert_eq!(body_size_numbered_heading_level("4.0 QUALITY ASSURANCE PROVISIONS 4-1"), None);
+        assert_eq!(body_size_numbered_heading_level("3.1 Hardware Components 6"), None);
+        assert!(is_page_reference_token("A-3") && is_page_reference_token("xii"));
+        assert!(!is_page_reference_token("1553B"));
+        // B1: a second field marker is a form row.
+        assert!(!is_single_level_caps_heading("4. TITLE AND SUBTITLE 5. FUNDING NUMBERS"));
+        // Still headings.
+        assert_eq!(body_size_numbered_heading_level("3.3 MIL-STD-1553B Data Bus"), Some(2));
+        assert!(is_single_level_caps_heading("1. SCOPE"));
+    }
+
+    #[test]
+    fn test_numbered_heading_context_demotes_lists_steps_and_contents() {
+        let mk = |text: &str, level: Option<u8>| {
+            let kind = if level.is_some() {
+                BlockType::Title
+            } else {
+                BlockType::Body
+            };
+            let mut b = test_block(kind, text, Rect::new(72.0, 700.0, 200.0, 10.0), 10.0, false);
+            b.header_level = level;
+            b
+        };
+        // B2 nested list under a ':' parent with a sentence-case sibling.
+        let mut blocks = vec![
+            mk("7. Audience did not want to spend time on:", None),
+            mk("7.1. Mathematics", Some(2)),
+            mk("7.2. Too much conceptual discussions", None),
+            mk("7.3. LAWS", Some(2)),
+        ];
+        let tags = tag_titles(&blocks);
+        demote_numbered_headings_without_context(&mut blocks, &tags, 0.0);
+        assert!(blocks.iter().all(|b| b.header_level.is_none()));
+        // B2 stacked procedure steps.
+        let mut blocks = vec![
+            mk("1. DISCONNECT ALL POWER", Some(1)),
+            mk("2. REMOVE ACCESS PANEL", Some(1)),
+        ];
+        let tags = tag_titles(&blocks);
+        demote_numbered_headings_without_context(&mut blocks, &tags, 0.0);
+        assert!(blocks.iter().all(|b| b.header_level.is_none()));
+        // Real sections separated by prose stay headings; 3.0 is the parent of 3.1.
+        let mut blocks = vec![
+            mk("3.0 REQUIREMENTS", Some(1)),
+            mk("3.1 PERFORMANCE REQUIREMENTS", Some(2)),
+            mk("The unit provides air data at all times.", None),
+            mk("3.2 INTERFACE REQUIREMENTS", Some(2)),
+        ];
+        let tags = tag_titles(&blocks);
+        demote_numbered_headings_without_context(&mut blocks, &tags, 0.0);
+        assert_eq!(blocks[0].header_level, Some(1));
+        assert_eq!(blocks[1].header_level, Some(2));
+        assert_eq!(blocks[3].header_level, Some(2));
+        // B3 contents page.
+        let mut blocks = vec![
+            mk("CONTENTS", None),
+            mk("3.4 INTERFACE REQUIREMENTS", Some(2)),
+        ];
+        let tags = tag_titles(&blocks);
+        demote_numbered_headings_without_context(&mut blocks, &tags, 0.0);
+        assert_eq!(blocks[1].header_level, None);
+
+        // N6: a heading the body-size rules did not create (bold/size rules)
+        // is never demoted, even on a page that looks like a contents page.
+        let mut blocks = vec![mk("CONTENTS", None), mk("5.1 Background", Some(1))];
+        demote_numbered_headings_without_context(&mut blocks, &[false, false], 0.0);
+        assert_eq!(blocks[1].header_level, Some(1));
+        // N8: quotation elisions and numeric data rows are not contents entries.
+        assert!(!is_contents_entry_line(
+            "\u{201c}Commanders at every level have responsibility [\u{2026}] to include the use"
+        ));
+        assert!(!is_contents_entry_line("1280 x 720"));
+        assert!(is_contents_entry_line("3.4 INTERFACE REQUIREMENTS .......... 3-7"));
+        assert!(is_contents_entry_line("4.1 Responsibility for Inspection 4-1"));
+        // N9: a prose sentence ending in ':' does not introduce a numbered run.
+        let mut blocks = vec![
+            mk("Parts availability is tracked through the reporting processes:", None),
+            mk("8.1.6.1 Parts Availability Process", Some(4)),
+        ];
+        let tags = tag_titles(&blocks);
+        demote_numbered_headings_without_context(&mut blocks, &tags, 0.0);
+        assert_eq!(blocks[1].header_level, Some(4));
+    }
+
+    fn tag_titles(blocks: &[ClassifiedBlock]) -> Vec<bool> {
+        blocks
+            .iter()
+            .map(|b| b.block_type == BlockType::Title)
+            .collect()
+    }
+
+    #[test]
+    fn test_marking_banner_matches_whole_line_markings_only() {
+        for yes in [
+            "UNCLASSIFIED",
+            "CUI",
+            "SECRET//NOFORN",
+            "UNCLASSIFIED//FOUO",
+            " TOP SECRET ",
+            "- UNCLASSIFIED -",
+        ] {
+            assert!(is_marking_banner(yes), "{yes}");
+        }
+        for no in [
+            "UNCLASSIFIED TECHNICAL DATA",
+            "The CUI program",
+            "SECRETS",
+            "3.1 SECRET",
+            "",
+        ] {
+            assert!(!is_marking_banner(no), "{no}");
+        }
+    }
+
+    #[test]
+    fn test_numbered_requirement_clause_rejected_even_when_bold() {
+        let v =
+            validate_header("4.3.1 All software development shall conform", true, 9.0, 9.0, 18.0);
+        assert!(!v.is_header);
+        assert!(v.reasons.contains(&"requirement_clause_negative"));
+    }
 
     #[test]
     fn test_numbered_header_accepted() {
@@ -4664,5 +5476,105 @@ mod tests {
         assert_eq!(blocks[0].block_type, BlockType::Header);
         assert_eq!(blocks[1].block_type, BlockType::Header);
         assert_eq!(blocks[2].block_type, BlockType::Footer);
+    }
+
+    // --- D3/D4 rev4/rev5 N18: ruling-evidence rules ---
+
+    fn ruled(rects: Vec<Rect>) -> BlockClassifier {
+        BlockClassifier::new(612.0, 792.0, &[]).with_underline_rects(rects)
+    }
+
+    #[test]
+    fn vertical_rule_inside_line_crosses() {
+        let line = Rect::new(100.0, 405.0, 400.0, 10.0);
+        let c = ruled(vec![Rect::new(300.0, 395.0, 0.5, 30.0)]);
+        assert!(c.crosses_vertical_rule(&line, 10.0));
+    }
+
+    #[test]
+    fn vertical_rule_outside_or_at_edge_does_not_cross() {
+        let line = Rect::new(100.0, 405.0, 400.0, 10.0);
+        // Margin rule left of the line, and a rule within half an em of its end.
+        assert!(!ruled(vec![Rect::new(90.0, 395.0, 0.5, 30.0)]).crosses_vertical_rule(&line, 10.0));
+        assert!(!ruled(vec![Rect::new(497.0, 395.0, 0.5, 30.0)]).crosses_vertical_rule(&line, 10.0));
+        // A wide box is not a rule; a rule shorter than the text does not cut it.
+        assert!(!ruled(vec![Rect::new(300.0, 395.0, 20.0, 30.0)]).crosses_vertical_rule(&line, 10.0));
+        assert!(!ruled(vec![Rect::new(300.0, 408.0, 0.5, 4.0)]).crosses_vertical_rule(&line, 10.0));
+    }
+
+    #[test]
+    fn vertical_rule_running_off_page_is_ignored() {
+        // Chart series line drawn past the page top (clipped in the PDF).
+        let line = Rect::new(100.0, 435.0, 400.0, 10.0);
+        let c = ruled(vec![Rect::new(300.0, 438.5 - 10.0, 0.0, 445.3)]);
+        assert!(!c.crosses_vertical_rule(&line, 10.0));
+    }
+
+    fn tagged_heading_and(sibling: Option<Rect>) -> (Vec<ClassifiedBlock>, Vec<bool>) {
+        let mut h = test_block(
+            BlockType::Title,
+            "3.2 Requirement",
+            Rect::new(72.0, 500.0, 90.0, 10.0),
+            10.0,
+            false,
+        );
+        h.header_level = Some(2);
+        let mut blocks = vec![h];
+        if let Some(r) = sibling {
+            blocks.push(test_block(BlockType::Body, "The system shall", r, 10.0, false));
+        }
+        let tags = vec![true; blocks.len()];
+        (blocks, tags)
+    }
+
+    #[test]
+    fn ruled_row_cell_with_sibling_is_demoted() {
+        let c = ruled(vec![Rect::new(60.0, 470.0, 480.0, 45.0)]);
+        let (mut blocks, mut tags) =
+            tagged_heading_and(Some(Rect::new(250.0, 500.0, 200.0, 10.0)));
+        c.demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Body);
+        assert_eq!(blocks[0].header_level, None);
+        assert!(!tags[0]);
+    }
+
+    #[test]
+    fn ruled_row_cell_needs_sibling_box_and_tag() {
+        let row = Rect::new(60.0, 470.0, 480.0, 45.0);
+        // No sibling cell: a boxed heading stays.
+        let (mut blocks, mut tags) = tagged_heading_and(None);
+        ruled(vec![row]).demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Title);
+        // Page-frame-sized box (> 35% of page height): not a row.
+        let (mut blocks, mut tags) =
+            tagged_heading_and(Some(Rect::new(250.0, 500.0, 200.0, 10.0)));
+        ruled(vec![Rect::new(40.0, 40.0, 530.0, 700.0)]).demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Title);
+        // Sibling not top-aligned (more than 2 em lower).
+        let (mut blocks, mut tags) =
+            tagged_heading_and(Some(Rect::new(250.0, 472.0, 200.0, 10.0)));
+        ruled(vec![row]).demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Title);
+        // Untagged headings are never touched.
+        let (mut blocks, _) = tagged_heading_and(Some(Rect::new(250.0, 500.0, 200.0, 10.0)));
+        let mut tags = vec![false; blocks.len()];
+        ruled(vec![row]).demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Title);
+    }
+
+    #[test]
+    fn ruled_row_box_is_clipped_to_page() {
+        // A box drawn from inside the page to far past its top is clipped to
+        // its in-page part (470..792 = 322pt, 41% of the page): too tall for
+        // a row, so the heading stays.
+        let (mut blocks, mut tags) =
+            tagged_heading_and(Some(Rect::new(250.0, 500.0, 200.0, 10.0)));
+        ruled(vec![Rect::new(60.0, 470.0, 480.0, 900.0)]).demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Title);
+        // An in-page row box is unchanged by the clip.
+        let (mut blocks, mut tags) =
+            tagged_heading_and(Some(Rect::new(250.0, 500.0, 200.0, 10.0)));
+        ruled(vec![Rect::new(60.0, 470.0, 480.0, 45.0)]).demote_ruled_row_cells(&mut blocks, &mut tags);
+        assert_eq!(blocks[0].block_type, BlockType::Body);
     }
 }

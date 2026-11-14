@@ -13,7 +13,8 @@ use crate::extractors::block_classifier::{
     ClassifiedBlock,
 };
 use crate::extractors::block_merger::{
-    mark_running_headers_footers, merge_blocks, promote_repeated_bottom_center_notes, MergedBlock,
+    apply_band_furniture_keys, mark_running_headers_footers, merge_blocks,
+    promote_repeated_band_furniture, promote_repeated_bottom_center_notes, MergedBlock,
 };
 use crate::extractors::document_profiler::{profile_document_with_cache, DocumentProfile};
 use crate::extractors::engineering::{detect_engineering_features_from_spans, EngineeringProfile};
@@ -485,6 +486,8 @@ pub fn extract_document_with_config(
     // promotion is deliberately document-wide so repeated margin physics,
     // rather than document-family vocabulary, decides the block type.
     promote_repeated_bottom_center_notes(&mut all_page_blocks, &all_dims);
+    let band_furniture = promote_repeated_band_furniture(&mut all_page_blocks, &all_dims);
+    apply_band_furniture_keys(&mut all_classified, &all_dims, &band_furniture);
     mark_running_headers_footers(&mut all_page_blocks);
 
     // PageResult summaries were built while each page was reconciled.  Sync
@@ -494,6 +497,7 @@ pub fn extract_document_with_config(
         for (summary, block) in page.blocks.iter_mut().zip(blocks) {
             summary.block_type = format!("{:?}", block.block_type);
             summary.confidence = block.confidence;
+            summary.header_level = block.header_level;
         }
         page.text = blocks
             .iter()
