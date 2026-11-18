@@ -168,7 +168,9 @@ struct AssignedRun {
     row: usize,
     col: usize,
     x0: f64,
+    x1: f64,
     y0: f64,
+    y1: f64,
     text: String,
 }
 
@@ -386,7 +388,9 @@ fn reconcile_views_inner(
                         row: ri,
                         col: ci,
                         x0: sr.x0,
+                        x1: sr.x1,
                         y0: sr.y0,
+                        y1: sr.y1,
                         text: spans[si].text.clone(),
                     }),
                     _ => {
@@ -558,21 +562,51 @@ fn reconcile_views_inner(
                 let mut lines: Vec<String> = Vec::new();
                 let mut line = String::new();
                 let mut line_y = f64::NEG_INFINITY;
+                let mut prev_x1: Option<f64> = None;
                 for run in &assigned_runs[idx..end] {
-                    if line.is_empty() || (run.y0 - line_y).abs() <= 2.0 {
-                        if !line.is_empty() {
+                    if !line.is_empty() && (run.y0 - line_y).abs() > 2.0 {
+                        lines.push(std::mem::take(&mut line));
+                        prev_x1 = None;
+                    }
+                    if let Some(x1) = prev_x1 {
+                        let height = (run.y1 - run.y0).abs().max(1.0);
+                        let em = height * 0.15;
+                        // A superscript/subscript marker sits on a different
+                        // baseline from the word it belongs to ("a" + "Range",
+                        // "P" + "Torque"). Its sort position puts it next to
+                        // that word with a backward or zero gap, so the gap test
+                        // alone glues them.
+                        let baseline_shift = (run.y0 - line_y).abs() > height * 0.3;
+                        // A backward gap means the runs are out of order on the
+                        // line (a marker set to the left of a word it belongs
+                        // with); it needs the same separator a forward gap does.
+                        let needs_space = ((run.x0 - x1).abs() > em || baseline_shift)
+                            && !line.ends_with(char::is_whitespace)
+                            && !run.text.starts_with(char::is_whitespace);
+                        if needs_space {
                             line.push(' ');
                         }
-                    } else {
-                        lines.push(std::mem::take(&mut line));
                     }
-                    line.push_str(run.text.trim());
+                    // Concatenate the runs as the page sets them: the whitespace
+                    // runs are real text. Inventing a space between runs both
+                    // doubles spaces the page has and splits words the
+                    // typesetter put in two font runs ("than" -> "tha n").
+                    line.push_str(&run.text);
+                    prev_x1 = Some(run.x1);
                     line_y = run.y0;
+                }
+                if !line.split_whitespace().next().is_some() {
+                    line.clear();
                 }
                 if !line.is_empty() {
                     lines.push(line);
                 }
-                table.cells[row][col].text = lines.join("\n");
+                let cleaned: Vec<String> = lines
+                    .iter()
+                    .map(|l| l.split_whitespace().collect::<Vec<_>>().join(" "))
+                    .filter(|l| !l.is_empty())
+                    .collect();
+                table.cells[row][col].text = cleaned.join("\n");
                 idx = end;
             }
             for ((row, col), parts) in deferred {
