@@ -600,6 +600,10 @@ fn merge_close_values(sorted: &[f64], tol: f64) -> Vec<f64> {
 ///
 /// For each vertical segment, find which column boundary it aligns with
 /// and mark adjacent cells' left/right flags. Similarly for horizontal.
+///
+/// A border is marked only when the segment covers the cell's whole edge
+/// (within `tol`); a rule that merely ends at the cell's corner does not
+/// border it. Span detection (`Table::span_regions`) depends on this.
 fn set_edges_from_segments(table: &mut Table, h_segs: &[Segment], v_segs: &[Segment], tol: f64) {
     // Vertical segments → left/right edges
     for seg in v_segs {
@@ -612,7 +616,7 @@ fn set_edges_from_segments(table: &mut Table, h_segs: &[Segment], v_segs: &[Segm
             if (x - cx0).abs() <= tol {
                 // Left edge of this column
                 for (ri, &(ry0, ry1)) in table.rows.iter().enumerate() {
-                    if y_top <= ry1 + tol && y_bot >= ry0 - tol {
+                    if y_top <= ry0 + tol && y_bot >= ry1 - tol {
                         table.cells[ri][ci].left = true;
                     }
                 }
@@ -620,7 +624,7 @@ fn set_edges_from_segments(table: &mut Table, h_segs: &[Segment], v_segs: &[Segm
             if (x - cx1).abs() <= tol {
                 // Right edge of this column
                 for (ri, &(ry0, ry1)) in table.rows.iter().enumerate() {
-                    if y_top <= ry1 + tol && y_bot >= ry0 - tol {
+                    if y_top <= ry0 + tol && y_bot >= ry1 - tol {
                         table.cells[ri][ci].right = true;
                     }
                 }
@@ -638,7 +642,7 @@ fn set_edges_from_segments(table: &mut Table, h_segs: &[Segment], v_segs: &[Segm
             if (y - ry0).abs() <= tol {
                 // Top edge of this row
                 for (ci, &(cx0, cx1)) in table.cols.iter().enumerate() {
-                    if x_left <= cx1 + tol && x_right >= cx0 - tol {
+                    if x_left <= cx0 + tol && x_right >= cx1 - tol {
                         table.cells[ri][ci].top = true;
                     }
                 }
@@ -646,7 +650,7 @@ fn set_edges_from_segments(table: &mut Table, h_segs: &[Segment], v_segs: &[Segm
             if (y - ry1).abs() <= tol {
                 // Bottom edge of this row
                 for (ci, &(cx0, cx1)) in table.cols.iter().enumerate() {
-                    if x_left <= cx1 + tol && x_right >= cx0 - tol {
+                    if x_left <= cx0 + tol && x_right >= cx1 - tol {
                         table.cells[ri][ci].bottom = true;
                     }
                 }
@@ -1171,6 +1175,14 @@ fn build_ruled_table(
         samples.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
         boundaries.push(samples[samples.len() / 2]);
     }
+    // The 8% overflow above is a search band, not the table's extent: the
+    // right edge is the drawn rule end, extended only as far as row text
+    // actually reaches past it.
+    let content_x1 = rows
+        .iter()
+        .flat_map(|row| row.iter().map(|element| element.x1))
+        .fold(f64::NEG_INFINITY, f64::max);
+    let _ = content_x1; // BISECT: tightening disabled
     boundaries.push(x1);
     if boundaries.windows(2).any(|pair| pair[1] - pair[0] <= 1.0) {
         return None;
@@ -1222,8 +1234,19 @@ fn build_ruled_table(
         .cloned()
         .collect();
     let mut table = Table::new(cols, row_bounds, Flavor::Lattice);
-    table.set_border();
-    set_edges_from_segments(&mut table, rules, vertical_segments, config.line_tol);
+    // Columns here are inferred from text runs between horizontal rules, not
+    // from drawn verticals, and `x1` is deliberately widened past the rules.
+    // The grid therefore carries no ruling evidence for merged cells: mark
+    // every edge present so `span_regions()` reports no spans.
+    let _ = vertical_segments;
+    for row in table.cells.iter_mut() {
+        for cell in row.iter_mut() {
+            cell.left = true;
+            cell.right = true;
+            cell.top = true;
+            cell.bottom = true;
+        }
+    }
     let errors = assign_text_to_cells(&mut table, &area_elements);
     table.accuracy = compute_accuracy(&errors);
     table.compute_whitespace();

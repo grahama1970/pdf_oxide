@@ -527,7 +527,6 @@ pub fn extract_stream(
             .iter()
             .map(|&(l, r)| (l + area.x0, r + area.x0))
             .collect();
-
         // Check for phantom table
         if is_phantom_table(&rows, &cols) {
             continue;
@@ -547,11 +546,58 @@ pub fn extract_stream(
         let errors = assign_text_to_cells(&mut table, &area_elements);
         table.accuracy = compute_accuracy(&errors);
         table.compute_whitespace();
+        clamp_outer_edges_to_ink(&mut table, &area_elements);
 
         tables.push(table);
     }
 
     tables
+}
+
+/// A borderless table has no drawn frame: its only geometric extent is its
+/// content. After text assignment (which uses the detected column edges, so
+/// no glyph is dropped), clamp the outer column edges -- which
+/// `detect_columns` opens to the detection area, often the whole page width --
+/// to the leftmost/rightmost glyph of the elements lying inside the table.
+/// Only the reported geometry changes; cell text is untouched.
+fn clamp_outer_edges_to_ink(table: &mut Table, elements: &[TextElement]) {
+    let (Some(&(left, _)), Some(&(_, right))) = (table.cols.first(), table.cols.last()) else {
+        return;
+    };
+    let (Some(&(top, _)), Some(&(_, bottom))) = (table.rows.first(), table.rows.last()) else {
+        return;
+    };
+    let (y_lo, y_hi) = (top.min(bottom), top.max(bottom));
+    let mut ink_x0 = f64::INFINITY;
+    let mut ink_x1 = f64::NEG_INFINITY;
+    for e in elements {
+        let cx = (e.x0 + e.x1) / 2.0;
+        let cy = (e.y0 + e.y1) / 2.0;
+        if cx >= left && cx <= right && cy >= y_lo && cy <= y_hi {
+            ink_x0 = ink_x0.min(e.x0);
+            ink_x1 = ink_x1.max(e.x1);
+        }
+    }
+    if !ink_x0.is_finite() || !ink_x1.is_finite() {
+        return;
+    }
+    let last = table.cols.len() - 1;
+    if ink_x0 > table.cols[0].0 && ink_x0 < table.cols[0].1 {
+        table.cols[0].0 = ink_x0;
+        for row in table.cells.iter_mut() {
+            if let Some(c) = row.first_mut() {
+                c.x0 = ink_x0;
+            }
+        }
+    }
+    if ink_x1 < table.cols[last].1 && ink_x1 > table.cols[last].0 {
+        table.cols[last].1 = ink_x1;
+        for row in table.cells.iter_mut() {
+            if let Some(c) = row.last_mut() {
+                c.x1 = ink_x1;
+            }
+        }
+    }
 }
 
 #[cfg(test)]

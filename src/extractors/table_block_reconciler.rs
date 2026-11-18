@@ -192,6 +192,26 @@ pub struct BlockView<'a> {
 /// Consumed blocks are removed from `blocks`; affected cell text in `tables`
 /// is rebuilt from the intact span text. Blocks that cannot be fully and
 /// unambiguously accounted for are retained unchanged (fail open).
+/// Claim the characters of `part` inside `cell` that no earlier run claimed.
+/// Returns false when no entirely unclaimed match exists, meaning the run
+/// carries an occurrence the cell does not already show.
+fn claim_occurrence(cell: &[char], part: &[char], claimed: &mut [bool]) -> bool {
+    if part.is_empty() || part.len() > cell.len() {
+        return part.is_empty();
+    }
+    for start in 0..=cell.len() - part.len() {
+        if cell[start..start + part.len()] == *part
+            && (start..start + part.len()).all(|i| !claimed[i])
+        {
+            for i in start..start + part.len() {
+                claimed[i] = true;
+            }
+            return true;
+        }
+    }
+    false
+}
+
 pub fn reconcile_page(
     blocks: &mut Vec<ClassifiedBlock>,
     tables: &mut [Table],
@@ -426,7 +446,94 @@ fn reconcile_views_inner(
             // Remove lossy detector fragments only where an exactly-accounted
             // consumed block geometrically touched the cell. Ambiguous blocks
             // never reach this set and therefore always fail open unchanged.
-            for (row, col) in cells_to_clear {
+            // consolidate_span_text already moved a merged region's text into its
+            // anchor, which the consumed block may not touch geometrically; the
+            // rebuild then re-consolidates and the anchor holds the text TWICE.
+            // Clear the whole region ONLY when the rebuilt runs carry every
+            // non-whitespace character the region currently holds, so the
+            // re-consolidation is lossless. Otherwise leave the touched cells
+            // alone: the runs are written and the pin's cell text is cleared as
+            // before, so no run is ever discarded (a discarded run would be
+            // dropped from the output entirely once its block counts as
+            // consumed).
+            let regions = table.span_regions();
+            let mut expanded = cells_to_clear.clone();
+            // Cells of a merged region whose held text the rebuild does not
+            // reproduce. Their text came from the span pass, not from these
+            // runs, so it must survive: keep the cells uncleared and append the
+            // runs instead of replacing (OX2-1).
+            let mut deferred: std::collections::BTreeMap<(usize, usize), Vec<String>> =
+                std::collections::BTreeMap::new();
+            let mut kept_cells: std::collections::BTreeSet<(usize, usize)> =
+                std::collections::BTreeSet::new();
+            let mut claimed_chars: std::collections::BTreeMap<(usize, usize), Vec<bool>> =
+                std::collections::BTreeMap::new();
+            for m in &regions {
+                let inside = |r: usize, c: usize| {
+                    r >= m.start_row
+                        && r < m.start_row + m.row_span
+                        && c >= m.start_col
+                        && c < m.start_col + m.col_span
+                };
+                if !cells_to_clear.iter().any(|&(r, c)| inside(r, c)) {
+                    continue;
+                }
+                let mut held = String::new();
+                for r in m.start_row..m.start_row + m.row_span {
+                    for c in m.start_col..m.start_col + m.col_span {
+                        held.push_str(&table.cells[r][c].text);
+                    }
+                }
+                let rebuilt: String = assigned_runs
+                    .iter()
+                    .filter(|run| inside(run.row, run.col))
+                    .map(|run| run.text.as_str())
+                    .collect();
+                let have = non_ws_multiset(&held);
+                let get = non_ws_multiset(&rebuilt);
+                let covered = have.iter().all(|(ch, n)| get.get(ch).copied().unwrap_or(0) >= *n);
+                if covered {
+                    for r in m.start_row..m.start_row + m.row_span {
+                        for c in m.start_col..m.start_col + m.col_span {
+                            expanded.insert((r, c));
+                        }
+                    }
+                } else {
+                    for r in m.start_row..m.start_row + m.row_span {
+                        for c in m.start_col..m.start_col + m.col_span {
+                            expanded.remove(&(r, c));
+                        }
+                    }
+                    // Keep the region's own text and append the runs, skipping
+                    // only the text this very cell already shows (the page may
+                    // legitimately print the same value in two cells).
+                    // Claim characters, don't count substrings: two runs whose
+                    // texts overlap (an "A" and an "AB") must not both be
+                    // satisfied by the same "A" in the cell. Each match claims
+                    // the characters it uses; a run with no unclaimed match is
+                    // appended, so every distinct source occurrence survives.
+                    for run in assigned_runs.iter().filter(|run| inside(run.row, run.col)) {
+                        kept_cells.insert((run.row, run.col));
+                        let part = run.text.trim();
+                        let part_norm: Vec<char> = part.chars().filter(|c| !c.is_whitespace()).collect();
+                        if part_norm.is_empty() {
+                            continue;
+                        }
+                        let cell_norm: Vec<char> = table.cells[run.row][run.col]
+                            .text
+                            .chars()
+                            .filter(|c| !c.is_whitespace())
+                            .collect();
+                        let claimed = claimed_chars
+                            .entry((run.row, run.col))
+                            .or_insert_with(|| vec![false; cell_norm.len()]);
+                        if !claim_occurrence(&cell_norm, &part_norm, claimed) {
+                            deferred.entry((run.row, run.col)).or_default().push(part.to_string());
+                        }
+                    }
+                }
+            }
+            for &(row, col) in &expanded {
                 table.cells[row][col].text.clear();
             }
             assigned_runs.sort_by(|a, b| {
@@ -435,6 +542,7 @@ fn reconcile_views_inner(
                     .then(a.y0.partial_cmp(&b.y0).unwrap_or(std::cmp::Ordering::Equal))
                     .then(a.x0.partial_cmp(&b.x0).unwrap_or(std::cmp::Ordering::Equal))
             });
+            assigned_runs.retain(|run| !kept_cells.contains(&(run.row, run.col)));
             let mut idx = 0;
             while idx < assigned_runs.len() {
                 let (row, col) = (assigned_runs[idx].row, assigned_runs[idx].col);
@@ -467,6 +575,19 @@ fn reconcile_views_inner(
                 table.cells[row][col].text = lines.join("\n");
                 idx = end;
             }
+            for ((row, col), parts) in deferred {
+                let mut text = std::mem::take(&mut table.cells[row][col].text);
+                for part in parts {
+                    if !text.trim().is_empty() {
+                        text.push(' ');
+                    }
+                    text.push_str(part.trim());
+                }
+                table.cells[row][col].text = text;
+            }
+            // The rebuild assigns runs by geometry; restore the merged-cell
+            // anchor convention (spanned text in the span's top-left cell).
+            table.consolidate_span_text();
         }
     }
 

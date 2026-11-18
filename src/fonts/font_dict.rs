@@ -90,6 +90,17 @@ pub struct FontInfo {
     pub byte_to_width_table: std::sync::OnceLock<[f32; 256]>,
 }
 
+/// Source of a glyph's advance width (provenance for downstream geometry).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum WidthSource {
+    /// /Widths (simple fonts) or /W (CID fonts).
+    Widths,
+    /// Standard-14 AFM metrics (ISO 32000-1 9.6.2.2), no /Widths present.
+    Core14Afm,
+    /// /MissingWidth, /DW, or the reader's flag-based default.
+    DefaultWidth,
+}
+
 /// Font encoding types.
 #[derive(Debug, Clone)]
 pub enum Encoding {
@@ -1492,7 +1503,57 @@ impl FontInfo {
                 }
             }
         }
+        if let Some(w) = self.core14_width(char_code) {
+            return w;
+        }
         self.default_width
+    }
+
+    /// Width (1/1000 em) from the standard-14 AFM metrics, for a simple font
+    /// that names a standard font and has no /Widths (ISO 32000-1 9.6.2.2).
+    ///
+    /// The code is resolved through the font's encoding to Unicode and then to
+    /// the AFM glyph; symbolic standard fonts (Symbol, ZapfDingbats) with their
+    /// built-in encoding, and codes that do not resolve, use the AFM code.
+    pub fn core14_width(&self, char_code: u16) -> Option<f32> {
+        if self.widths.is_some() || self.cid_widths.is_some() || char_code > 255 {
+            return None;
+        }
+        let m = super::core14::metrics_for(&self.base_font)?;
+        let builtin = matches!(&self.encoding, Encoding::Standard(name) if name == "StandardEncoding");
+        if super::core14::is_symbolic_standard(&self.base_font) && builtin {
+            return m.by_code[char_code as usize];
+        }
+        if let Some(s) = self.char_to_unicode(char_code as u32) {
+            let mut it = s.chars();
+            if let (Some(c), None) = (it.next(), it.next()) {
+                if let Some(&w) = m.by_unicode.get(&c) {
+                    return Some(w);
+                }
+            }
+        }
+        m.by_code[char_code as usize]
+    }
+
+    /// Which source supplies the advance width of `char_code`.
+    pub fn width_source(&self, char_code: u16) -> WidthSource {
+        if let Some(cid_widths) = &self.cid_widths {
+            return if cid_widths.contains_key(&char_code) {
+                WidthSource::Widths
+            } else {
+                WidthSource::DefaultWidth
+            };
+        }
+        if let (Some(widths), Some(first_char)) = (&self.widths, self.first_char) {
+            let index = char_code as i32 - first_char as i32;
+            if index >= 0 && (index as usize) < widths.len() {
+                return WidthSource::Widths;
+            }
+        }
+        if self.core14_width(char_code).is_some() {
+            return WidthSource::Core14Afm;
+        }
+        WidthSource::DefaultWidth
     }
 
     /// Get the width of the space glyph (U+0020) in font units.
@@ -1833,6 +1894,13 @@ impl FontInfo {
     pub fn get_byte_to_width_table(&self) -> &[f32; 256] {
         self.byte_to_width_table.get_or_init(|| {
             let mut tbl = [self.default_width; 256];
+            if self.widths.is_none() && self.cid_widths.is_none() {
+                for (code, slot) in tbl.iter_mut().enumerate() {
+                    if let Some(w) = self.core14_width(code as u16) {
+                        *slot = w;
+                    }
+                }
+            }
             if let Some(widths) = &self.widths {
                 if let Some(first_char) = self.first_char {
                     for (idx, &w) in widths.iter().enumerate() {

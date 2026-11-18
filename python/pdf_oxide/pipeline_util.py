@@ -43,15 +43,39 @@ def data_to_csv(data: List[List[str]]) -> str:
     return "\n".join(lines)
 
 
-def data_to_html(data: List[List[str]]) -> str:
-    """Convert 2D list to HTML table string."""
+def data_to_html(data: List[List[str]], spans: Optional[List[Dict]] = None) -> str:
+    """Convert 2D list to HTML table string.
+
+    ``spans`` (``{"row","col","row_span","col_span"}``, anchor = top-left cell)
+    become ``rowspan``/``colspan`` on the anchor cell; covered cells are omitted.
+    """
     if not data:
         return ""
+    anchors = {}
+    covered = set()
+    for sp in spans or []:
+        r, c = int(sp["row"]), int(sp["col"])
+        rs, cs = int(sp.get("row_span", 1)), int(sp.get("col_span", 1))
+        anchors[(r, c)] = (rs, cs)
+        for rr in range(r, r + rs):
+            for cc in range(c, c + cs):
+                if (rr, cc) != (r, c):
+                    covered.add((rr, cc))
     rows_html = []
     for i, row in enumerate(data):
         tag = "th" if i == 0 else "td"
-        cells = "".join(f"<{tag}>{c}</{tag}>" for c in row)
-        rows_html.append(f"<tr>{cells}</tr>")
+        cells = []
+        for j, c in enumerate(row):
+            if (i, j) in covered:
+                continue
+            attrs = ""
+            rs, cs = anchors.get((i, j), (1, 1))
+            if rs > 1:
+                attrs += f' rowspan="{rs}"'
+            if cs > 1:
+                attrs += f' colspan="{cs}"'
+            cells.append(f"<{tag}{attrs}>{c}</{tag}>")
+        rows_html.append(f"<tr>{''.join(cells)}</tr>")
     return f"<table>{''.join(rows_html)}</table>"
 
 

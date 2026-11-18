@@ -315,8 +315,27 @@ impl Table {
                 }
 
                 // Flood-fill to find connected cells
-                let region = self.flood_fill_region(r, c, &mut visited);
-                if region.row_span > 1 || region.col_span > 1 {
+                let (region, size) = self.flood_fill_region(r, c, &mut visited);
+                // A flood-fill component can be an L or a U of missing rules.
+                // Its bounding box then covers cells that are NOT part of the
+                // merged cell, which moves text into the wrong column and can
+                // cross a table boundary. Report only components that are
+                // exactly their own rectangle.
+                let rectangle = size == region.row_span * region.col_span;
+                // A real merged cell carries ONE label. A component whose
+                // covered cells each already hold their own text is a run of
+                // undetected separators, not a span: merging it would fold
+                // three distinct column headers into the first cell and drop
+                // the other two (NASA-STD-3001 p82).
+                let mut labelled = 0usize;
+                for r in region.start_row..region.start_row + region.row_span {
+                    for c in region.start_col..region.start_col + region.col_span {
+                        if !self.cells[r][c].text.trim().is_empty() {
+                            labelled += 1;
+                        }
+                    }
+                }
+                if rectangle && labelled <= 1 && (region.row_span > 1 || region.col_span > 1) {
                     regions.push(region);
                 }
             }
@@ -325,13 +344,136 @@ impl Table {
         regions
     }
 
+    /// Merged regions that are real row/column spans.
+    ///
+    /// Only meaningful when the grid carries ruling information: tables with no
+    /// internal border at all (stream/whitespace tables) and a region covering
+    /// the whole grid yield no spans.
+    pub fn span_regions(&self) -> Vec<MergedRegion> {
+        let nrows = self.num_rows();
+        let ncols = self.num_cols();
+        if nrows == 0 || ncols == 0 || self.cells.len() != nrows {
+            return Vec::new();
+        }
+        // An axis carries span information only if at least one internal rule
+        // exists on it. A table ruled only horizontally has no column borders
+        // at all: that is "no vertical rules", not "every row spans all columns".
+        let has_internal_v = (0..nrows)
+            .any(|r| (0..ncols - 1).any(|c| self.cells[r][c].right || self.cells[r][c + 1].left));
+        let has_internal_h = (0..nrows - 1)
+            .any(|r| (0..ncols).any(|c| self.cells[r][c].bottom || self.cells[r + 1][c].top));
+        if !has_internal_v && !has_internal_h {
+            return Vec::new();
+        }
+        let mut view = self.clone();
+        for row in view.cells.iter_mut() {
+            for cell in row.iter_mut() {
+                if !has_internal_v {
+                    cell.left = true;
+                    cell.right = true;
+                }
+                if !has_internal_h {
+                    cell.top = true;
+                    cell.bottom = true;
+                }
+            }
+        }
+        // Flood-fill components are reported as bounding boxes, and the box of
+        // an irregular component (an L or a U of missing rules) can overlap
+        // other regions. Overlapping regions make the anchor convention
+        // ambiguous, so keep a disjoint set: largest area first (row-major on
+        // ties), skipping any region that overlaps one already kept. Text in a
+        // skipped region still lands in the kept region that covers it.
+        let mut all: Vec<MergedRegion> = view
+            .detect_merged_regions()
+            .into_iter()
+            .filter(|m| !(m.row_span == nrows && m.col_span == ncols))
+            .collect();
+        all.sort_by(|a, b| {
+            (b.row_span * b.col_span)
+                .cmp(&(a.row_span * a.col_span))
+                .then(a.start_row.cmp(&b.start_row))
+                .then(a.start_col.cmp(&b.start_col))
+        });
+        let overlaps = |a: &MergedRegion, b: &MergedRegion| {
+            a.start_row < b.start_row + b.row_span
+                && b.start_row < a.start_row + a.row_span
+                && a.start_col < b.start_col + b.col_span
+                && b.start_col < a.start_col + a.col_span
+        };
+        let mut regions: Vec<MergedRegion> = Vec::new();
+        for m in all {
+            if regions.iter().all(|k| !overlaps(k, &m)) {
+                regions.push(m);
+            }
+        }
+        regions.sort_by(|a, b| a.start_row.cmp(&b.start_row).then(a.start_col.cmp(&b.start_col)));
+        regions
+    }
+
+    /// Anchor `(row, col)` of the span region containing cell `(row, col)`
+    /// whose columns fully contain `[x0, x1]`, if any.
+    pub fn span_anchor_for(
+        &self,
+        regions: &[MergedRegion],
+        row: usize,
+        x0: f64,
+        x1: f64,
+        tol: f64,
+    ) -> Option<(usize, usize)> {
+        regions.iter().find_map(|m| {
+            if row < m.start_row || row >= m.start_row + m.row_span || m.col_span < 2 {
+                return None;
+            }
+            let rx0 = self.cols[m.start_col].0;
+            let rx1 = self.cols[m.start_col + m.col_span - 1].1;
+            (x0 >= rx0 - tol && x1 <= rx1 + tol).then_some((m.start_row, m.start_col))
+        })
+    }
+
+    /// Move the text of every spanned region into its top-left anchor cell
+    /// (row-major order, space-joined) and clear the covered cells, so the
+    /// grid's `data()` puts a spanning label in the column where its span
+    /// starts rather than wherever its glyphs happen to sit.
+    pub fn consolidate_span_text(&mut self) {
+        for region in self.span_regions() {
+            // Refuse to merge a region whose covered cells each already hold
+            // their own label: that is a run of undetected separators, not one
+            // merged cell. Merging it moves several column headers into the
+            // first cell, where the per-cell rebuild cannot put them back
+            // (NASA-STD-3001 p82 lost 17 characters this way). Leaving the
+            // cells alone is lossless and visible.
+            let labelled = (region.start_row..region.start_row + region.row_span)
+                .flat_map(|r| {
+                    (region.start_col..region.start_col + region.col_span)
+                        .map(move |c| (r, c))
+                })
+                .filter(|&(r, c)| !self.cells[r][c].text.trim().is_empty())
+                .count();
+            if labelled > 1 {
+                continue;
+            }
+            let mut parts: Vec<String> = Vec::new();
+            for r in region.start_row..region.start_row + region.row_span {
+                for c in region.start_col..region.start_col + region.col_span {
+                    let text = std::mem::take(&mut self.cells[r][c].text);
+                    let text = text.trim();
+                    if !text.is_empty() {
+                        parts.push(text.to_string());
+                    }
+                }
+            }
+            self.cells[region.start_row][region.start_col].text = parts.join(" ");
+        }
+    }
+
     /// Flood-fill to find all cells connected to (start_row, start_col) via missing borders.
     fn flood_fill_region(
         &self,
         start_row: usize,
         start_col: usize,
         visited: &mut [Vec<bool>],
-    ) -> MergedRegion {
+    ) -> (MergedRegion, usize) {
         let nrows = self.num_rows();
         let ncols = self.num_cols();
 
@@ -341,12 +483,14 @@ impl Table {
         let mut max_col = start_col;
 
         let mut stack = vec![(start_row, start_col)];
+        let mut size = 0usize;
 
         while let Some((r, c)) = stack.pop() {
             if visited[r][c] {
                 continue;
             }
             visited[r][c] = true;
+            size += 1;
 
             min_row = min_row.min(r);
             max_row = max_row.max(r);
@@ -388,12 +532,15 @@ impl Table {
             }
         }
 
-        MergedRegion {
-            start_row: min_row,
-            start_col: min_col,
-            row_span: max_row - min_row + 1,
-            col_span: max_col - min_col + 1,
-        }
+        (
+            MergedRegion {
+                start_row: min_row,
+                start_col: min_col,
+                row_span: max_row - min_row + 1,
+                col_span: max_col - min_col + 1,
+            },
+            size,
+        )
     }
 }
 
@@ -605,5 +752,70 @@ mod tests {
         let r = &regions[0];
         assert_eq!(r.row_span, 2);
         assert_eq!(r.col_span, 2);
+    }
+
+    /// Fully ruled 4x3 grid with the G4 `merged_cells` layout: row 0 spans all
+    /// columns, (1,0) spans rows 1-2, (3,0) spans columns 0-1.
+    #[test]
+    fn span_regions_and_anchor_text_for_merged_layout() {
+        let mut table = Table::new(
+            vec![(0.0, 100.0), (100.0, 200.0), (200.0, 300.0)],
+            vec![(0.0, 10.0), (10.0, 20.0), (20.0, 30.0), (30.0, 40.0)],
+            Flavor::Lattice,
+        );
+        for row in &mut table.cells {
+            for cell in row {
+                cell.left = true;
+                cell.right = true;
+                cell.top = true;
+                cell.bottom = true;
+            }
+        }
+        for c in 0..2 {
+            table.cells[0][c].right = false;
+            table.cells[0][c + 1].left = false;
+        }
+        table.cells[1][0].bottom = false;
+        table.cells[2][0].top = false;
+        table.cells[3][0].right = false;
+        table.cells[3][1].left = false;
+        table.cells[0][1].text = "System Limits".into();
+        table.cells[1][0].text = "Nominal mode".into();
+        table.cells[3][0].text = "Emergency mode".into();
+
+        let mut spans: Vec<(usize, usize, usize, usize)> = table
+            .span_regions()
+            .iter()
+            .map(|m| (m.start_row, m.start_col, m.row_span, m.col_span))
+            .collect();
+        spans.sort();
+        assert_eq!(spans, vec![(0, 0, 1, 3), (1, 0, 2, 1), (3, 0, 1, 2)]);
+
+        table.consolidate_span_text();
+        assert_eq!(table.cells[0][0].text, "System Limits");
+        assert_eq!(table.cells[0][1].text, "");
+        assert_eq!(table.cells[1][0].text, "Nominal mode");
+
+        // An element lying inside the row-0 span maps to its anchor.
+        let regions = table.span_regions();
+        assert_eq!(table.span_anchor_for(&regions, 0, 120.0, 180.0, 2.0), Some((0, 0)));
+        assert_eq!(table.span_anchor_for(&regions, 2, 120.0, 180.0, 2.0), None);
+    }
+
+    /// Horizontal rules only (booktabs-style): no column-rule evidence, so no
+    /// spans, even though every internal vertical border is absent.
+    #[test]
+    fn span_regions_ignore_axis_without_internal_rules() {
+        let mut table = make_3x3_table();
+        for row in &mut table.cells {
+            for cell in row {
+                cell.top = true;
+                cell.bottom = true;
+            }
+        }
+        assert!(table.span_regions().is_empty());
+        // No rules at all (stream table): no spans.
+        let bare = make_3x3_table();
+        assert!(bare.span_regions().is_empty());
     }
 }

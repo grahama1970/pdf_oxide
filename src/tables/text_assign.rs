@@ -21,6 +21,10 @@ const WATERMARK_PHRASES: [&str; 3] = [
 /// Returns a list of assignment errors (0.0 = perfect fit, >0 = spillover).
 pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<f64> {
     let mut errors = Vec::with_capacity(elements.len());
+    // Column-spanning cells: an element lying wholly inside a span goes to the
+    // span's anchor cell intact instead of being split at the (absent) column
+    // boundaries it crosses.
+    let span_regions = table.span_regions();
 
     for elem in elements {
         let text = elem.text.trim();
@@ -40,6 +44,15 @@ pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<
             None => continue,
         };
 
+        if let Some((ar, ac)) = table.span_anchor_for(&span_regions, row_idx, elem.x0, elem.x1, 2.0)
+        {
+            errors.push(0.0);
+            // Every distinct source element inside a span is conserved: no
+            // duplicate folding here ("cc" and "c" are two elements).
+            append_to_cell_verbatim(table, ar, ac, text);
+            continue;
+        }
+
         // If character positions available, split across columns
         if let Some(ref chars) = elem.chars {
             let split_errors = assign_with_char_splitting(table, elem, chars, row_idx);
@@ -54,6 +67,7 @@ pub fn assign_text_to_cells(table: &mut Table, elements: &[TextElement]) -> Vec<
     }
 
     merge_withdrawn_note_spanning_cells(table);
+    table.consolidate_span_text();
     errors
 }
 
@@ -207,6 +221,15 @@ fn append_to_cell(table: &mut Table, row: usize, col: usize, text: &str) {
         cell.text.push('\n');
         cell.text.push_str(text);
     }
+}
+
+/// Append text to a cell without the duplicate filter.
+fn append_to_cell_verbatim(table: &mut Table, row: usize, col: usize, text: &str) {
+    let cell = &mut table.cells[row][col];
+    if !cell.text.is_empty() {
+        cell.text.push('\n');
+    }
+    cell.text.push_str(text);
 }
 
 fn is_watermark_text(text: &str) -> bool {

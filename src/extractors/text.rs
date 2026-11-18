@@ -851,6 +851,20 @@ fn ends_with_ligature(s: &str) -> bool {
     }
 }
 
+/// True when `left` + `right` meet at a decimal separator inside a number
+/// (`0.` | `78`, `12,` | `5`): digit, `.` or `,`, then digit. A font switch at
+/// such a junction is not a word boundary. A bare digit|digit junction is
+/// excluded on purpose.
+fn is_numeric_font_junction(left: &str, right: &str) -> bool {
+    let mut tail = left.chars().rev();
+    let (Some(l), Some(r)) = (tail.next(), right.chars().next()) else {
+        return false;
+    };
+    matches!(l, '.' | ',')
+        && tail.next().is_some_and(|c| c.is_ascii_digit())
+        && r.is_ascii_digit()
+}
+
 /// Fast whitespace-only check. For short strings (common in PDF spans),
 /// checks bytes directly for ASCII whitespace which covers 99%+ of cases.
 #[inline(always)]
@@ -3397,11 +3411,19 @@ impl TextExtractor {
                         false
                     }
                 };
+                // A decimal separator set in another font is not a word
+                // boundary: "0" F20 + "." F23 + "78" F20 (gap -0.0004pt) is
+                // "0.78", not "0. 78" (D10). Joined only when the runs touch
+                // (gap within 0.1 em). Signs, "%" and bare digit|digit
+                // junctions are left alone until glyph positions exist (D11).
+                let touching = gap.abs() <= current.font_size.max(span.font_size) * 0.1
+                    && is_numeric_font_junction(&current.text, &span.text);
                 if !current.text.ends_with(' ')
                     && !span.text.starts_with(' ')
                     && !starts_with_punct
                     && !is_ligature_font_switch
                     && !is_ligature_subset_switch
+                    && !touching
                 {
                     current.text.push(' ');
                 }
@@ -12464,6 +12486,69 @@ mod profile_based_space_tests {
         assert_eq!(
             default_config.space_insertion_threshold, conservative_profile.tj_offset_threshold,
             "Default config should use conservative threshold for backward compatibility"
+        );
+    }
+
+    // --- D10: decimal separator at a font switch ---
+
+    #[test]
+    fn numeric_junction_decimal_only() {
+        assert!(is_numeric_font_junction("0.", "78"));
+        assert!(is_numeric_font_junction("12,", "5"));
+        assert!(!is_numeric_font_junction("9.7", "%"));
+        assert!(!is_numeric_font_junction("\u{2212}", "20"));
+        assert!(!is_numeric_font_junction("SNR = -", "17"));
+        assert!(!is_numeric_font_junction("26", "27"));
+        assert!(!is_numeric_font_junction("Fig.", "3"));
+        assert!(!is_numeric_font_junction(".", "5"));
+        assert!(!is_numeric_font_junction("a,", "5"));
+    }
+
+    /// Spans laid out left to right from x=100, font size 10; the 4th field is
+    /// the gap in points before the span. Returns the merged first span text.
+    fn merged_text(parts: &[(&str, &str, f32, f32)]) -> String {
+        let mut extractor = TextExtractor::new();
+        let mut x = 100.0;
+        for (seq, &(text, font, width, gap_before)) in parts.iter().enumerate() {
+            if seq > 0 {
+                x += gap_before;
+            }
+            extractor.spans.push(TextSpan {
+                text: text.to_string(),
+                bbox: Rect::new(x, 700.0, width, 10.0),
+                font_name: font.to_string(),
+                font_size: 10.0,
+                font_weight: FontWeight::Normal,
+                color: Color::black(),
+                mcid: None,
+                sequence: seq,
+                split_boundary_before: false,
+                offset_semantic: false,
+                is_italic: false,
+                char_spacing: 0.0,
+                word_spacing: 0.0,
+                horizontal_scaling: 100.0,
+                primary_detected: false,
+            });
+            x += width;
+        }
+        extractor.merge_adjacent_spans();
+        extractor.spans[0].text.clone()
+    }
+
+    #[test]
+    fn merge_decimal_font_switch_and_boundary() {
+        assert_eq!(
+            merged_text(&[("0", "F1", 5.0, 0.0), (".", "F2", 2.5, 0.0), ("78", "F1", 10.0, 0.0)]),
+            "0.78"
+        );
+        // 0.1 em boundary at size 10: 1.0 pt joins, 1.2 pt keeps the space.
+        assert_eq!(merged_text(&[("0.", "F1", 7.5, 0.0), ("78", "F2", 10.0, 1.0)]), "0.78");
+        assert_eq!(merged_text(&[("0.", "F1", 7.5, 0.0), ("78", "F2", 10.0, 1.2)]), "0. 78");
+        // Signs are unchanged by D10-min.
+        assert_eq!(
+            merged_text(&[("x", "F1", 5.0, 0.0), ("\u{2212}", "F2", 6.0, 0.0), ("1", "F3", 5.0, 0.0)]),
+            "x \u{2212} 1"
         );
     }
 }

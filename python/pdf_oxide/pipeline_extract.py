@@ -149,8 +149,9 @@ def _tables_from_engine(
                 "flavor": t.get("flavor", config.table_flavor),
                 "data": t.get("data", []),
                 "df_data": t.get("df_data", []),
+                "spans": t.get("spans", []),
                 "csv_data": data_to_csv(t.get("data", [])),
-                "html_data": data_to_html(t.get("data", [])),
+                "html_data": data_to_html(t.get("data", []), t.get("spans")),
                 "text": table_text,
                 "section_id": assigned_section,
                 "section_path": section_path(assigned_section, sections),
@@ -196,8 +197,9 @@ def _extract_tables(
                 "flavor": t.get("flavor", config.table_flavor),
                 "data": t.get("data", []),
                 "df_data": t.get("df_data", []),
+                "spans": t.get("spans", []),
                 "csv_data": data_to_csv(t.get("data", [])),
-                "html_data": data_to_html(t.get("data", [])),
+                "html_data": data_to_html(t.get("data", []), t.get("spans")),
                 "text": (
                     data_to_csv(t.get("data", []))
                     or f"Table page {page_num}"

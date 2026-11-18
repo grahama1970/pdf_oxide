@@ -7504,6 +7504,19 @@ fn table_to_pydict<'py>(
     dict.set_item("accuracy", table.accuracy)?;
     dict.set_item("whitespace", table.whitespace)?;
 
+    // Row/column spans: anchor (row, col) is the top-left cell, which holds
+    // the spanned text in `data`; covered cells are "".
+    let spans = pyo3::types::PyList::empty(py);
+    for region in table.span_regions() {
+        let d = pyo3::types::PyDict::new(py);
+        d.set_item("row", region.start_row)?;
+        d.set_item("col", region.start_col)?;
+        d.set_item("row_span", region.row_span)?;
+        d.set_item("col_span", region.col_span)?;
+        spans.append(d)?;
+    }
+    dict.set_item("spans", spans)?;
+
     // Bounding box: (x0, y0, x1, y1) computed from row/column boundaries
     if !table.cols.is_empty() && !table.rows.is_empty() {
         let x0 = table.cols.first().map(|c| c.0).unwrap_or(0.0);
